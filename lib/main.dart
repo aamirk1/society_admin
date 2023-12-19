@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/homeScreen/homeScreen.dart';
 import 'package:society_admin/homeScreen/side.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
           return null;
         },
         // home: const customSide()
-        home: customSide());
+        home: LoginScreen());
   }
 
   Widget? _getPageWidget(RouteSettings settings) {

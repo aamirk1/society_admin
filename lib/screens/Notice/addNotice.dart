@@ -43,16 +43,20 @@ class _AddNoticeState extends State<AddNotice> {
                     padding: const EdgeInsets.all(8),
                     child: TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
-                          controller: societyNameController,
-                          decoration: const InputDecoration(
-                              labelText: 'Search Society',
-                              border: OutlineInputBorder())),
+                        controller: societyNameController,
+                        decoration: const InputDecoration(
+                            labelText: 'Search Society',
+                            border: OutlineInputBorder()),
+                      ),
                       suggestionsCallback: (pattern) async {
                         return await getUserdata(pattern);
                       },
                       itemBuilder: (context, suggestion) {
                         return ListTile(
-                          title: Text(suggestion.toString()),
+                          title: Text(
+                            suggestion.toString(),
+                            style: const TextStyle(color: Colors.black),
+                          ),
                         );
                       },
                       onSuggestionSelected: (suggestion) {
