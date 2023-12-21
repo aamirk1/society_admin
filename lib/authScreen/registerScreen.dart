@@ -3,20 +3,21 @@
 // ignore_for_file: file_names
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:society_admin/homeScreen/side.dart';
 
-class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+class RegisrationScreen extends StatefulWidget {
+  RegisrationScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisrationScreen> createState() => _RegisrationScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisrationScreenState extends State<RegisrationScreen> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController userIdController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   String? userFlatNumber;
@@ -28,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    userIdController.dispose();
+    mobileController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -73,16 +74,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     TextFormField(
-                      keyboardType: TextInputType.phone,
                       style: const TextStyle(color: Colors.white),
                       textInputAction: TextInputAction.next,
-                      controller: userIdController,
+                      controller: firstNameController,
                       decoration: const InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                           color: Colors.white,
                         )),
-                        labelText: 'UserID',
+                        labelText: 'First Name',
                         labelStyle: TextStyle(
                           color: Colors.white,
                         ),
@@ -97,7 +97,72 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter UserID';
+                          return 'Please enter First Name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      style: const TextStyle(color: Colors.white),
+                      textInputAction: TextInputAction.next,
+                      controller: lastNameController,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: Colors.white,
+                        )),
+                        labelText: 'Last Name',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        // enabledBorder: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: Colors.white,
+                        )),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Last Name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.phone,
+                      style: const TextStyle(color: Colors.white),
+                      textInputAction: TextInputAction.next,
+                      controller: mobileController,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: Colors.white,
+                        )),
+                        labelText: 'Mobile No.',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        // enabledBorder: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: Colors.white,
+                        )),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Mobile No.';
                         }
                         return null;
                       },
@@ -150,12 +215,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              login(userIdController.text,
-                                  passwordController.text, context);
+                              register(
+                                  firstNameController.text,
+                                  lastNameController.text,
+                                  mobileController.text,
+                                  passwordController.text,
+                                  context);
                             }
                           },
                           child: const Text(
-                            'Login',
+                            'Sign Up',
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
@@ -171,66 +240,31 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void storeLoginData(bool isLogin, String userID) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('userID');
-    prefs.setBool('isLogin', isLogin);
-    prefs.setString('userID', userID);
-  }
+  Future<void> register(String firstName, String lastName, String mobile,
+      String password, BuildContext context) async {
+    String firstInitial = firstName[0][0].trim().toUpperCase();
+    String lastInitial = lastName[0][0].trim().toUpperCase();
+    String mobileLastFour = mobile.substring(mobile.length - 4);
+    String fullName = '$firstName $lastName';
 
-  Future<void> login(
-      String userID, String password, BuildContext context) async {
-    try {
-      // Fetch the user document from Firestore based on the provided username
-      final userDoc = await FirebaseFirestore.instance
-          .collection('societyAdmin')
-          .doc(userID)
-          .get();
-     
-      if (userDoc.exists) {
-        // Compare the provided password with the stored password
-        final storedPassword = userDoc.data()!['password'];
+    String userID = '$firstInitial$lastInitial$mobileLastFour';
+    await FirebaseFirestore.instance
+        .collection('societyAdmin')
+        .doc(userID)
+        .set({
+      'firstName': firstName.trim(),
+      'lastName': lastName.trim(),
+      'mobile': mobile,
+      'password': password,
+      'fullName': '$fullName',
+      // Add more fields as needed
+    });
+    FirebaseFirestore.instance.collection('unAssignedRole').doc(fullName).set({
+      'alphabet': firstInitial,
+      'position': 'unAssigned',
+    });
 
-        if (password == storedPassword) {
-          storeLoginData(true, userID);
-          // Login successful
-          SnackBar snackBar = const SnackBar(
-            backgroundColor: Colors.green,
-            content: Center(child: Text('Login successful')),
-          );
-          // ignore: use_build_context_synchronously
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          // ignore: use_build_context_synchronously
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const customSide()),
-              (route) => false);
-
-          // Navigate to the home screen or perform any other necessary actions
-        } else {
-          // Incorrect password
-          SnackBar snackBar = const SnackBar(
-            backgroundColor: Colors.red,
-            content: Center(child: Text('Incorrect password')),
-          );
-          // ignore: use_build_context_synchronously
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          // print('Incorrect password');
-        }
-      } else {
-        // User does not exist
-        SnackBar snackBar = const SnackBar(
-          backgroundColor: Colors.red,
-          content: Center(child: Center(child: Text('User does not exist'))),
-        );
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        // print('User does not exist');
-      }
-    } catch (e) {
-      // Error occurred
-      // ignore: avoid_print
-      print('Error: $e');
-    }
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => customSide()));
   }
 }

@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/homeScreen/homeScreen.dart';
-import 'package:society_admin/homeScreen/side.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
 
 void main() async {
@@ -72,10 +71,10 @@ class MyApp extends StatelessWidget {
       case '/':
         return const HomePage();
       case '/addNotice':
-      return  AddNotice();
-      case '/addMember':
+        return AddNotice();
+      case '/addNoc':
       // return const AddMember();
-      case '/societyList':
+      case '/complaint':
       // return const societyList();
       case '/committeeList':
       // return const committeeList();

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class NocManagement extends StatefulWidget {
@@ -28,6 +27,7 @@ class _NocManagementState extends State<NocManagement> {
 
     List allFlat = flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
 
+    // ignore: unused_local_variable
     List<dynamic> dataList = allFlat;
   }
 }

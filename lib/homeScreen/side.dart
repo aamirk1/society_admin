@@ -28,7 +28,7 @@ class _customSideState extends State<customSide> {
     Icons.house_rounded,
     Icons.house_outlined,
     Icons.account_balance_outlined,
-    Icons.account_balance_wallet_outlined,
+    Icons.settings_outlined,
   ];
   List<bool> design = [true, false, false, false, false, false];
 
@@ -54,12 +54,12 @@ class _customSideState extends State<customSide> {
             color: Colors.purple,
             child: Column(
               children: [
-                // Container(
-                //   width: 100,
-                //   height: 40,
-                //   padding: const EdgeInsets.only(bottom: 10),
-                //   child: Image.asset('assets/images/devlogo.png'),
-                // ),
+                Container(
+                  width: 100,
+                  height: 40,
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Image.asset('assets/images/devlogo.png'),
+                ),
                 const Divider(
                   color: Colors.black,
                 ),
