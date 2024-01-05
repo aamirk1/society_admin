@@ -1,18 +1,231 @@
+// import 'dart:html';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:society_admin/authScreen/common.dart';
 
 class AddNoc extends StatefulWidget {
-  const AddNoc({super.key});
-
+  AddNoc(
+      {super.key,
+      required this.nocType,
+      required this.text,
+      required this.society,
+      required this.flatNo});
+  String nocType;
+  String text;
+  String society;
+  String flatNo;
   @override
   State<AddNoc> createState() => _AddNocState();
 }
 
 class _AddNocState extends State<AddNoc> {
+  List<dynamic> dataList = [];
+  bool isLoading = true;
+  PlatformFile? selectedFile;
+  @override
+  void initState() {
+    super.initState();
+    // getTypeOfNoc(widget.society, widget.flatNo, widget.nocType,widget.text);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        body: Center(
-      child: Text('Add Noc \n Module'),
-    ));
+    return Scaffold(
+      body: Column(
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.75,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: Text(
+                        widget.nocType,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            color: Colors.black),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        widget.text,
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
+              onPressed: () async {
+                selectedFile = await pickAndUploadPDF();
+                setState(() {});
+              },
+              child: const Text('Pick PDF'),
+            ),
+            Text(
+              selectedFile?.name ?? 'No file selected',
+              style: const TextStyle(color: textColor),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
+              onPressed: () {
+                if (selectedFile == null) {
+                  return alertbox();
+                } else {
+                  uploadFile(selectedFile!, selectedFile!.name);
+                }
+              },
+              child: const Text('Upload PDF'),
+            ),
+          ])
+        ],
+      ),
+    );
+  }
+
+  // Future<String> uploadPdf(String fileName, File file) async {
+  //   final Reference storageReference =
+  //       FirebaseStorage.instance.ref().child('pdfs/$fileName.pdf');
+  //   final UploadTask uploadTask = storageReference.putFile(file);
+  //   await uploadTask.whenComplete(() {});
+  //   final downloadLink = await storageReference.getDownloadURL();
+  //   return downloadLink;
+  // }
+
+  // void pickAndUploadPDF() async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //     type: FileType.custom,
+  //     allowedExtensions: ['pdf'],
+  //   );
+
+  //   if (result != null) {
+  //     PlatformFile file = result.files.first;
+
+  //     String fileName = DateTime.now().millisecondsSinceEpoch.toString() +
+  //         '.' +
+  //         file.extension!;
+
+  //     try {
+  //       TaskSnapshot taskSnapshot;
+  //       if (file.bytes != null) {
+  //         taskSnapshot = await FirebaseStorage.instance
+  //             .ref(widget.society)
+  //             .child(widget.flatNo)
+  //             .child(widget.nocType)
+  //             .child(fileName)
+  //             .putData(file.bytes!);
+
+  //         // .ref()
+
+  //         // .ref('pdfs/$fileName')
+  //         // .putData(file.bytes!);
+  //       } else {
+  //         throw Exception('File bytes are null');
+  //       }
+
+  //       if (taskSnapshot.state == TaskState.success) {
+  //         print('PDF file uploaded successfully');
+  //       } else {
+  //         print('Failed to upload PDF file');
+  //       }
+  //     } on FirebaseException catch (e) {
+  //       print('Failed to upload PDF file: $e');
+  //     }
+  //   } else {
+  //     print('File picking canceled');
+  //   }
+  // }
+
+  Future<PlatformFile> pickAndUploadPDF() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+    PlatformFile? file;
+
+    if (result != null) {
+      file = result.files.first;
+    } else {
+      print('File picking canceled');
+    }
+    return file!;
+  }
+
+  void uploadFile(PlatformFile file, String fileName) async {
+    try {
+      TaskSnapshot taskSnapshot;
+      if (file.bytes != null) {
+        taskSnapshot = await FirebaseStorage.instance
+            .ref('NocPdfs')
+            .child(widget.society)
+            .child(widget.flatNo)
+            .child(widget.nocType)
+            .child(fileName)
+            .putData(file.bytes!);
+
+        // ignore: use_build_context_synchronously
+      } else {
+        throw Exception('File bytes are null');
+      }
+
+      if (taskSnapshot.state == TaskState.success) {
+        await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(
+                  '$fileName uploaded successfully!',
+                  style: const TextStyle(color: Colors.green),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('OK'),
+                  )
+                ],
+              );
+            });
+      } else {
+        print('Failed to upload PDF file');
+      }
+    } on FirebaseException catch (e) {
+      print('Failed to upload PDF file: $e');
+    }
+  }
+
+  alertbox() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(color: textColor),
+                    )),
+              ],
+              title: const Text(
+                'Please select a file first!',
+                style: TextStyle(color: Colors.red),
+              ));
+        });
   }
 }

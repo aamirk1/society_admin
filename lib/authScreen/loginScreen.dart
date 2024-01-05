@@ -4,6 +4,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:society_admin/authScreen/common.dart';
+import 'package:society_admin/authScreen/registerScreen.dart';
 import 'package:society_admin/homeScreen/side.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -44,27 +46,15 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Society",
+                "Society Manager",
                 style: TextStyle(
-                    color: Colors.white,
+                    color: secondaryColor,
                     fontSize: 30,
-                    fontWeight: FontWeight.bold),
-              ),
-              const Text(
-                "Manager",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 20,
               ),
-              const Text('Welcome Back',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold)),
               const SizedBox(
                 height: 10,
               ),
@@ -74,25 +64,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     TextFormField(
                       keyboardType: TextInputType.phone,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: secondaryColor),
                       textInputAction: TextInputAction.next,
                       controller: userIdController,
                       decoration: const InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                          color: Colors.white,
+                          color: secondaryColor,
                         )),
                         labelText: 'UserID',
                         labelStyle: TextStyle(
-                          color: Colors.white,
+                          color: secondaryColor,
                         ),
                         // enabledBorder: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                          color: Colors.white,
+                          color: secondaryColor,
                         )),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
+                          borderSide: BorderSide(color: secondaryColor),
                         ),
                       ),
                       validator: (value) {
@@ -104,27 +94,27 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: secondaryColor),
                       textInputAction: TextInputAction.done,
                       controller: passwordController,
                       obscureText: true,
                       decoration: const InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.white,
+                            color: secondaryColor,
                           ),
                         ),
                         labelText: 'Password',
                         labelStyle: TextStyle(
-                          color: Colors.white,
+                          color: secondaryColor,
                         ),
                         // enabledBorder: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                          color: Colors.white,
+                          color: secondaryColor,
                         )),
                         border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white)),
+                            borderSide: BorderSide(color: secondaryColor)),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -139,25 +129,45 @@ class _LoginScreenState extends State<LoginScreen> {
                     Center(
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor:
-                                const Color.fromARGB(255, 0, 0, 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: secondaryColor,
+                                  foregroundColor:
+                                      const Color.fromARGB(255, 0, 0, 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  minimumSize: Size(
+                                      MediaQuery.of(context).size.width, 40)),
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  login(userIdController.text,
+                                      passwordController.text, context);
+                                }
+                              },
+                              child: const Text(
+                                'Login',
+                                style: TextStyle(fontSize: 20),
+                              ),
                             ),
-                          ),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              login(userIdController.text,
-                                  passwordController.text, context);
-                            }
-                          },
-                          child: const Text(
-                            'Login',
-                            style: TextStyle(fontSize: 20),
-                          ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return RegisrationScreen();
+                                }));
+                              },
+                              child: const Text(
+                                'Don\'t have an account? Sign Up',
+                                style: TextStyle(color: secondaryColor),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -186,25 +196,74 @@ class _LoginScreenState extends State<LoginScreen> {
           .collection('societyAdmin')
           .doc(userID)
           .get();
-     
+
       if (userDoc.exists) {
         // Compare the provided password with the stored password
         final storedPassword = userDoc.data()!['password'];
+        final fullName = userDoc.data()!['fullName'];
 
         if (password == storedPassword) {
           storeLoginData(true, userID);
           // Login successful
           SnackBar snackBar = const SnackBar(
             backgroundColor: Colors.green,
-            content: Center(child: Text('Login successful')),
+            content: Center(
+              child: Text('Login successful'),
+            ),
           );
-          // ignore: use_build_context_synchronously
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          // ignore: use_build_context_synchronously
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const customSide()),
-              (route) => false);
+
+          QuerySnapshot querySnapshot =
+              await FirebaseFirestore.instance.collection('AssignedRole').get();
+          List<dynamic> assignedRoles =
+              querySnapshot.docs.map((e) => e.id).toList();
+          for (int i = 0; i < assignedRoles.length; i++) {
+            if (fullName == assignedRoles[i]) {
+              DocumentSnapshot roleDoc = await FirebaseFirestore.instance
+                  .collection('AssignedRole')
+                  .doc(fullName)
+                  .get();
+
+              // Access the role field
+              Map<String, dynamic>? data =
+                  roleDoc.data() as Map<String, dynamic>?;
+              String position = data!['position'];
+
+              if (position == 'Assigned') {
+                print(position);
+                String societyname = data['societyname'];
+
+                print(societyname);
+                List<dynamic> roles = data['roles'];
+
+                print(roles);
+                // print(roles);
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                // ignore: use_build_context_synchronously
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => customSide(
+                              society: societyname,
+                              allRoles: roles,
+                            )),
+                    (route) => false);
+              }
+
+              // print(position);
+              // ignore: use_build_context_synchronously
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => const customSide()),
+              //     (route) => false);
+            } else {
+              SnackBar snackBar = const SnackBar(
+                  backgroundColor: Colors.red,
+                  content: Center(
+                    child: Text('Roles not assigned'),
+                  ));
+            }
+          }
 
           // Navigate to the home screen or perform any other necessary actions
         } else {

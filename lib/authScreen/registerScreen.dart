@@ -3,7 +3,7 @@
 // ignore_for_file: file_names
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:society_admin/homeScreen/side.dart';
+import 'package:society_admin/authScreen/loginScreen.dart';
 
 class RegisrationScreen extends StatefulWidget {
   RegisrationScreen({super.key});
@@ -45,27 +45,15 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Society",
+                "Society Manager",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,
                     fontWeight: FontWeight.bold),
               ),
-              const Text(
-                "Manager",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold),
-              ),
               const SizedBox(
                 height: 20,
               ),
-              const Text('Welcome Back',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold)),
               const SizedBox(
                 height: 10,
               ),
@@ -204,29 +192,48 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
                     Center(
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor:
-                                const Color.fromARGB(255, 0, 0, 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor:
+                                      const Color.fromARGB(255, 0, 0, 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  minimumSize: Size(
+                                      MediaQuery.of(context).size.width, 40)),
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  register(
+                                      firstNameController.text,
+                                      lastNameController.text,
+                                      mobileController.text,
+                                      passwordController.text,
+                                      context);
+                                }
+                              },
+                              child: const Text(
+                                'Sign Up',
+                                style: TextStyle(fontSize: 20),
+                              ),
                             ),
-                          ),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              register(
-                                  firstNameController.text,
-                                  lastNameController.text,
-                                  mobileController.text,
-                                  passwordController.text,
-                                  context);
-                            }
-                          },
-                          child: const Text(
-                            'Sign Up',
-                            style: TextStyle(fontSize: 20),
-                          ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return LoginScreen();
+                                  }));
+                                },
+                                child: const Text(
+                                  'Already have an account? Login',
+                                  style: TextStyle(color: Colors.white),
+                                ))
+                          ],
                         ),
                       ),
                     ),
@@ -265,6 +272,6 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
     });
 
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => customSide()));
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 }

@@ -69,17 +69,13 @@ class MyApp extends StatelessWidget {
       // case '/':
       //   return LoginScreen();
       case '/':
-        return const HomePage();
+        return HomePage(society: 'society', allRoles: []);
       case '/addNotice':
         return AddNotice();
       case '/addNoc':
-      // return const AddMember();
-      case '/complaint':
-      // return const societyList();
-      case '/committeeList':
-      // return const committeeList();
-      case '/addBill':
-      // return const AddBill();
+      // return  AddNoc();
+      case '/nocManagement':
+      // return  NocManagement();
     }
 
     return null;

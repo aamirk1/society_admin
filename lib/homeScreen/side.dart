@@ -6,8 +6,9 @@ import 'package:society_admin/screens/Notice/circularNotice.dart';
 
 // ignore: camel_case_types
 class customSide extends StatefulWidget {
-  const customSide({super.key});
-
+  customSide({super.key, this.society, this.allRoles});
+  String? society;
+  List<dynamic>? allRoles = [];
   @override
   State<customSide> createState() => _customSideState();
 }
@@ -35,16 +36,23 @@ class _customSideState extends State<customSide> {
   int _selectedIndex = 0;
 
   List<Widget> pages = [
-    const HomePage(),
-    const CircularNotice(),
-    const NocManagement(),
-    const ComplaintManagement(),
+    //   HomePage(society: widget.society, allRoles: widget.allRoles),
+    //   CircularNotice(widget.society, widget.allRoles),
+    //   NocManagement(widget.society, widget.allRoles),
+    //   ComplaintManagement(widget.society, widget.allRoles),
     // const ServiceProvider(),
     // const Settings(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    pages = [
+      HomePage(society: widget.society!, allRoles: widget.allRoles!),
+      CircularNotice(society: widget.society!, allRoles: widget.allRoles!),
+      NocManagement(society: widget.society!, allRoles: widget.allRoles!),
+      ComplaintManagement(society: widget.society!, allRoles: widget.allRoles!),
+      // HomePage(society: widget.society!, allRoles: widget.allRoles!)
+    ];
     return Scaffold(
       body: Row(
         children: [
@@ -116,7 +124,10 @@ class _customSideState extends State<customSide> {
 
   Widget getPage(int index) {
     if (index == 0) {
-      return const HomePage();
+      return HomePage(
+        society: widget.society!,
+        allRoles: widget.allRoles!,
+      );
     }
     return const Text('');
   }

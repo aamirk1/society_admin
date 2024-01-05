@@ -1,24 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:society_admin/authScreen/common.dart';
-import 'package:society_admin/screens/Noc/typeOfNoc.dart';
+import 'package:society_admin/screens/Noc/addNoc.dart';
 
-class NocManagement extends StatefulWidget {
-  NocManagement({super.key, required this.society, required this.allRoles});
+class TypeOfNoc extends StatefulWidget {
+  TypeOfNoc({super.key, required this.society, required this.flatNo});
   String society;
-  List<dynamic> allRoles = [];
+  String flatNo;
 
   @override
-  State<NocManagement> createState() => _NocManagementState();
+  State<TypeOfNoc> createState() => _TypeOfNocState();
 }
 
-class _NocManagementState extends State<NocManagement> {
+class _TypeOfNocState extends State<TypeOfNoc> {
   List<dynamic> dataList = [];
   bool isLoading = true;
   @override
   void initState() {
     super.initState();
-    getFlatNum(widget.society).whenComplete(() {
+    getTypeOfNoc(widget.society, widget.flatNo).whenComplete(() {
       isLoading = false;
     });
   }
@@ -26,16 +25,11 @@ class _NocManagementState extends State<NocManagement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('NOC Management'),
-        backgroundColor: primaryColor,
-      ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Column(
-              children: [
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(children: [
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: dataList.length,
@@ -45,19 +39,20 @@ class _NocManagementState extends State<NocManagement> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
-                          minVerticalPadding: 1,
                           title: Text(
-                            dataList[index]['flatno'],
-                            style: const TextStyle(color: Colors.black),
+                            dataList[index]['nocType'],
+                            style: TextStyle(color: Colors.black),
                           ),
                           // subtitle: Text(data.docs[index]['city']),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) {
-                                return TypeOfNoc(
+                                return AddNoc(
+                                  nocType: dataList[index]['nocType'],
+                                  text: dataList[index]['text'],
                                   society: widget.society,
-                                  flatNo: dataList[index]['flatno'],
+                                  flatNo: widget.flatNo,
                                 );
                               }),
                             );
@@ -67,25 +62,25 @@ class _NocManagementState extends State<NocManagement> {
                     );
                   },
                 ),
-              ],
-            ),
-    );
+              ]));
   }
 
-  Future<void> getFlatNum(String selectedSociety) async {
+  Future<void> getTypeOfNoc(society, flatNo) async {
     isLoading = true;
     QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
         .collection('nocApplications')
-        .doc(selectedSociety)
+        .doc(society)
         .collection('flatno')
+        .doc(flatNo)
+        .collection('typeofNoc')
         .get();
 
-    List<dynamic> allFlat =
+    List<dynamic> allNocType =
         flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
-    print('heloloeeoc $allFlat');
+    print('heloloeeoc $allNocType');
     // ignore: unused_local_variable
-    dataList = allFlat;
-    print('dataList ${dataList[0]['flatno']}');
+    dataList = allNocType;
+    print('dataList ${dataList}');
     setState(() {
       isLoading = false;
     });

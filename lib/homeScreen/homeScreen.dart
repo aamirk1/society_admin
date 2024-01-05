@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+   HomePage({super.key, required this.society, required this.allRoles});
+  String society;
+  List<dynamic> allRoles = [];
 
   @override
   Widget build(BuildContext context) {
