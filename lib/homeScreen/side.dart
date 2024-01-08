@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:society_admin/homeScreen/homeScreen.dart';
-import 'package:society_admin/screens/Complaint/complaint.dart';
+import 'package:society_admin/screens/Complaint/complaintManagement.dart';
 import 'package:society_admin/screens/Noc/nocManagement.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
+import 'package:society_admin/screens/ServiceProvider/serviceProvider.dart';
+import 'package:society_admin/screens/settings/settings.dart';
 
-// ignore: camel_case_types
+// ignore: camel_case_types, must_be_immutable
 class customSide extends StatefulWidget {
   customSide({super.key, this.society, this.allRoles});
   String? society;
@@ -51,7 +53,8 @@ class _customSideState extends State<customSide> {
       CircularNotice(society: widget.society!, allRoles: widget.allRoles!),
       NocManagement(society: widget.society!, allRoles: widget.allRoles!),
       ComplaintManagement(society: widget.society!, allRoles: widget.allRoles!),
-      // HomePage(society: widget.society!, allRoles: widget.allRoles!)
+      ServiceProvider(society: widget.society!, allRoles: widget.allRoles!),
+      Settings(society: widget.society!, allRoles: widget.allRoles!),
     ];
     return Scaffold(
       body: Row(

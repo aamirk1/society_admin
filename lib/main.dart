@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/list_builder_provider.dart';
 import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/homeScreen/homeScreen.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
@@ -25,39 +27,46 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Society Management',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          textTheme: Theme.of(context).textTheme.apply(
-                bodyColor: Colors.blueGrey,
-              ),
-          primaryTextTheme: Theme.of(context).textTheme.apply(
-                bodyColor: Colors.purple,
-              ),
-          primaryIconTheme: const IconThemeData(
-            color: Color.fromARGB(255, 91, 3, 255),
-          ),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ListBuilderProvider(),
         ),
-        onGenerateRoute: (settings) {
-          final page = _getPageWidget(settings);
-          if (page != null) {
-            return PageRouteBuilder(
-                settings: settings,
-                pageBuilder: (_, __, ___) => page,
-                transitionsBuilder: (_, anim, __, child) {
-                  return FadeTransition(
-                    opacity: anim,
-                    child: child,
-                  );
-                });
-          }
-          return null;
-        },
-        // home: const customSide()
-        home: LoginScreen());
+      ],
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Society Management',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            textTheme: Theme.of(context).textTheme.apply(
+                  bodyColor: Colors.blueGrey,
+                ),
+            primaryTextTheme: Theme.of(context).textTheme.apply(
+                  bodyColor: Colors.purple,
+                ),
+            primaryIconTheme: const IconThemeData(
+              color: Color.fromARGB(255, 91, 3, 255),
+            ),
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          onGenerateRoute: (settings) {
+            final page = _getPageWidget(settings);
+            if (page != null) {
+              return PageRouteBuilder(
+                  settings: settings,
+                  pageBuilder: (_, __, ___) => page,
+                  transitionsBuilder: (_, anim, __, child) {
+                    return FadeTransition(
+                      opacity: anim,
+                      child: child,
+                    );
+                  });
+            }
+            return null;
+          },
+          // home: const customSide()
+          home: LoginScreen()),
+    );
   }
 
   Widget? _getPageWidget(RouteSettings settings) {

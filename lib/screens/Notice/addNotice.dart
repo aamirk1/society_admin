@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:society_admin/authScreen/common.dart';
 
+// ignore: must_be_immutable
 class AddNotice extends StatefulWidget {
   static const id = "/addNotice";
   AddNotice({super.key, this.societyName});
@@ -140,6 +141,7 @@ class _AddNoticeState extends State<AddNotice> {
         .collection('notices')
         .doc(title)
         .set({
+      'title': title,
       'date': date,
       'notice': notice,
     });

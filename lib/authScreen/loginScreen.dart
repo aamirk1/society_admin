@@ -250,13 +250,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     (route) => false);
               }
 
-              // print(position);
-              // ignore: use_build_context_synchronously
-              // Navigator.pushAndRemoveUntil(
-              //     context,
-              //     MaterialPageRoute(builder: (context) => const customSide()),
-              //     (route) => false);
+              
             } else {
+              // ignore: unused_local_variable
               SnackBar snackBar = const SnackBar(
                   backgroundColor: Colors.red,
                   content: Center(

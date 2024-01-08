@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 
+// ignore: must_be_immutable
 class AddNoc extends StatefulWidget {
   AddNoc(
       {super.key,
@@ -32,66 +33,79 @@ class _AddNocState extends State<AddNoc> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(top: 20),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.75,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Text(
-                        widget.nocType,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
-                            color: Colors.black),
+      body: Center(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.60,
+          height: MediaQuery.of(context).size.height * 0.98,
+          child: Card(
+            elevation: 5,
+            child: Column(
+              children: [
+                SingleChildScrollView(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 20),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.75,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Text(
+                              widget.nocType,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25,
+                                  color: Colors.black),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              widget.text,
+                              style: const TextStyle(
+                                  fontSize: 18, color: Colors.black),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                      child: Text(
-                        widget.text,
-                        style:
-                            const TextStyle(fontSize: 18, color: Colors.black),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor),
+                        onPressed: () async {
+                          selectedFile = await pickAndUploadPDF();
+                          setState(() {});
+                        },
+                        child: const Text('Pick PDF'),
+                      ),
+                      Text(
+                        selectedFile?.name ?? 'No file selected',
+                        style: const TextStyle(color: textColor),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor),
+                        onPressed: () {
+                          if (selectedFile == null) {
+                            return alertbox();
+                          } else {
+                            uploadFile(selectedFile!, selectedFile!.name);
+                          }
+                        },
+                        child: const Text('Upload PDF'),
+                      ),
+                    ])
+              ],
             ),
           ),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
-              onPressed: () async {
-                selectedFile = await pickAndUploadPDF();
-                setState(() {});
-              },
-              child: const Text('Pick PDF'),
-            ),
-            Text(
-              selectedFile?.name ?? 'No file selected',
-              style: const TextStyle(color: textColor),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
-              onPressed: () {
-                if (selectedFile == null) {
-                  return alertbox();
-                } else {
-                  uploadFile(selectedFile!, selectedFile!.name);
-                }
-              },
-              child: const Text('Upload PDF'),
-            ),
-          ])
-        ],
+        ),
       ),
     );
   }

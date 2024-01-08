@@ -1,32 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
-import 'package:society_admin/screens/Noc/addNoc.dart';
+import 'package:society_admin/screens/Complaint/addComplaints.dart';
 
 // ignore: must_be_immutable
-class TypeOfNoc extends StatefulWidget {
-  TypeOfNoc({super.key, required this.society, required this.flatNo});
+class TypeOfComplaint extends StatefulWidget {
+  TypeOfComplaint({super.key, required this.society, required this.flatNo});
   String society;
   String flatNo;
 
   @override
-  State<TypeOfNoc> createState() => _TypeOfNocState();
+  State<TypeOfComplaint> createState() => _TypeOfComplaintState();
 }
 
-class _TypeOfNocState extends State<TypeOfNoc> {
+class _TypeOfComplaintState extends State<TypeOfComplaint> {
   List<dynamic> dataList = [];
   bool isLoading = true;
   @override
   void initState() {
     super.initState();
-    getTypeOfNoc(widget.society, widget.flatNo);
+    getTypeOfComplaint(widget.society, widget.flatNo);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Type of Noc'),
+          title: const Text('Type of Complaint'),
           backgroundColor: primaryColor,
         ),
         body: isLoading
@@ -45,16 +45,17 @@ class _TypeOfNocState extends State<TypeOfNoc> {
                         child: ListTile(
                           minVerticalPadding: 0.3,
                           title: Text(
-                            dataList[index]['nocType'],
-                            style: TextStyle(color: Colors.black),
+                            dataList[index]['complaintsType'],
+                            style: const TextStyle(color: Colors.black),
                           ),
                           // subtitle: Text(data.docs[index]['city']),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) {
-                                return AddNoc(
-                                  nocType: dataList[index]['nocType'],
+                                return AddComplaint(
+                                  complaintType: dataList[index]
+                                      ['complaintsType'],
                                   text: dataList[index]['text'],
                                   society: widget.society,
                                   flatNo: widget.flatNo,
@@ -70,22 +71,21 @@ class _TypeOfNocState extends State<TypeOfNoc> {
               ]));
   }
 
-  Future<void> getTypeOfNoc(society, flatNo) async {
+  Future<void> getTypeOfComplaint(society, flatNo) async {
     isLoading = true;
     QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
-        .collection('nocApplications')
+        .collection('complaints')
         .doc(society)
         .collection('flatno')
         .doc(flatNo)
-        .collection('typeofNoc')
+        .collection('typeofcomplaints')
         .get();
 
-    List<dynamic> allNocType =
+    List<dynamic> allComplaintType =
         flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
-    print('heloloeeoc $allNocType');
+    print('heloloeeoc $allComplaintType');
     // ignore: unused_local_variable
-    dataList = allNocType;
-    print('dataList ${dataList}');
+    dataList = allComplaintType;
     setState(() {
       isLoading = false;
     });

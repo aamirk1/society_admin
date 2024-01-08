@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/screens/Noc/typeOfNoc.dart';
 
+// ignore: must_be_immutable
 class NocManagement extends StatefulWidget {
   NocManagement({super.key, required this.society, required this.allRoles});
   String society;
@@ -27,7 +28,7 @@ class _NocManagementState extends State<NocManagement> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('NOC Management'),
+        title: const Text('Flat No. Of Members'),
         backgroundColor: primaryColor,
       ),
       body: isLoading
@@ -45,7 +46,7 @@ class _NocManagementState extends State<NocManagement> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
-                          minVerticalPadding: 1,
+                          minVerticalPadding: 0.3,
                           title: Text(
                             dataList[index]['flatno'],
                             style: const TextStyle(color: Colors.black),
@@ -82,10 +83,9 @@ class _NocManagementState extends State<NocManagement> {
 
     List<dynamic> allFlat =
         flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
-    print('heloloeeoc $allFlat');
+  
     // ignore: unused_local_variable
     dataList = allFlat;
-    print('dataList ${dataList[0]['flatno']}');
     setState(() {
       isLoading = false;
     });
