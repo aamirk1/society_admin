@@ -1,34 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 
-class ViewData extends StatefulWidget {
-  const ViewData({
+class ViewCompanyData extends StatefulWidget {
+  const ViewCompanyData({
     super.key,
     required this.CompanyName,
-    required this.name,
-    required this.email,
-    required this.phone,
-    required this.address,
-    required this.designation,
+    required this.comEmail,
+    required this.comPhone,
+    required this.comAddress,
   });
   final String CompanyName;
-  final String name;
-  final String email;
-  final String phone;
-  final String address;
-  final String designation;
+  final String comEmail;
+  final String comPhone;
+  final String comAddress;
 
   @override
-  State<ViewData> createState() => _ViewDataState();
+  State<ViewCompanyData> createState() => _ViewCompanyDataState();
 }
 
-class _ViewDataState extends State<ViewData> {
+class _ViewCompanyDataState extends State<ViewCompanyData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'View Full Detais of ${widget.name}',
+          'View Full Detais of ${widget.CompanyName}',
           style: TextStyle(color: secondaryColor),
         ),
         backgroundColor: primaryColor,
@@ -36,7 +32,7 @@ class _ViewDataState extends State<ViewData> {
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.50,
-          height: MediaQuery.of(context).size.height * 0.50,
+          height: MediaQuery.of(context).size.height * 0.40,
           child: Card(
             elevation: 15,
             child:
@@ -63,7 +59,7 @@ class _ViewDataState extends State<ViewData> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Name: ${widget.name}',
+                      'Email: ${widget.comEmail}',
                       textAlign: TextAlign.start,
                       style: const TextStyle(color: textColor),
                     ),
@@ -71,7 +67,7 @@ class _ViewDataState extends State<ViewData> {
                       height: 10,
                     ),
                     Text(
-                      'Designation: ${widget.designation}',
+                      'Mobile: ${widget.comPhone}',
                       textAlign: TextAlign.start,
                       style: const TextStyle(color: textColor),
                     ),
@@ -79,23 +75,7 @@ class _ViewDataState extends State<ViewData> {
                       height: 10,
                     ),
                     Text(
-                      'Mobile: ${widget.phone}',
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(color: textColor),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Email: ${widget.email}',
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(color: textColor),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Address: ${widget.address}',
+                      'Address: ${widget.comAddress}',
                       textAlign: TextAlign.start,
                       style: const TextStyle(color: textColor),
                     ),
@@ -103,13 +83,16 @@ class _ViewDataState extends State<ViewData> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 55.0, right: 30),
-                child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      'Back',
-                      style: TextStyle(color: textColor, fontSize: 18),
-                    )),
+                padding: const EdgeInsets.only(top: 70.0, right: 30),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        'Back',
+                        style: TextStyle(color: textColor, fontSize: 18),
+                      )),
+                ),
               ),
             ]),
           ),

@@ -1,21 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/emplist_builder_provider.dart';
 import 'package:society_admin/authScreen/common.dart';
+import 'package:society_admin/screens/ServiceProvider/CompanyDetails/viewCompDetails.dart';
 import 'package:society_admin/screens/ServiceProvider/EmployeeDetails/addEmployeeDetails%20copy.dart';
 import 'package:society_admin/screens/ServiceProvider/EmployeeDetails/viewDetails.dart';
 
+// ignore: must_be_immutable
 class ViewEmployee extends StatefulWidget {
-  ViewEmployee({super.key, required this.society, required this.CompanyName});
+  ViewEmployee({
+    super.key,
+    required this.society,
+    required this.CompanyName,
+    required this.comEmail,
+    required this.comPhone,
+    required this.comAddress,
+  });
   String society;
   String CompanyName;
+  String comEmail;
+  String comPhone;
+  String comAddress;
 
   @override
   State<ViewEmployee> createState() => _ViewEmployeeState();
 }
 
 class _ViewEmployeeState extends State<ViewEmployee> {
-  List<dynamic> dataList = [];
-  bool isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -24,24 +36,44 @@ class _ViewEmployeeState extends State<ViewEmployee> {
 
   @override
   Widget build(BuildContext context) {
+    final provider =
+        Provider.of<EmpListBuilderProvider>(context, listen: false);
+    provider.empList.clear();
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'All Employee in ${widget.CompanyName}',
-          style: const TextStyle(color: secondaryColor),
+        title: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return ViewCompanyData(
+                    CompanyName: widget.CompanyName,
+                    comEmail: widget.comEmail,
+                    comPhone: widget.comPhone,
+                    comAddress: widget.comAddress,
+                  );
+                },
+              ),
+            );
+          },
+          child: Text(
+            'All Employee in ${widget.CompanyName}',
+            style: const TextStyle(color: secondaryColor),
+          ),
         ),
         backgroundColor: primaryColor,
         actions: [
           Padding(
-              padding: EdgeInsets.only(right: 10.0),
+              padding: const EdgeInsets.only(right: 10.0),
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(secondaryColor),
                       minimumSize: MaterialStateProperty.all(
-                        Size(20, 10),
+                        const Size(20, 10),
                       )),
                   onPressed: () {
                     Navigator.push(
@@ -61,65 +93,72 @@ class _ViewEmployeeState extends State<ViewEmployee> {
               ))
         ],
       ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : dataList.isEmpty
-              ? alertbox()
-              : Column(
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: dataList.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.10,
-                            child: Card(
-                              elevation: 10,
-                              child: ListTile(
-                                shape: BeveledRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                title: Text(
-                                  dataList[index]['empName'],
-                                  style: const TextStyle(color: Colors.black),
-                                ),
-                                subtitle: Text(
-                                  dataList[index]['empDesignation'],
-                                ),
-                                // subtitle: Text(data.docs[index]['city']),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return ViewData(
-                                        CompanyName: widget.CompanyName,
-                                        name: dataList[index]['empName'],
-                                        email: dataList[index]['empEmail'],
-                                        phone: dataList[index]['empPhone'],
-                                        address: dataList[index]['empAddress'],
-                                        designation: dataList[index]
-                                            ['empDesignation'],
-                                      );
-                                    }),
-                                  );
-                                },
-                              ),
-                            ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Consumer<EmpListBuilderProvider>(builder: (context, value, child) {
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: value.empList.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.10,
+                      child: Card(
+                        elevation: 10,
+                        child: ListTile(
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        );
-                      },
+                          title: Text(
+                            value.empList[index]['empName'],
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                          subtitle: Text(
+                            value.empList[index]['empDesignation'],
+                          ),
+                          trailing: IconButton(
+                            onPressed: () {
+                              deleteEmp(widget.CompanyName,
+                                  value.empList[index]['empName'], index);
+                            },
+                            icon: const Icon(Icons.delete),
+                          ),
+                          // subtitle: Text(data.docs[index]['city']),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return ViewData(
+                                  CompanyName: widget.CompanyName,
+                                  name: value.empList[index]['empName'],
+                                  email: value.empList[index]['empEmail'],
+                                  phone: value.empList[index]['empPhone'],
+                                  address: value.empList[index]['empAddress'],
+                                  designation: value.empList[index]
+                                      ['empDesignation'],
+                                );
+                              }),
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                  ],
-                ),
+                  );
+                },
+              );
+            })
+          ],
+        ),
+      ),
     );
   }
 
   Future<void> getEmployee(String CompanyName) async {
-    isLoading = true;
+    final provider =
+        Provider.of<EmpListBuilderProvider>(context, listen: false);
+
     QuerySnapshot companyQuerySnapshot = await FirebaseFirestore.instance
         .collection('vendorEmployeeList')
         .doc(CompanyName)
@@ -129,31 +168,41 @@ class _ViewEmployeeState extends State<ViewEmployee> {
     List<dynamic> allCompany =
         companyQuerySnapshot.docs.map((e) => e.data()).toList();
 
-    // ignore: unused_local_variable
-    dataList = allCompany;
-   
-    setState(() {
-      isLoading = false;
-    });
+    provider.setBuilderEmpList(allCompany);
+  }
+
+  Future<void> deleteEmp(String company, String name, int index) async {
+    final provider =
+        Provider.of<EmpListBuilderProvider>(context, listen: false);
+    DocumentReference deleteEmployee = FirebaseFirestore.instance
+        .collection('vendorEmployeeList')
+        .doc(company)
+        .collection('employeeList')
+        .doc(name);
+    await deleteEmployee.delete();
+
+    provider.removeData(index);
   }
 
   alertbox() {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      'OK',
-                      style: TextStyle(color: textColor),
-                    )),
-              ],
-              title: const Text(
-                'Please select a file first!',
-                style: TextStyle(color: Colors.red),
-              ));
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(color: textColor),
+                )),
+          ],
+          title: const Text(
+            'No data found!',
+            style: TextStyle(color: Colors.red),
+          ),
+        );
+      },
+    );
   }
 }

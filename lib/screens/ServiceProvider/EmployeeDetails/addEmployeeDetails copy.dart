@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:society_admin/Provider/list_builder_provider.dart';
+import 'package:society_admin/Provider/emplist_builder_provider.dart';
 import 'package:society_admin/authScreen/common.dart';
 
+// ignore: must_be_immutable
 class AddEmployee extends StatefulWidget {
   AddEmployee({super.key, required this.society, required this.CompanyName});
   String society;
@@ -23,6 +24,7 @@ class _AddEmployeeState extends State<AddEmployee> {
 
   @override
   void dispose() {
+    super.dispose();
     empNameController.dispose();
     empEmailController.dispose();
     empPhoneController.dispose();
@@ -53,6 +55,14 @@ class _AddEmployeeState extends State<AddEmployee> {
                     key: _formKey,
                     child: Column(children: [
                       TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Employee Name';
+                          }
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
                         controller: empNameController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -61,6 +71,14 @@ class _AddEmployeeState extends State<AddEmployee> {
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Employee Designation';
+                          }
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
                         controller: empDesignationController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -69,6 +87,14 @@ class _AddEmployeeState extends State<AddEmployee> {
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Employee Email';
+                          }
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
                         controller: empEmailController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -77,6 +103,15 @@ class _AddEmployeeState extends State<AddEmployee> {
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
+                        maxLength: 10,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Employee Phone';
+                          }
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.number,
                         controller: empPhoneController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -85,6 +120,14 @@ class _AddEmployeeState extends State<AddEmployee> {
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Employee Address';
+                            }
+                            return null;
+                          },
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.text,
                           controller: empAddressController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -92,6 +135,9 @@ class _AddEmployeeState extends State<AddEmployee> {
                           )),
                       const SizedBox(height: 15),
                       ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor,
+                          ),
                           onPressed: () {
                             storedData(
                                 widget.CompanyName,
@@ -113,7 +159,8 @@ class _AddEmployeeState extends State<AddEmployee> {
 
   Future<void> storedData(String CompanyName, String empName, String email,
       String phone, String address, String designation) async {
-    final provider = Provider.of<ListBuilderProvider>(context, listen: false);
+    final provider =
+        Provider.of<EmpListBuilderProvider>(context, listen: false);
     if (_formKey.currentState!.validate()) {
       FirebaseFirestore.instance
           .collection('vendorEmployeeList')
@@ -131,6 +178,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       provider.addSingleList({
         'companyName': CompanyName,
       });
+
       Navigator.pop(context);
     }
   }

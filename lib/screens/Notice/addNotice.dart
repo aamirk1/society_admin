@@ -4,6 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/deleteNoticeProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
 
 // ignore: must_be_immutable
@@ -135,6 +137,7 @@ class _AddNoticeState extends State<AddNotice> {
   }
 
   void storeNotice(title, notice) {
+    final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
     FirebaseFirestore.instance
         .collection('notice')
         .doc(widget.societyName)
@@ -145,7 +148,9 @@ class _AddNoticeState extends State<AddNotice> {
       'date': date,
       'notice': notice,
     });
-
+    provider.addSingleList({
+      'title': title,
+    });
     Navigator.pop(context);
   }
 
@@ -165,6 +170,7 @@ class _AddNoticeState extends State<AddNotice> {
   }
 
   void uploadFile(PlatformFile file, String fileName) async {
+    final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
     try {
       TaskSnapshot taskSnapshot;
       if (file.bytes != null) {
@@ -173,6 +179,9 @@ class _AddNoticeState extends State<AddNotice> {
             .child(widget.societyName!)
             .child(fileName)
             .putData(file.bytes!);
+        provider.addSingleList({
+          'title': fileName,
+        });
 
         // ignore: use_build_context_synchronously
       } else {

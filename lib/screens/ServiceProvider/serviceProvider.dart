@@ -6,6 +6,7 @@ import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/screens/ServiceProvider/CompanyDetails/addCompanyDetails.dart';
 import 'package:society_admin/screens/ServiceProvider/EmployeeDetails/viewEmployeeDetails.dart';
 
+// ignore: must_be_immutable
 class ServiceProvider extends StatefulWidget {
   ServiceProvider({super.key, required this.society, required this.allRoles});
   String society;
@@ -16,8 +17,6 @@ class ServiceProvider extends StatefulWidget {
 }
 
 class _ServiceProviderState extends State<ServiceProvider> {
-  List<dynamic> dataList = [];
-  bool isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -59,58 +58,63 @@ class _ServiceProviderState extends State<ServiceProvider> {
               ))
         ],
       ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          // : dataList.isEmpty
-          //     ? alertbox()
-          : Column(
-              children: [
-                Consumer<ListBuilderProvider>(
-                  builder: (context, value, child) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: provider.list.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          elevation: 5,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListTile(
-                              minVerticalPadding: 0.3,
-                              title: Text(
-                                provider.list[index]['companyName'],
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              // subtitle: Text(data.docs[index]['city']),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) {
-                                    return ViewEmployee(
-                                      society: widget.society,
-                                      CompanyName: provider.list[index]
-                                          ['companyName'],
-                                    );
-                                  }),
-                                );
-                              },
-                            ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Consumer<ListBuilderProvider>(
+              builder: (context, value, child) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: value.list.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      elevation: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          minVerticalPadding: 0.3,
+                          title: Text(
+                            value.list[index]['companyName'],
+                            style: const TextStyle(color: Colors.black),
                           ),
-                        );
-                      },
+                          trailing: IconButton(
+                            onPressed: () {
+                              deleteEmp(widget.society,
+                                  value.list[index]['companyName'], index);
+                            },
+                            icon: const Icon(Icons.delete),
+                          ),
+                          // subtitle: Text(data.docs[index]['city']),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return ViewEmployee(
+                                  society: widget.society,
+                                  CompanyName: value.list[index]['companyName'],
+                                  comEmail: value.list[index]['email'],
+                                  comPhone: value.list[index]['phone'],
+                                  comAddress: value.list[index]['address'],
+                                );
+                              }),
+                            );
+                          },
+                        ),
+                      ),
                     );
                   },
-                ),
-              ],
+                );
+              },
             ),
+          ],
+        ),
+      ),
     );
   }
 
   Future<void> getCompany(String selectedSociety) async {
     final provider = Provider.of<ListBuilderProvider>(context, listen: false);
-    isLoading = true;
+
     QuerySnapshot companyQuerySnapshot = await FirebaseFirestore.instance
         .collection('vendorList')
         .doc(selectedSociety)
@@ -120,13 +124,22 @@ class _ServiceProviderState extends State<ServiceProvider> {
     List<dynamic> allCompany =
         companyQuerySnapshot.docs.map((e) => e.data()).toList();
 
-    // ignore: unused_local_variable
-    // dataList = allCompany;
     print(allCompany);
     provider.setBuilderList(allCompany);
-    setState(() {
-      isLoading = false;
-    });
+  }
+
+  Future<void> deleteEmp(
+      String selectedSociety, String company, int index) async {
+    final provider = Provider.of<ListBuilderProvider>(context, listen: false);
+    DocumentReference deleteEmployee = FirebaseFirestore.instance
+        .collection('vendorList')
+        .doc(selectedSociety)
+        .collection('companyList')
+        .doc(company);
+
+    await deleteEmployee.delete();
+
+    provider.removeData(index);
   }
 
   alertbox() {

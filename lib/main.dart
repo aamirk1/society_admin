@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/deleteNoticeProvider.dart';
+import 'package:society_admin/Provider/emplist_builder_provider.dart';
 import 'package:society_admin/Provider/list_builder_provider.dart';
 import 'package:society_admin/authScreen/loginScreen.dart';
-import 'package:society_admin/homeScreen/homeScreen.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
+import 'package:society_admin/screens/Notice/circularNotice.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +33,12 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => ListBuilderProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => EmpListBuilderProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => DeleteNoticeProvider(),
         ),
       ],
       child: MaterialApp(
@@ -78,7 +86,7 @@ class MyApp extends StatelessWidget {
       // case '/':
       //   return LoginScreen();
       case '/':
-        return HomePage(society: 'society', allRoles: []);
+        return CircularNotice(society: 'society', allRoles: []);
       case '/addNotice':
         return AddNotice();
       case '/addNoc':

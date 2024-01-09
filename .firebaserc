@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "societymanagement-763f1"
+  },
+  "targets": {
+    "societymanagement-763f1": {
+      "hosting": {
+        "society_admin": [
+          "societyadmin"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

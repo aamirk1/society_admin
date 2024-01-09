@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/list_builder_provider.dart';
 import 'package:society_admin/authScreen/common.dart';
 
+// ignore: must_be_immutable
 class AddCompany extends StatefulWidget {
   AddCompany({super.key, required this.society});
   String society;
@@ -19,6 +22,7 @@ class _AddCompanyState extends State<AddCompany> {
 
   @override
   void dispose() {
+    super.dispose();
     nameController.dispose();
     emailController.dispose();
     phoneController.dispose();
@@ -38,7 +42,7 @@ class _AddCompanyState extends State<AddCompany> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
+          child: SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width * 0.80,
             child: Padding(
@@ -48,6 +52,14 @@ class _AddCompanyState extends State<AddCompany> {
                     key: _formKey,
                     child: Column(children: [
                       TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Company Name';
+                          }
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
                         controller: nameController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -56,6 +68,14 @@ class _AddCompanyState extends State<AddCompany> {
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Company Email';
+                          }
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
                         controller: emailController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -64,6 +84,15 @@ class _AddCompanyState extends State<AddCompany> {
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
+                        maxLength: 10,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Company Phone';
+                          }
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.number,
                         controller: phoneController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -72,6 +101,14 @@ class _AddCompanyState extends State<AddCompany> {
                       ),
                       const SizedBox(height: 10),
                       TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Company Address';
+                            }
+                            return null;
+                          },
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.text,
                           controller: addressController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -79,6 +116,9 @@ class _AddCompanyState extends State<AddCompany> {
                           )),
                       const SizedBox(height: 15),
                       ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor,
+                          ),
                           onPressed: () {
                             storedData(
                                 nameController.text,
@@ -98,6 +138,8 @@ class _AddCompanyState extends State<AddCompany> {
 
   Future<void> storedData(
       String companyName, String email, String phone, String address) async {
+    final provider = Provider.of<ListBuilderProvider>(context, listen: false);
+
     if (_formKey.currentState!.validate()) {
       FirebaseFirestore.instance
           .collection('vendorList')
@@ -109,6 +151,9 @@ class _AddCompanyState extends State<AddCompany> {
         'email': email,
         'phone': phone,
         'address': address,
+      });
+      provider.addSingleList({
+        'companyName': companyName,
       });
       Navigator.pop(context);
     }

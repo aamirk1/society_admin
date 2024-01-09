@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/homeScreen/homeScreen.dart';
 import 'package:society_admin/screens/Complaint/complaintManagement.dart';
 import 'package:society_admin/screens/Noc/nocManagement.dart';
@@ -18,7 +19,7 @@ class customSide extends StatefulWidget {
 // ignore: camel_case_types
 class _customSideState extends State<customSide> {
   List<String> tabTitle = [
-    'Home',
+    // 'Home',
     'Circular/Notice \n Module',
     'NOC Management',
     'Complaint Management',
@@ -26,14 +27,14 @@ class _customSideState extends State<customSide> {
     'Settings',
   ];
   List<dynamic> tabIcon = [
-    Icons.apartment_outlined,
+    // Icons.apartment_outlined,
     Icons.supervised_user_circle_outlined,
     Icons.house_rounded,
     Icons.house_outlined,
     Icons.account_balance_outlined,
     Icons.settings_outlined,
   ];
-  List<bool> design = [true, false, false, false, false, false];
+  List<bool> design = [true, false, false, false, false];
 
   int _selectedIndex = 0;
 
@@ -49,7 +50,7 @@ class _customSideState extends State<customSide> {
   @override
   Widget build(BuildContext context) {
     pages = [
-      HomePage(society: widget.society!, allRoles: widget.allRoles!),
+      // HomePage(society: widget.society!, allRoles: widget.allRoles!),
       CircularNotice(society: widget.society!, allRoles: widget.allRoles!),
       NocManagement(society: widget.society!, allRoles: widget.allRoles!),
       ComplaintManagement(society: widget.society!, allRoles: widget.allRoles!),
@@ -67,12 +68,12 @@ class _customSideState extends State<customSide> {
               children: [
                 Container(
                   width: 100,
-                  height: 40,
+                  height: 80,
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Image.asset('assets/images/devlogo.png'),
                 ),
                 const Divider(
-                  color: Colors.black,
+                  color: secondaryColor,
                 ),
                 ListView.builder(
                     physics: const BouncingScrollPhysics(),

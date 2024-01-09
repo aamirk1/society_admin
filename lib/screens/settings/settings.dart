@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class Settings extends StatefulWidget {
-   Settings({super.key,required this.society, required this.allRoles});
+  Settings({super.key, required this.society, required this.allRoles});
   String society;
   List<dynamic> allRoles = [];
 
@@ -14,8 +15,7 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return const Scaffold(
         body: Center(
-          child: Text('Settings \n Module'),
-        )
-    );
+      child: Text('Pending'),
+    ));
   }
 }

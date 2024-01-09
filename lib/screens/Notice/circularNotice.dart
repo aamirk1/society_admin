@@ -5,6 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/deleteNoticeProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
 import 'package:society_admin/screens/Notice/viewNotice.dart';
@@ -23,7 +25,6 @@ class _CircularNoticeState extends State<CircularNotice> {
   List<dynamic> dataList = [];
   List<String> fileList = [];
   String url = '';
-  bool isLoading = true;
   final date = DateFormat('dd-MM-yyyy ').format(DateTime.now());
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _CircularNoticeState extends State<CircularNotice> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<DeleteNoticeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Circular Notice'),
@@ -67,13 +69,14 @@ class _CircularNoticeState extends State<CircularNotice> {
               ))
         ],
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
+      body: Material(
+        child: SingleChildScrollView(
+          child: Consumer<DeleteNoticeProvider>(
+            builder: (context, value, child) => Column(
               children: [
                 ListView.builder(
                     shrinkWrap: true,
-                    itemCount: dataList.length,
+                    itemCount: value.noticeList.length,
                     itemBuilder: (context, index) {
                       return Card(
                         elevation: 5,
@@ -82,14 +85,13 @@ class _CircularNoticeState extends State<CircularNotice> {
                           child: ListTile(
                             minVerticalPadding: 0.3,
                             title: Text(
-                              dataList[index]['title'],
+                              value.noticeList[index]['title'],
                               style: const TextStyle(color: textColor),
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                deleteNotice(
-                                    widget.society, dataList[index]['title']);
-                                setState(() {});
+                                deleteNotice(widget.society,
+                                    value.noticeList[index]['title'], index);
                               },
                               icon: const Icon(Icons.delete),
                             ),
@@ -99,9 +101,9 @@ class _CircularNoticeState extends State<CircularNotice> {
                                 MaterialPageRoute(builder: (context) {
                                   return ViewNotice(
                                       society: widget.society,
-                                      title: dataList[index]['title'],
-                                      notice: dataList[index]['notice'],
-                                      date: dataList[index]['date']);
+                                      title: value.noticeList[index]['title'],
+                                      notice: value.noticeList[index]['notice'],
+                                      date: value.noticeList[index]['date']);
                                 }),
                               );
                             },
@@ -110,7 +112,7 @@ class _CircularNoticeState extends State<CircularNotice> {
                       );
                     }),
                 ListView.builder(
-                    itemCount: fileList.length,
+                    itemCount: value.noticePdfList.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return Card(
@@ -120,19 +122,18 @@ class _CircularNoticeState extends State<CircularNotice> {
                           child: ListTile(
                             minVerticalPadding: 0.3,
                             title: Text(
-                              fileList[index],
+                              value.noticePdfList[index].toString(),
                               style: const TextStyle(color: textColor),
                             ),
                             trailing: IconButton(
                               onPressed: () {
-                                deleteNoticePdf(
-                                    widget.society, fileList[index]);
-                                setState(() {});
+                                deleteNoticePdf(widget.society,
+                                    value.noticePdfList[index], index);
                               },
                               icon: const Icon(Icons.delete),
                             ),
                             onTap: () {
-                              openPdf(fileList[index]);
+                              openPdf(value.noticePdfList[index]);
                             },
                           ),
                         ),
@@ -140,12 +141,16 @@ class _CircularNoticeState extends State<CircularNotice> {
                     })
               ],
             ),
+          ),
+        ),
+      ),
     );
   }
 
   // ignore: non_constant_identifier_names
   Future<void> getNotice(String? SelectedSociety) async {
-    isLoading = true;
+    final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
+
     QuerySnapshot getAllNotice = await FirebaseFirestore.instance
         .collection('notice')
         .doc(SelectedSociety)
@@ -153,15 +158,15 @@ class _CircularNoticeState extends State<CircularNotice> {
         .get();
     List<dynamic> allTypeOfNotice =
         getAllNotice.docs.map((e) => e.data()).toList();
-    dataList = allTypeOfNotice;
-    setState(() {
-      isLoading = false;
-    });
+    print('aaaa - $allTypeOfNotice');
+    provider.setBuilderNoticeList(allTypeOfNotice);
   }
 
   Future<List<String>> getNoticePdf(String? SelectedSociety) async {
-    isLoading = true;
+    final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
+
     // List<String> fileList = [];
+
     ListResult listResult = await FirebaseStorage.instance
         .ref('Notices')
         .child(SelectedSociety!)
@@ -170,29 +175,36 @@ class _CircularNoticeState extends State<CircularNotice> {
     for (Reference ref in listResult.items) {
       String filename = ref.name;
       fileList.add(filename);
-      setState(() {
-        isLoading = false;
-      });
     }
+    print('getPdf - $fileList');
+
+    provider.setBuilderNoticePdfList(fileList);
+
     return fileList;
   }
 
   Future<void> deleteNotice(
-      String? SelectedSociety, String typeOfNotice) async {
+      String? SelectedSociety, String typeOfNotice, int index) async {
+    final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
     DocumentReference deleteNotice = FirebaseFirestore.instance
         .collection('notice')
         .doc(SelectedSociety)
         .collection('notices')
         .doc(typeOfNotice);
     await deleteNotice.delete();
+    provider.removeData(index);
   }
 
-  Future<void> deleteNoticePdf(String? SelectedSociety, String fileName) async {
+  Future<void> deleteNoticePdf(
+      String? SelectedSociety, String fileName, int index) async {
+    final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
     await FirebaseStorage.instance
         .ref('Notices')
         .child(SelectedSociety!)
         .child(fileName)
         .delete();
+
+    provider.removePdfData(index);
   }
 
   openPdf(String title) async {
