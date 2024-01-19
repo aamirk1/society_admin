@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/homeScreen/homeScreen.dart';
 import 'package:society_admin/screens/Complaint/complaintManagement.dart';
+import 'package:society_admin/screens/GatePass/gatePass.dart';
+import 'package:society_admin/screens/Members/ListOfMemberName.dart';
 import 'package:society_admin/screens/Noc/nocManagement.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
 import 'package:society_admin/screens/ServiceProvider/serviceProvider.dart';
+import 'package:society_admin/screens/assignRoll/user.dart';
 import 'package:society_admin/screens/settings/settings.dart';
 
 // ignore: camel_case_types, must_be_immutable
@@ -19,42 +22,41 @@ class customSide extends StatefulWidget {
 // ignore: camel_case_types
 class _customSideState extends State<customSide> {
   List<String> tabTitle = [
-    // 'Home',
     'Circular/Notice \n Module',
     'NOC Management',
     'Complaint Management',
     'Service Provider \n Management',
+    'Member Name List',
+    'Assign Roles',
+    'Gate Pass',
     'Settings',
   ];
   List<dynamic> tabIcon = [
-    // Icons.apartment_outlined,
     Icons.supervised_user_circle_outlined,
     Icons.house_rounded,
     Icons.house_outlined,
     Icons.account_balance_outlined,
+    Icons.group,
+    Icons.person,
+    Icons.insert_drive_file,
     Icons.settings_outlined,
   ];
-  List<bool> design = [true, false, false, false, false];
+  List<bool> design = [true, false, false, false, false, false, false, false];
 
   int _selectedIndex = 0;
 
-  List<Widget> pages = [
-    //   HomePage(society: widget.society, allRoles: widget.allRoles),
-    //   CircularNotice(widget.society, widget.allRoles),
-    //   NocManagement(widget.society, widget.allRoles),
-    //   ComplaintManagement(widget.society, widget.allRoles),
-    // const ServiceProvider(),
-    // const Settings(),
-  ];
+  List<Widget> pages = [];
 
   @override
   Widget build(BuildContext context) {
     pages = [
-      // HomePage(society: widget.society!, allRoles: widget.allRoles!),
       CircularNotice(society: widget.society!, allRoles: widget.allRoles!),
       NocManagement(society: widget.society!, allRoles: widget.allRoles!),
       ComplaintManagement(society: widget.society!, allRoles: widget.allRoles!),
       ServiceProvider(society: widget.society!, allRoles: widget.allRoles!),
+      MemberNameList(society: widget.society!, allRoles: widget.allRoles!),
+      MenuUserPage(society: widget.society!),
+      GatePass(society: widget.society!, allRoles: widget.allRoles!),
       Settings(society: widget.society!, allRoles: widget.allRoles!),
     ];
     return Scaffold(
@@ -75,14 +77,19 @@ class _customSideState extends State<customSide> {
                 const Divider(
                   color: secondaryColor,
                 ),
-                ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: tabIcon.length,
-                    itemBuilder: (context, index) {
-                      return customListTile(
-                          tabTitle[index], tabIcon[index], index);
-                    })
+                SingleChildScrollView(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: tabIcon.length,
+                        itemBuilder: (context, index) {
+                          return customListTile(
+                              tabTitle[index], tabIcon[index], index);
+                        }),
+                  ),
+                )
               ],
             ),
           ),
@@ -120,7 +127,7 @@ class _customSideState extends State<customSide> {
 
   void setDesignBool() {
     List<bool> tempBool = [];
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 8; i++) {
       tempBool.add(false);
     }
     design = tempBool;

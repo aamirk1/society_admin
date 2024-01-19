@@ -28,7 +28,6 @@ class _CircularNoticeState extends State<CircularNotice> {
   final date = DateFormat('dd-MM-yyyy ').format(DateTime.now());
   @override
   void initState() {
-    print(date);
     getNotice(widget.society);
     getNoticePdf(widget.society);
     super.initState();
@@ -158,7 +157,6 @@ class _CircularNoticeState extends State<CircularNotice> {
         .get();
     List<dynamic> allTypeOfNotice =
         getAllNotice.docs.map((e) => e.data()).toList();
-    print('aaaa - $allTypeOfNotice');
     provider.setBuilderNoticeList(allTypeOfNotice);
   }
 
@@ -176,7 +174,6 @@ class _CircularNoticeState extends State<CircularNotice> {
       String filename = ref.name;
       fileList.add(filename);
     }
-    print('getPdf - $fileList');
 
     provider.setBuilderNoticePdfList(fileList);
 
@@ -212,7 +209,6 @@ class _CircularNoticeState extends State<CircularNotice> {
     final Reference ref =
         storage.ref('Notices').child(widget.society!).child(title);
     String url = await ref.getDownloadURL();
-    print('url - $url');
 
     if (kIsWeb) {
       html.window.open(url, '_blank');

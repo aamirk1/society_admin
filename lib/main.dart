@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/assigned_user_provider.dart';
 import 'package:society_admin/Provider/deleteNoticeProvider.dart';
 import 'package:society_admin/Provider/emplist_builder_provider.dart';
+import 'package:society_admin/Provider/filteration_provider.dart';
 import 'package:society_admin/Provider/list_builder_provider.dart';
+import 'package:society_admin/Provider/menuUserPageProvider.dart';
 import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
@@ -40,6 +43,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => DeleteNoticeProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => MenuUserPageProvider(),
+        ),
+        ChangeNotifierProvider(create: (_) => AssignedUserProvider()),
+        ChangeNotifierProvider(create: (_) => FilterProvider()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

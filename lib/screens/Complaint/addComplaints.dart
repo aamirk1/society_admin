@@ -103,6 +103,4 @@ class _AddComplaintState extends State<AddComplaint> {
       ),
     );
   }
-
-  
 }

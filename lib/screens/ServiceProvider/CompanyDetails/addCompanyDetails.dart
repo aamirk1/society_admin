@@ -154,6 +154,9 @@ class _AddCompanyState extends State<AddCompany> {
       });
       provider.addSingleList({
         'companyName': companyName,
+        'email': email,
+        'phone': phone,
+        'address': address,
       });
       Navigator.pop(context);
     }

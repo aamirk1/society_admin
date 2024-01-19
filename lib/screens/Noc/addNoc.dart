@@ -24,6 +24,7 @@ class _AddNocState extends State<AddNoc> {
   List<dynamic> dataList = [];
   bool isLoading = true;
   PlatformFile? selectedFile;
+
   @override
   void initState() {
     super.initState();
@@ -109,59 +110,6 @@ class _AddNocState extends State<AddNoc> {
       ),
     );
   }
-
-  // Future<String> uploadPdf(String fileName, File file) async {
-  //   final Reference storageReference =
-  //       FirebaseStorage.instance.ref().child('pdfs/$fileName.pdf');
-  //   final UploadTask uploadTask = storageReference.putFile(file);
-  //   await uploadTask.whenComplete(() {});
-  //   final downloadLink = await storageReference.getDownloadURL();
-  //   return downloadLink;
-  // }
-
-  // void pickAndUploadPDF() async {
-  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
-  //     type: FileType.custom,
-  //     allowedExtensions: ['pdf'],
-  //   );
-
-  //   if (result != null) {
-  //     PlatformFile file = result.files.first;
-
-  //     String fileName = DateTime.now().millisecondsSinceEpoch.toString() +
-  //         '.' +
-  //         file.extension!;
-
-  //     try {
-  //       TaskSnapshot taskSnapshot;
-  //       if (file.bytes != null) {
-  //         taskSnapshot = await FirebaseStorage.instance
-  //             .ref(widget.society)
-  //             .child(widget.flatNo)
-  //             .child(widget.nocType)
-  //             .child(fileName)
-  //             .putData(file.bytes!);
-
-  //         // .ref()
-
-  //         // .ref('pdfs/$fileName')
-  //         // .putData(file.bytes!);
-  //       } else {
-  //         throw Exception('File bytes are null');
-  //       }
-
-  //       if (taskSnapshot.state == TaskState.success) {
-  //         print('PDF file uploaded successfully');
-  //       } else {
-  //         print('Failed to upload PDF file');
-  //       }
-  //     } on FirebaseException catch (e) {
-  //       print('Failed to upload PDF file: $e');
-  //     }
-  //   } else {
-  //     print('File picking canceled');
-  //   }
-  // }
 
   Future<PlatformFile> pickAndUploadPDF() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(

@@ -177,6 +177,11 @@ class _AddEmployeeState extends State<AddEmployee> {
       });
       provider.addSingleList({
         'companyName': CompanyName,
+        'empName': empName,
+        'empEmail': email,
+        'empPhone': phone,
+        'empAddress': address,
+        'empDesignation': designation,
       });
 
       Navigator.pop(context);
