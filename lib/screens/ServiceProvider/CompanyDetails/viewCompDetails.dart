@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 
@@ -25,7 +27,7 @@ class _ViewCompanyDataState extends State<ViewCompanyData> {
       appBar: AppBar(
         title: Text(
           'View Full Detais of ${widget.CompanyName}',
-          style: TextStyle(color: secondaryColor),
+          style: const TextStyle(color: secondaryColor),
         ),
         backgroundColor: primaryColor,
       ),
@@ -53,34 +55,32 @@ class _ViewCompanyDataState extends State<ViewCompanyData> {
               const SizedBox(
                 height: 7,
               ),
-              Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Email: ${widget.comEmail}',
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(color: textColor),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Mobile: ${widget.comPhone}',
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(color: textColor),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Address: ${widget.comAddress}',
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(color: textColor),
-                    ),
-                  ],
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Email: ${widget.comEmail}',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(color: textColor),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Mobile: ${widget.comPhone}',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(color: textColor),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Address: ${widget.comAddress}',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(color: textColor),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 70.0, right: 30),

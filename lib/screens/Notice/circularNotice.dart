@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, avoid_web_libraries_in_flutter, duplicate_ignore, file_names
+
 import 'dart:html' as html;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,14 +37,13 @@ class _CircularNoticeState extends State<CircularNotice> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<DeleteNoticeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Circular Notice'),
         backgroundColor: primaryColor,
         actions: [
           Padding(
-              padding: EdgeInsets.only(right: 10.0),
+              padding:const EdgeInsets.only(right: 10.0),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
@@ -50,7 +51,7 @@ class _CircularNoticeState extends State<CircularNotice> {
                       backgroundColor:
                           MaterialStateProperty.all(secondaryColor),
                       minimumSize: MaterialStateProperty.all(
-                        Size(20, 10),
+                        const Size(20, 10),
                       )),
                   onPressed: () {
                     Navigator.push(

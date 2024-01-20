@@ -9,7 +9,7 @@ import 'package:society_admin/authScreen/registerScreen.dart';
 import 'package:society_admin/homeScreen/side.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return RegisrationScreen();
+                                  return const RegisrationScreen();
                                 }));
                               },
                               child: const Text(
@@ -229,13 +229,13 @@ class _LoginScreenState extends State<LoginScreen> {
               String position = data!['position'];
 
               if (position == 'Assigned') {
-                print(position);
+                // print(position);
                 String societyname = data['societyname'];
 
-                print(societyname);
+                // print(societyname);
                 List<dynamic> roles = data['roles'];
 
-                print(roles);
+                // print(roles);
                 // print(roles);
                 // ignore: use_build_context_synchronously
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);

@@ -1,12 +1,12 @@
 // ignore: duplicate_ignore
 // ignore: file_names
-// ignore_for_file: file_names
+// ignore_for_file: file_names, use_build_context_synchronously, unnecessary_string_interpolations
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/loginScreen.dart';
 
 class RegisrationScreen extends StatefulWidget {
-  RegisrationScreen({super.key});
+  const RegisrationScreen({super.key});
 
   @override
   State<RegisrationScreen> createState() => _RegisrationScreenState();
@@ -226,7 +226,7 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
                                 onPressed: () {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return LoginScreen();
+                                    return const LoginScreen();
                                   }));
                                 },
                                 child: const Text(
@@ -272,6 +272,6 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
     });
 
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 }

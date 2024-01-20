@@ -1,4 +1,6 @@
 // import 'dart:html';
+// ignore_for_file: use_build_context_synchronously, avoid_print, file_names, void_checks
+
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +46,7 @@ class _AddNocState extends State<AddNoc> {
               children: [
                 SingleChildScrollView(
                   child: Container(
-                    margin: EdgeInsets.only(top: 20),
+                    margin: const EdgeInsets.only(top: 20),
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.75,
                     child: Padding(
@@ -53,21 +55,17 @@ class _AddNocState extends State<AddNoc> {
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            child: Text(
-                              widget.nocType,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                  color: Colors.black),
-                            ),
+                          Text(
+                            widget.nocType,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: Colors.black),
                           ),
-                          Container(
-                            child: Text(
-                              widget.text,
-                              style: const TextStyle(
-                                  fontSize: 18, color: Colors.black),
-                            ),
+                          Text(
+                            widget.text,
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.black),
                           ),
                         ],
                       ),
@@ -129,6 +127,7 @@ class _AddNocState extends State<AddNoc> {
   void uploadFile(PlatformFile file, String fileName) async {
     try {
       TaskSnapshot taskSnapshot;
+      // ignore: duplicate_ignore
       if (file.bytes != null) {
         taskSnapshot = await FirebaseStorage.instance
             .ref('NocPdfs')
@@ -138,7 +137,6 @@ class _AddNocState extends State<AddNoc> {
             .child(fileName)
             .putData(file.bytes!);
 
-        // ignore: use_build_context_synchronously
       } else {
         throw Exception('File bytes are null');
       }

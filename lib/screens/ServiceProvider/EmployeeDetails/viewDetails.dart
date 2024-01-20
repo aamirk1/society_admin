@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 
@@ -29,7 +31,7 @@ class _ViewDataState extends State<ViewData> {
       appBar: AppBar(
         title: Text(
           'View Full Detais of ${widget.name}',
-          style: TextStyle(color: secondaryColor),
+          style: const TextStyle(color: secondaryColor),
         ),
         backgroundColor: primaryColor,
       ),
@@ -57,50 +59,48 @@ class _ViewDataState extends State<ViewData> {
               const SizedBox(
                 height: 7,
               ),
-              Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Name: ${widget.name}',
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(color: textColor),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Designation: ${widget.designation}',
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(color: textColor),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Mobile: ${widget.phone}',
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(color: textColor),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Email: ${widget.email}',
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(color: textColor),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Address: ${widget.address}',
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(color: textColor),
-                    ),
-                  ],
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Name: ${widget.name}',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(color: textColor),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Designation: ${widget.designation}',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(color: textColor),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Mobile: ${widget.phone}',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(color: textColor),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Email: ${widget.email}',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(color: textColor),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Address: ${widget.address}',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(color: textColor),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 55.0, right: 30),

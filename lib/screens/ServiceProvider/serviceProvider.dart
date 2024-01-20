@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,22 +27,21 @@ class _ServiceProviderState extends State<ServiceProvider> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ListBuilderProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Service Provider'),
         backgroundColor: primaryColor,
         actions: [
           Padding(
-              padding: EdgeInsets.only(right: 10.0),
+              padding:const EdgeInsets.only(right: 10.0),
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(secondaryColor),
                       minimumSize: MaterialStateProperty.all(
-                        Size(20, 10),
+                       const  Size(20, 10),
                       )),
                   onPressed: () {
                     Navigator.push(
@@ -124,7 +125,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
     List<dynamic> allCompany =
         companyQuerySnapshot.docs.map((e) => e.data()).toList();
 
-    print(allCompany);
+    // print(allCompany);
     provider.setBuilderList(allCompany);
   }
 

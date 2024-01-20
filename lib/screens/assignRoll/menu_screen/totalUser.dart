@@ -38,7 +38,7 @@ class _TotalUsersState extends State<TotalUsers> {
             appBar: PreferredSize(
                 preferredSize: Size(MediaQuery.of(context).size.width, 50),
                 child: AppBar(
-                  title: Text(
+                  title:const  Text(
                     'Total Comittee Members',
                     style: TextStyle(color: secondaryColor),
                   ),
@@ -281,7 +281,7 @@ class _TotalUsersState extends State<TotalUsers> {
             child: Text(
               '${inputList[index]}',
         
-              style:TextStyle(fontSize: 13),
+              style:const TextStyle(fontSize: 13),
               textAlign: TextAlign.center,
             ),
           );
@@ -313,7 +313,7 @@ class _TotalUsersState extends State<TotalUsers> {
                     child: Text(
                       user.split("&")[0].toString(),
                     
-              style:TextStyle(fontSize: 14),
+              style:const TextStyle(fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -547,7 +547,7 @@ class _TotalUsersState extends State<TotalUsers> {
                         child: Text(
                           user,
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20),
+                          style: const TextStyle(fontSize: 20),
                         ),
                       ),
                       Row(
@@ -559,7 +559,7 @@ class _TotalUsersState extends State<TotalUsers> {
                           ),
                           Container(
                             padding: const EdgeInsets.only(bottom: 5.0),
-                            child: Text(
+                            child:const  Text(
                               'Designation',
                               style: TextStyle(
                                   decorationThickness: 2.0,
@@ -575,9 +575,9 @@ class _TotalUsersState extends State<TotalUsers> {
                           child: customRowBuilderForDialog(currentRoles)),
                       Container(
                         padding: const EdgeInsets.only(bottom: 5.0, top: 20.0),
-                        child: Row(
+                        child:const  Row(
                           children: [
-                            const Icon(
+                             Icon(
                               Icons.person_4_sharp,
                               color: Colors.black,
                               size: 20,
@@ -688,7 +688,7 @@ class _TotalUsersState extends State<TotalUsers> {
               width: 120,
               child: Text(
                 user,
-                style: TextStyle(
+                style:const  TextStyle(
                   fontSize: 18,
                 ),
                 textAlign: TextAlign.center,

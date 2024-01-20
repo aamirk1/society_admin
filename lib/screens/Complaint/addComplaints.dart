@@ -1,9 +1,10 @@
-// import 'dart:html';
+// ignore_for_file: must_be_immutable, file_names
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 
-// ignore: must_be_immutable
+
 class AddComplaint extends StatefulWidget {
   AddComplaint(
       {super.key,

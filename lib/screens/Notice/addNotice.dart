@@ -1,4 +1,6 @@
 // import 'dart:html';
+// ignore_for_file: avoid_print, use_build_context_synchronously, duplicate_ignore, void_checks, file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -97,7 +99,7 @@ class _AddNoticeState extends State<AddNotice> {
               height: 40,
             ),
             Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: const EdgeInsets.only(top: 10),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,

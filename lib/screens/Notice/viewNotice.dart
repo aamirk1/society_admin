@@ -1,9 +1,10 @@
-// import 'dart:html';
+// ignore_for_file: must_be_immutable, file_names, avoid_print
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 
-// ignore: must_be_immutable
+
 class ViewNotice extends StatefulWidget {
   ViewNotice(
       {super.key, this.society, required this.title, this.notice, this.date});
@@ -70,7 +71,7 @@ class _ViewNoticeState extends State<ViewNotice> {
                 const SizedBox(
                   height: 7,
                 ),
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.77,
                   child: SingleChildScrollView(
                     child: Wrap(
@@ -81,7 +82,7 @@ class _ViewNoticeState extends State<ViewNotice> {
                           child: Text(
                             widget.notice!,
                             textAlign: TextAlign.justify,
-                            style: TextStyle(color: textColor),
+                            style: const TextStyle(color: textColor),
                           ),
                         )
                       ],

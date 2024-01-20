@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, unnecessary_brace_in_string_interps, file_names, prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';

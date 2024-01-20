@@ -1,5 +1,5 @@
 // ignore: duplicate_ignore
-// ignore_for_file: file_names
+// ignore_for_file: file_names, must_be_immutable, use_build_context_synchronously
 //ignore: avoid_web_libraries_in_flutter
 // ignore_for_file: camel_case_types
 
@@ -24,7 +24,6 @@ class _MemberNameListState extends State<MemberNameList> {
   final StreamController<List<List<dynamic>>> _data =
       StreamController<List<List<dynamic>>>();
 
-  final TextEditingController _societyNameController = TextEditingController();
   Stream<List<List<dynamic>>> get _streamData => _data.stream;
   List<bool> isActive = [];
 
@@ -34,7 +33,6 @@ class _MemberNameListState extends State<MemberNameList> {
   //   });
   // }
 
-  final _formKey = GlobalKey<FormState>();
 
   List<dynamic> columnName = [];
   List<String> searchedList = [];
@@ -56,7 +54,7 @@ class _MemberNameListState extends State<MemberNameList> {
         appBar: AppBar(
           title: Text(
             "All Members of ${widget.society}",
-            style: TextStyle(color: secondaryColor),
+            style: const TextStyle(color: secondaryColor),
           ),
           backgroundColor: primaryColor,
         ),
@@ -82,7 +80,7 @@ class _MemberNameListState extends State<MemberNameList> {
                                     border:
                                         TableBorder.all(color: Colors.black),
                                     headingRowColor:
-                                        MaterialStatePropertyAll(primaryColor),
+                                        const MaterialStatePropertyAll(primaryColor),
                                     headingTextStyle: const TextStyle(
                                         color: Colors.white, fontSize: 50.0),
                                     columnSpacing: 3.0,

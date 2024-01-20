@@ -14,7 +14,7 @@ import 'menu_screen/unAssignedUserPage.dart';
 
 class MenuUserPage extends StatefulWidget {
   static const String id = 'user-page';
-  MenuUserPage({super.key, required this.society});
+  const MenuUserPage({super.key, required this.society});
   final String society;
 
   @override
@@ -52,7 +52,6 @@ class _MenuUserPageState extends State<MenuUserPage> {
   bool isLoading = true;
   bool getDepooData = false;
   TextEditingController unAssignedUserController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
 
   List<String> designation = ['Admin', 'Secretary', 'Treasurer'];
 
@@ -100,12 +99,12 @@ class _MenuUserPageState extends State<MenuUserPage> {
     final provider = Provider.of<MenuUserPageProvider>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: primaryColor),
+        iconTheme: const IconThemeData(color: primaryColor),
         title: Text(widget.society),
         backgroundColor: primaryColor,
       ),
       body: isLoading
-          ? Center(child: const CircularProgressIndicator())
+          ? const Center(child:  CircularProgressIndicator())
           : Container(
               padding: const EdgeInsets.all(5.0),
               width: MediaQuery.of(context).size.width * 0.98,
@@ -469,7 +468,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
                             ),
                           );
                         }
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       },
                     ),
                   ),
@@ -669,7 +668,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
 
     assignedUserList = querySnapshot.docs.map((e) => e.id).toList();
     assignedUsers = querySnapshot.docs.length;
-    print('aasasasasasasasa -  $assignedUsers');
+    // print('aasasasasasasasa -  $assignedUsers');
     return assignedUserList;
   }
 

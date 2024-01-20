@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
             return null;
           },
           // home: const customSide()
-          home: LoginScreen()),
+          home: const LoginScreen()),
     );
   }
 
@@ -94,7 +94,7 @@ class MyApp extends StatelessWidget {
       // case '/':
       //   return LoginScreen();
       case '/':
-        return CircularNotice(society: 'society', allRoles: []);
+        return CircularNotice(society: 'society', allRoles: const []);
       case '/addNotice':
         return AddNotice();
       case '/addNoc':

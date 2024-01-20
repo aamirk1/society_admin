@@ -38,7 +38,7 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
         appBar: PreferredSize(
             preferredSize: Size(MediaQuery.of(context).size.width, 50),
             child: AppBar(
-              title: Text(
+              title: const Text(
                 'UnAssigned Members',
                 style: TextStyle(color: secondaryColor),
               ),
@@ -194,7 +194,7 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
               width: 120,
               child: Text(
                 user.split("&")[0].toString(),
-                style: TextStyle(
+                style:const TextStyle(
                   fontSize: 14,
                 ),
                 textAlign: TextAlign.center,

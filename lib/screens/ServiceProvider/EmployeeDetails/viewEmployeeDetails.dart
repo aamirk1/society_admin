@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -103,7 +105,7 @@ class _ViewEmployeeState extends State<ViewEmployee> {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: Container(
+                    child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.10,
                       child: Card(
                         elevation: 10,

@@ -40,7 +40,7 @@ class _AssignedUserState extends State<AssignedUser> {
             appBar: PreferredSize(
               preferredSize: Size(MediaQuery.of(context).size.width, 50),
               child: AppBar(
-                  title: Text(
+                  title:const  Text(
                     'Assigned Members',
                     style: TextStyle(color: secondaryColor),
                   ),
@@ -277,7 +277,7 @@ class _AssignedUserState extends State<AssignedUser> {
             decoration: BoxDecoration(border: Border.all()),
             child: Text(
               inputList[index],
-              style: TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: 13),
               textAlign: TextAlign.center,
             ),
           );
@@ -288,7 +288,7 @@ class _AssignedUserState extends State<AssignedUser> {
       String currentReportingmanager) {
     return Card(
       elevation: 15,
-      child: Container(
+      child: SizedBox(
         // decoration: BoxDecoration(
         //     image: const DecorationImage(
         //         image: AssetImage('assets/tata_power_card.jpeg'),
@@ -308,7 +308,7 @@ class _AssignedUserState extends State<AssignedUser> {
                     width: 120,
                     child: Text(
                       user.split("&")[0].toString(),
-                      style: TextStyle(fontSize: 14),
+                      style: const TextStyle(fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -559,7 +559,7 @@ class _AssignedUserState extends State<AssignedUser> {
                         child: Text(
                           user,
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20),
+                          style: const TextStyle(fontSize: 20),
                         ),
                       ),
                       Row(
@@ -571,7 +571,7 @@ class _AssignedUserState extends State<AssignedUser> {
                           ),
                           Container(
                             padding: const EdgeInsets.only(bottom: 5.0),
-                            child: Text(
+                            child:const  Text(
                               'Designation',
                               style: TextStyle(
                                   decorationThickness: 2.0,
@@ -587,14 +587,14 @@ class _AssignedUserState extends State<AssignedUser> {
                           child: customRowBuilderForDialog(currentRoles)),
                       Container(
                         padding: const EdgeInsets.only(bottom: 5.0, top: 20.0),
-                        child: Row(
+                        child:const  Row(
                           children: [
-                            const Icon(
+                             Icon(
                               Icons.person_4_sharp,
                               color: Colors.black,
                               size: 20,
                             ),
-                            const Text(
+                             Text(
                               'Society Name',
                               style: TextStyle(
                                   decorationThickness: 2.0,
@@ -630,9 +630,9 @@ class _AssignedUserState extends State<AssignedUser> {
                       ),
                       Container(
                         padding: const EdgeInsets.only(bottom: 5.0, top: 30.0),
-                        child: Row(
+                        child:const Row(
                           children: [
-                            const Icon(
+                             Icon(
                               Icons.person_4_sharp,
                               color: Colors.black,
                               size: 20,

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter/foundation.dart';
 
 class EmpListBuilderProvider extends ChangeNotifier {
