@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,8 +16,9 @@ import 'menu_screen/unAssignedUserPage.dart';
 
 class MenuUserPage extends StatefulWidget {
   static const String id = 'user-page';
-  const MenuUserPage({super.key, required this.society});
+  MenuUserPage({super.key, required this.society, required this.userId});
   final String society;
+  String userId;
 
   @override
   State<MenuUserPage> createState() => _MenuUserPageState();
@@ -104,7 +107,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
         backgroundColor: primaryColor,
       ),
       body: isLoading
-          ? const Center(child:  CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Container(
               padding: const EdgeInsets.all(5.0),
               width: MediaQuery.of(context).size.width * 0.98,
@@ -639,8 +642,8 @@ class _MenuUserPageState extends State<MenuUserPage> {
         // 'cities': selectedCity,
       }).whenComplete(() {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: Colors.grey,
-          content: Text('Role Assigned Successfully'),
+          backgroundColor: Colors.green,
+          content: Center(child: Text('Role Assigned Successfully')),
         ));
       });
 
@@ -805,7 +808,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
       'cities': updatedCity,
     }).whenComplete(() {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.green,
         content: Text('Role Assigned Successfully'),
       ));
     });

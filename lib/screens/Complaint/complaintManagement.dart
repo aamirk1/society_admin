@@ -8,9 +8,10 @@ import 'package:society_admin/screens/Complaint/typeOfComplaint.dart';
 // ignore: must_be_immutable
 class ComplaintManagement extends StatefulWidget {
   ComplaintManagement(
-      {super.key, required this.society, required this.allRoles});
+      {super.key, required this.society, required this.allRoles, required this.userId});
   String society;
   List<dynamic> allRoles = [];
+  String userId;
 
   @override
   State<ComplaintManagement> createState() => _ComplaintManagementState();
@@ -58,6 +59,7 @@ class _ComplaintManagementState extends State<ComplaintManagement> {
                               context,
                               MaterialPageRoute(builder: (context) {
                                 return TypeOfComplaint(
+                                  userId: widget.userId,
                                   society: widget.society,
                                   flatNo: dataList[index]['flatno'],
                                 );

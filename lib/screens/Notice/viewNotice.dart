@@ -7,11 +7,12 @@ import 'package:society_admin/authScreen/common.dart';
 
 class ViewNotice extends StatefulWidget {
   ViewNotice(
-      {super.key, this.society, required this.title, this.notice, this.date});
+      {super.key, this.society, required this.title, this.notice, this.date,required this.userId});
   String? notice;
   String? date;
   String? society;
   String? title;
+  String userId;
   @override
   State<ViewNotice> createState() => _ViewNoticeState();
 }

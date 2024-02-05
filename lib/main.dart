@@ -94,9 +94,12 @@ class MyApp extends StatelessWidget {
       // case '/':
       //   return LoginScreen();
       case '/':
-        return CircularNotice(society: 'society', allRoles: const []);
+        return CircularNotice(
+            society: 'society', allRoles: const [], userId: 'userId');
       case '/addNotice':
-        return AddNotice();
+        return AddNotice(
+          userId: 'userId',
+        );
       case '/addNoc':
       // return  AddNoc();
       case '/nocManagement':

@@ -13,9 +13,10 @@ import 'package:society_admin/authScreen/common.dart';
 
 class MemberNameList extends StatefulWidget {
   static const id = "/MemberNameList";
-  MemberNameList({super.key, required this.society, required this.allRoles});
-  final String society;
+  MemberNameList({super.key, required this.society, required this.allRoles, required this.userId});
+  String society;
   List<dynamic> allRoles = [];
+  String userId;
   @override
   State<MemberNameList> createState() => _MemberNameListState();
 }

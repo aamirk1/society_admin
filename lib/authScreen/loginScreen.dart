@@ -246,6 +246,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         builder: (context) => customSide(
                               society: societyname,
                               allRoles: roles,
+                              userId: userID,
                             )),
                     (route) => false);
               }

@@ -8,8 +8,9 @@ import 'package:society_admin/authScreen/common.dart';
 
 // ignore: must_be_immutable
 class AddCompany extends StatefulWidget {
-  AddCompany({super.key, required this.society});
+  AddCompany({super.key, required this.society, required this.userId});
   String society;
+  String userId;
 
   @override
   State<AddCompany> createState() => _AddCompanyState();
@@ -123,10 +124,12 @@ class _AddCompanyState extends State<AddCompany> {
                           ),
                           onPressed: () {
                             storedData(
-                                nameController.text,
-                                emailController.text,
-                                phoneController.text,
-                                addressController.text);
+                              nameController.text,
+                              emailController.text,
+                              phoneController.text,
+                              addressController.text,
+                              widget.userId,
+                            );
                           },
                           child: const Text('Submit'))
                     ])),
@@ -138,14 +141,16 @@ class _AddCompanyState extends State<AddCompany> {
     );
   }
 
-  Future<void> storedData(
-      String companyName, String email, String phone, String address) async {
+  Future<void> storedData(String companyName, String email, String phone,
+      String address, String userId) async {
     final provider = Provider.of<ListBuilderProvider>(context, listen: false);
 
     if (_formKey.currentState!.validate()) {
       FirebaseFirestore.instance
           .collection('vendorList')
           .doc(widget.society)
+          .collection('userId')
+          .doc(userId)
           .collection('companyList')
           .doc(companyName)
           .set({

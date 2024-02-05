@@ -11,11 +11,13 @@ class AddComplaint extends StatefulWidget {
       required this.complaintType,
       required this.text,
       required this.society,
-      required this.flatNo});
+      required this.flatNo,
+      required this.userId});
   String complaintType;
   String text;
   String society;
   String flatNo;
+  String userId;
   @override
   State<AddComplaint> createState() => _AddComplaintState();
 }

@@ -12,9 +12,10 @@ import 'package:society_admin/screens/settings/settings.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class customSide extends StatefulWidget {
-  customSide({super.key, this.society, this.allRoles});
+  customSide({super.key, this.society, this.allRoles, required this.userId});
   String? society;
   List<dynamic>? allRoles = [];
+  String userId;
   @override
   State<customSide> createState() => _customSideState();
 }
@@ -50,14 +51,14 @@ class _customSideState extends State<customSide> {
   @override
   Widget build(BuildContext context) {
     pages = [
-      CircularNotice(society: widget.society!, allRoles: widget.allRoles!),
-      NocManagement(society: widget.society!, allRoles: widget.allRoles!),
-      ComplaintManagement(society: widget.society!, allRoles: widget.allRoles!),
-      ServiceProvider(society: widget.society!, allRoles: widget.allRoles!),
-      MemberNameList(society: widget.society!, allRoles: widget.allRoles!),
-      MenuUserPage(society: widget.society!),
-      GatePass(society: widget.society!, allRoles: widget.allRoles!),
-      Settings(society: widget.society!, allRoles: widget.allRoles!),
+      CircularNotice(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
+      NocManagement(society: widget.society!, allRoles: widget.allRoles, userId:widget.userId),
+      ComplaintManagement(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
+      ServiceProvider(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
+      MemberNameList(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
+      MenuUserPage(society: widget.society!,userId:widget.userId),
+      GatePass(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
+      Settings(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
     ];
     return Scaffold(
       body: Row(

@@ -13,8 +13,9 @@ import 'package:society_admin/authScreen/common.dart';
 // ignore: must_be_immutable
 class AddNotice extends StatefulWidget {
   static const id = "/addNotice";
-  AddNotice({super.key, this.societyName});
+  AddNotice({super.key, this.societyName, required this.userId});
   String? societyName;
+  String userId;
 
   @override
   State<AddNotice> createState() => _AddNoticeState();
@@ -84,8 +85,8 @@ class _AddNoticeState extends State<AddNotice> {
                   backgroundColor: MaterialStateProperty.all(primaryColor),
                 ),
                 onPressed: () {
-                  storeNotice(
-                      titleController.text, customNoticeController.text);
+                  storeNotice(titleController.text, customNoticeController.text,
+                      widget.userId);
                 },
                 child: const Text('Submit')),
             const SizedBox(
@@ -138,11 +139,13 @@ class _AddNoticeState extends State<AddNotice> {
     );
   }
 
-  void storeNotice(title, notice) {
+  void storeNotice(title, notice, userId) {
     final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
     FirebaseFirestore.instance
         .collection('notice')
         .doc(widget.societyName)
+        .collection('userId')
+        .doc(userId)
         .collection('notices')
         .doc(title)
         .set({
@@ -179,6 +182,7 @@ class _AddNoticeState extends State<AddNotice> {
         taskSnapshot = await FirebaseStorage.instance
             .ref('Notices')
             .child(widget.societyName!)
+            .child(widget.userId)
             .child(fileName)
             .putData(file.bytes!);
         provider.addSingleList({

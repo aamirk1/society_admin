@@ -3,6 +3,7 @@
 // ignore_for_file: file_names, use_build_context_synchronously, unnecessary_string_interpolations
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/authScreen/loginScreen.dart';
 
 class RegisrationScreen extends StatefulWidget {
@@ -27,6 +28,10 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
     super.initState();
   }
 
+  String firstInitial = '';
+  String lastInitial = '';
+  String mobileLastFour = '';
+  String fullName = '';
   @override
   void dispose() {
     mobileController.dispose();
@@ -126,6 +131,7 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
                       height: 10,
                     ),
                     TextFormField(
+                      maxLength: 10,
                       keyboardType: TextInputType.phone,
                       style: const TextStyle(color: Colors.white),
                       textInputAction: TextInputAction.next,
@@ -249,10 +255,10 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
 
   Future<void> register(String firstName, String lastName, String mobile,
       String password, BuildContext context) async {
-    String firstInitial = firstName[0][0].trim().toUpperCase();
-    String lastInitial = lastName[0][0].trim().toUpperCase();
-    String mobileLastFour = mobile.substring(mobile.length - 4);
-    String fullName = '$firstName $lastName';
+    firstInitial = firstName[0][0].trim().toUpperCase();
+    lastInitial = lastName[0][0].trim().toUpperCase();
+    mobileLastFour = mobile.substring(mobile.length - 4);
+    fullName = '$firstName $lastName';
 
     String userID = '$firstInitial$lastInitial$mobileLastFour';
     await FirebaseFirestore.instance
@@ -270,8 +276,31 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
       'alphabet': firstInitial,
       'position': 'unAssigned',
     });
+    alertbox(userID, context);
+  }
 
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+  alertbox(String userID, BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        ),
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(color: textColor),
+                    )),
+              ],
+              title: Text(
+                'Your User ID is: $userID',
+                style: const TextStyle(color: textColor),
+              ));
+        });
   }
 }

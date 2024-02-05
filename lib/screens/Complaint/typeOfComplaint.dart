@@ -7,9 +7,14 @@ import 'package:society_admin/screens/Complaint/addComplaints.dart';
 
 // ignore: must_be_immutable
 class TypeOfComplaint extends StatefulWidget {
-  TypeOfComplaint({super.key, required this.society, required this.flatNo});
+  TypeOfComplaint(
+      {super.key,
+      required this.society,
+      required this.flatNo,
+      required this.userId});
   String society;
   String flatNo;
+  String userId;
 
   @override
   State<TypeOfComplaint> createState() => _TypeOfComplaintState();
@@ -61,6 +66,7 @@ class _TypeOfComplaintState extends State<TypeOfComplaint> {
                                   text: dataList[index]['text'],
                                   society: widget.society,
                                   flatNo: widget.flatNo,
+                                  userId: widget.userId,
                                 );
                               }),
                             );

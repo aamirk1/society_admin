@@ -15,9 +15,11 @@ import 'package:society_admin/screens/Notice/viewNotice.dart';
 
 // ignore: must_be_immutable
 class CircularNotice extends StatefulWidget {
-  CircularNotice({super.key, this.society, this.allRoles});
+  CircularNotice(
+      {super.key, this.society, this.allRoles, required this.userId});
   String? society;
   List<dynamic>? allRoles = [];
+  String userId;
 
   @override
   State<CircularNotice> createState() => _CircularNoticeState();
@@ -43,7 +45,7 @@ class _CircularNoticeState extends State<CircularNotice> {
         backgroundColor: primaryColor,
         actions: [
           Padding(
-              padding:const EdgeInsets.only(right: 10.0),
+              padding: const EdgeInsets.only(right: 10.0),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
@@ -57,7 +59,8 @@ class _CircularNoticeState extends State<CircularNotice> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
-                        return AddNotice(societyName: widget.society);
+                        return AddNotice(
+                            societyName: widget.society, userId: widget.userId);
                       }),
                     );
                   },
@@ -100,6 +103,7 @@ class _CircularNoticeState extends State<CircularNotice> {
                                 context,
                                 MaterialPageRoute(builder: (context) {
                                   return ViewNotice(
+                                      userId: widget.userId,
                                       society: widget.society,
                                       title: value.noticeList[index]['title'],
                                       notice: value.noticeList[index]['notice'],
@@ -154,6 +158,8 @@ class _CircularNoticeState extends State<CircularNotice> {
     QuerySnapshot getAllNotice = await FirebaseFirestore.instance
         .collection('notice')
         .doc(SelectedSociety)
+        .collection('userId')
+        .doc(widget.userId)
         .collection('notices')
         .get();
     List<dynamic> allTypeOfNotice =
@@ -169,6 +175,7 @@ class _CircularNoticeState extends State<CircularNotice> {
     ListResult listResult = await FirebaseStorage.instance
         .ref('Notices')
         .child(SelectedSociety!)
+        .child(widget.userId)
         .listAll();
 
     for (Reference ref in listResult.items) {
@@ -187,6 +194,8 @@ class _CircularNoticeState extends State<CircularNotice> {
     DocumentReference deleteNotice = FirebaseFirestore.instance
         .collection('notice')
         .doc(SelectedSociety)
+        .collection('userId')
+        .doc(widget.userId)
         .collection('notices')
         .doc(typeOfNotice);
     await deleteNotice.delete();
@@ -199,6 +208,7 @@ class _CircularNoticeState extends State<CircularNotice> {
     await FirebaseStorage.instance
         .ref('Notices')
         .child(SelectedSociety!)
+        .child(widget.userId)
         .child(fileName)
         .delete();
 
@@ -207,8 +217,11 @@ class _CircularNoticeState extends State<CircularNotice> {
 
   openPdf(String title) async {
     final storage = FirebaseStorage.instance;
-    final Reference ref =
-        storage.ref('Notices').child(widget.society!).child(title);
+    final Reference ref = storage
+        .ref('Notices')
+        .child(widget.society!)
+        .child(widget.userId)
+        .child(title);
     String url = await ref.getDownloadURL();
 
     if (kIsWeb) {

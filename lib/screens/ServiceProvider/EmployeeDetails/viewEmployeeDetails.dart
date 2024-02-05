@@ -30,10 +30,14 @@ class ViewEmployee extends StatefulWidget {
 }
 
 class _ViewEmployeeState extends State<ViewEmployee> {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  bool isAlreadyApproved = false;
+  List<dynamic> empName = [];
   @override
   void initState() {
     super.initState();
     getEmployee(widget.CompanyName);
+    // getApproved();
   }
 
   @override
@@ -41,6 +45,7 @@ class _ViewEmployeeState extends State<ViewEmployee> {
     final provider =
         Provider.of<EmpListBuilderProvider>(context, listen: false);
     provider.empList.clear();
+    // getApproved();
     return Scaffold(
       appBar: AppBar(
         title: InkWell(
@@ -120,12 +125,17 @@ class _ViewEmployeeState extends State<ViewEmployee> {
                           subtitle: Text(
                             value.empList[index]['empDesignation'],
                           ),
-                          trailing: IconButton(
-                            onPressed: () {
-                              deleteEmp(widget.CompanyName,
-                                  value.empList[index]['empName'], index);
-                            },
-                            icon: const Icon(Icons.delete),
+                          trailing: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.10,
+
+                            // margin: EdgeInsets.only(right: 10),
+                            child: IconButton(
+                              onPressed: () {
+                                deleteEmp(widget.CompanyName,
+                                    value.empList[index]['empName'], index);
+                              },
+                              icon: const Icon(Icons.delete),
+                            ),
                           ),
                           // subtitle: Text(data.docs[index]['city']),
                           onTap: () {
@@ -170,7 +180,10 @@ class _ViewEmployeeState extends State<ViewEmployee> {
     List<dynamic> allCompany =
         companyQuerySnapshot.docs.map((e) => e.data()).toList();
 
+    empName = allCompany.map((e) => e['empName']).toList();
+
     provider.setBuilderEmpList(allCompany);
+    print('hello -  $allCompany');
   }
 
   Future<void> deleteEmp(String company, String name, int index) async {

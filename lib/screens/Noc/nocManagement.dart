@@ -7,9 +7,10 @@ import 'package:society_admin/screens/Noc/typeOfNoc.dart';
 
 // ignore: must_be_immutable
 class NocManagement extends StatefulWidget {
-  NocManagement({super.key, required this.society, required this.allRoles});
+  NocManagement({super.key, required this.society, required this.userId, List? allRoles});
   String society;
   List<dynamic> allRoles = [];
+  String userId;
 
   @override
   State<NocManagement> createState() => _NocManagementState();
@@ -21,7 +22,7 @@ class _NocManagementState extends State<NocManagement> {
   @override
   void initState() {
     super.initState();
-    getFlatNum(widget.society).whenComplete(() {
+    getFlatNum(widget.society, widget.userId).whenComplete(() {
       isLoading = false;
     });
   }
@@ -61,6 +62,7 @@ class _NocManagementState extends State<NocManagement> {
                                 return TypeOfNoc(
                                   society: widget.society,
                                   flatNo: dataList[index]['flatno'],
+                                  userId: widget.userId,
                                 );
                               }),
                             );
@@ -75,7 +77,7 @@ class _NocManagementState extends State<NocManagement> {
     );
   }
 
-  Future<void> getFlatNum(String selectedSociety) async {
+  Future<void> getFlatNum(String selectedSociety, String userId) async {
     isLoading = true;
     QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
         .collection('nocApplications')

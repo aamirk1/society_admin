@@ -7,9 +7,10 @@ import 'package:society_admin/screens/Noc/addNoc.dart';
 
 // ignore: must_be_immutable
 class TypeOfNoc extends StatefulWidget {
-  TypeOfNoc({super.key, required this.society, required this.flatNo});
+  TypeOfNoc({super.key, required this.society, required this.flatNo, required this.userId});
   String society;
   String flatNo;
+  String userId;
 
   @override
   State<TypeOfNoc> createState() => _TypeOfNocState();
