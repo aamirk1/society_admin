@@ -168,7 +168,7 @@ class _AddEmployeeState extends State<AddEmployee> {
           .collection('vendorEmployeeList')
           .doc(CompanyName)
           .collection('employeeList')
-          .doc(empName)
+          .doc(email)
           .set({
         'companyName': CompanyName,
         'empName': empName,
@@ -177,6 +177,13 @@ class _AddEmployeeState extends State<AddEmployee> {
         'empAddress': address,
         'empDesignation': designation,
         'status': true,
+      });
+
+      FirebaseFirestore.instance
+          .collection('vendorEmployeeList')
+          .doc(CompanyName)
+          .set({
+        'companyName': CompanyName,
       });
       provider.addSingleList({
         'companyName': CompanyName,

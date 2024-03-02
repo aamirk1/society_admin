@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/emplist_builder_provider.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/screens/ServiceProvider/CompanyDetails/viewCompDetails.dart';
-import 'package:society_admin/screens/ServiceProvider/EmployeeDetails/addEmployeeDetails%20copy.dart';
+import 'package:society_admin/screens/ServiceProvider/EmployeeDetails/addEmployeeDetails.dart';
 import 'package:society_admin/screens/ServiceProvider/EmployeeDetails/viewDetails.dart';
 
 // ignore: must_be_immutable
