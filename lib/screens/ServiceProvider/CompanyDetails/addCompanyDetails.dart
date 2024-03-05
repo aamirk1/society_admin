@@ -149,8 +149,6 @@ class _AddCompanyState extends State<AddCompany> {
       FirebaseFirestore.instance
           .collection('vendorList')
           .doc(widget.society)
-          .collection('userId')
-          .doc(userId)
           .collection('companyList')
           .doc(companyName)
           .set({
