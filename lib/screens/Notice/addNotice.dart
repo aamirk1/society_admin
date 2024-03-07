@@ -181,11 +181,11 @@ class _AddNoticeState extends State<AddNotice> {
         taskSnapshot = await FirebaseStorage.instance
             .ref('Notices')
             .child(widget.societyName!)
-            .child(widget.userId)
             .child(fileName)
             .putData(file.bytes!);
         provider.addSingleList({
           'title': fileName,
+          
         });
 
         // ignore: use_build_context_synchronously

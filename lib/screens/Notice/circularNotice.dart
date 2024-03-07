@@ -173,7 +173,6 @@ class _CircularNoticeState extends State<CircularNotice> {
     ListResult listResult = await FirebaseStorage.instance
         .ref('Notices')
         .child(SelectedSociety!)
-        .child(widget.userId)
         .listAll();
 
     for (Reference ref in listResult.items) {
@@ -204,7 +203,6 @@ class _CircularNoticeState extends State<CircularNotice> {
     await FirebaseStorage.instance
         .ref('Notices')
         .child(SelectedSociety!)
-        .child(widget.userId)
         .child(fileName)
         .delete();
 
@@ -216,7 +214,6 @@ class _CircularNoticeState extends State<CircularNotice> {
     final Reference ref = storage
         .ref('Notices')
         .child(widget.society!)
-        .child(widget.userId)
         .child(title);
     String url = await ref.getDownloadURL();
 
