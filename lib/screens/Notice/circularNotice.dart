@@ -158,8 +158,6 @@ class _CircularNoticeState extends State<CircularNotice> {
     QuerySnapshot getAllNotice = await FirebaseFirestore.instance
         .collection('notice')
         .doc(SelectedSociety)
-        .collection('userId')
-        .doc(widget.userId)
         .collection('notices')
         .get();
     List<dynamic> allTypeOfNotice =
@@ -194,8 +192,6 @@ class _CircularNoticeState extends State<CircularNotice> {
     DocumentReference deleteNotice = FirebaseFirestore.instance
         .collection('notice')
         .doc(SelectedSociety)
-        .collection('userId')
-        .doc(widget.userId)
         .collection('notices')
         .doc(typeOfNotice);
     await deleteNotice.delete();

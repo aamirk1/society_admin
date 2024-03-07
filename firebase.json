@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "target": "tr",
+    "target": "society_admin",
     "public": "build/web",
     "ignore": [
       "firebase.json",
