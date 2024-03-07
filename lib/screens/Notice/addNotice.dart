@@ -144,11 +144,10 @@ class _AddNoticeState extends State<AddNotice> {
     FirebaseFirestore.instance
         .collection('notice')
         .doc(widget.societyName)
-        .collection('userId')
-        .doc(userId)
         .collection('notices')
         .doc(title)
         .set({
+      'userId': userId,
       'title': title,
       'date': date,
       'notice': notice,
