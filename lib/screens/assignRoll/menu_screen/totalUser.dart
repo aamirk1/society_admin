@@ -1,11 +1,18 @@
 // ignore: duplicate_ignore
 // ignore: file_names
 // ignore_for_file: file_names
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/filteration_provider.dart';
+import 'package:society_admin/Provider/image_upload_provider.dart';
 import 'package:society_admin/authScreen/common.dart';
+
 class TotalUsers extends StatefulWidget {
   const TotalUsers({super.key});
 
@@ -14,11 +21,15 @@ class TotalUsers extends StatefulWidget {
 }
 
 class _TotalUsersState extends State<TotalUsers> {
+  bool isImageUploaded = false;
+  dynamic byteData;
   bool isLoading = true;
   List<bool> selectedDesign = [];
   String selectedAlphabet = 'All';
   bool showAll = true;
   String alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  File? _imageFile;
 
   @override
   void initState() {
@@ -38,7 +49,7 @@ class _TotalUsersState extends State<TotalUsers> {
             appBar: PreferredSize(
                 preferredSize: Size(MediaQuery.of(context).size.width, 50),
                 child: AppBar(
-                  title:const  Text(
+                  title: const Text(
                     'Total Comittee Members',
                     style: TextStyle(color: secondaryColor),
                   ),
@@ -157,7 +168,7 @@ class _TotalUsersState extends State<TotalUsers> {
                                     const EdgeInsets.only(left: 10, right: 10),
                                 width: MediaQuery.of(context).size.width,
                                 height:
-                                    MediaQuery.of(context).size.width * 0.39,
+                                    MediaQuery.of(context).size.width * 0.37, //
                                 child: GridView.builder(
                                   shrinkWrap: true,
                                   gridDelegate:
@@ -179,11 +190,15 @@ class _TotalUsersState extends State<TotalUsers> {
                                       //     data.docs[index]['depots'];
                                       String societyname =
                                           data.docs[index]['societyname'];
+                                      // dynamic phone =
+                                      //     data.docs[index]['phoneNum'];
 
                                       return InkWell(
                                         onTap: () {
                                           customDialogBox(
-                                              user[index], roles, societyname);
+                                            context, user[index],
+                                            roles, societyname, //phone
+                                          );
                                         },
                                         child: customCard(user[index], index,
                                             roles, societyname),
@@ -280,8 +295,7 @@ class _TotalUsersState extends State<TotalUsers> {
             decoration: BoxDecoration(border: Border.all()),
             child: Text(
               '${inputList[index]}',
-        
-              style:const TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: 13),
               textAlign: TextAlign.center,
             ),
           );
@@ -290,9 +304,11 @@ class _TotalUsersState extends State<TotalUsers> {
 
   Widget customCard(String user, int index, List<dynamic> selectedRole,
       String currentReportingmanager) {
+    print('user : $user');
     return Card(
       elevation: 15,
-      child: SizedBox(
+      child: Container(
+        padding: const EdgeInsets.all(5.0),
         // decoration: BoxDecoration(
         //     image: const DecorationImage(
         //         image: AssetImage('assets/tata_power_card.jpeg'),
@@ -302,111 +318,109 @@ class _TotalUsersState extends State<TotalUsers> {
         width: 180,
         child: Column(
           children: [
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: 2.0, bottom: 10.0, right: 2.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    width: 120,
-                    child: Text(
-                      user.split("&")[0].toString(),
-                    
-              style:const TextStyle(fontSize: 14),
-                      textAlign: TextAlign.center,
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(
+                  width: 120,
+                  child: Text(
+                    user.split("&")[0].toString(),
+                    style: const TextStyle(fontSize: 12),
+                    textAlign: TextAlign.center,
                   ),
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: const Color.fromARGB(255, 241, 237, 238),
-                    child: IconButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        bottom: 5,
-                                        top: 10),
-                                    height: 150,
-                                    width: 390,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Icon(
-                                          Icons.warning_amber,
-                                          color: Colors.red,
-                                          size: 50,
-                                        ),
-                                        Text(
-                                          textAlign: TextAlign.center,
-                                          'Are you sure you want to delete "$user" from his role?',
-                                          style: const TextStyle(
-                                              fontSize: 13,
-                                              color: Colors.black),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              ElevatedButton(
-                                                style: const ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStatePropertyAll(
-                                                            Colors.redAccent)),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text('Cancel'),
-                                              ),
-                                              ElevatedButton(
-                                                style: const ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStatePropertyAll(
-                                                            Color.fromARGB(255,
-                                                                67, 182, 126))),
-                                                onPressed: () {
-                                                  removeRole(user);
+                ),
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: const Color.fromARGB(255, 241, 237, 238),
+                  child: IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                child: Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, bottom: 5, top: 10),
+                                  height: 150,
+                                  width: 390,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Icon(
+                                        Icons.warning_amber,
+                                        color: Colors.red,
+                                        size: 50,
+                                      ),
+                                      Text(
+                                        textAlign: TextAlign.center,
+                                        'Are you sure you want to delete "$user" from his role?',
+                                        style: const TextStyle(
+                                            fontSize: 13, color: Colors.black),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            ElevatedButton(
+                                              style: const ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStatePropertyAll(
+                                                          Colors.redAccent)),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Cancel'),
+                                            ),
+                                            ElevatedButton(
+                                              style: const ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStatePropertyAll(
+                                                          Color.fromARGB(255,
+                                                              67, 182, 126))),
+                                              onPressed: () {
+                                                removeRole(user);
 
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text(
-                                                  'Confirm',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'Confirm',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                );
-                              });
-                        },
-                        icon: const Icon(
-                          Icons.delete_outline_outlined,
-                          color: Colors.red,
-                          size: 18,
-                        )),
-                  )
-                ],
-              ),
+                                ),
+                              );
+                            });
+                      },
+                      icon: const Icon(
+                        Icons.delete_outline_outlined,
+                        color: Colors.red,
+                        size: 18,
+                      )),
+                )
+              ],
             ),
             Row(
               children: [
-                const Icon(
-                  Icons.person_2_sharp,
-                  color: Colors.black87,
-                  size: 14,
+                const CircleAvatar(
+                  radius: 12,
+                  backgroundColor: Colors.purple,
+                  child: Icon(
+                    Icons.person_2_sharp,
+                    color: Colors.white,
+                    size: 15,
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
                 ),
                 Container(
                   padding: const EdgeInsets.only(bottom: 5.0),
@@ -430,10 +444,17 @@ class _TotalUsersState extends State<TotalUsers> {
               padding: const EdgeInsets.only(bottom: 5.0, top: 5.0),
               child: const Row(
                 children: [
-                  Icon(
-                    Icons.person_4_sharp,
-                    color: Colors.black87,
-                    size: 14,
+                  CircleAvatar(
+                    radius: 12,
+                    backgroundColor: Colors.purple,
+                    child: Icon(
+                      Icons.apartment,
+                      color: Colors.white,
+                      size: 14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
                   ),
                   Text(
                     'Society Name',
@@ -466,27 +487,35 @@ class _TotalUsersState extends State<TotalUsers> {
                 ],
               ),
             ),
-            Container(
-              padding: const EdgeInsets.only(top: 5.0),
-              child: const Row(
-                children: [
-                  Icon(
-                    Icons.house_sharp,
-                    color: Colors.black87,
-                    size: 14,
-                  ),
-                  Text(
-                    'Cities',
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 2.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                        fontSize: 12),
-                  ),
-                ],
-              ),
-            ),
+            //this is done on 18 by shashank
+            // Container(
+            //   padding: const EdgeInsets.only(top: 5.0),
+            //   child: const Row(
+            //     children: [
+            //       CircleAvatar(
+            //         radius: 12,
+            //         backgroundColor: Colors.purple,
+            //         child: Icon(
+            //           Icons.house_sharp,
+            //           color: Colors.white,
+            //           size: 14,
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         width: 8,
+            //       ),
+            //       Text(
+            //         'Cities',
+            //         style: TextStyle(
+            //             decoration: TextDecoration.underline,
+            //             decorationThickness: 2.0,
+            //             fontWeight: FontWeight.bold,
+            //             color: Colors.black87,
+            //             fontSize: 12),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Container(
               padding: const EdgeInsets.only(left: 12.0),
               child: Row(
@@ -522,150 +551,228 @@ class _TotalUsersState extends State<TotalUsers> {
   }
 
   customDialogBox(
-      String user, List<dynamic> currentRoles, String currentsocietyname) {
+    BuildContext mainContext,
+    String user,
+    List<dynamic> currentRoles,
+    String currentsocietyname,
+    //String phoneNumber
+  ) {
+    final provider = Provider.of<ImageUploadProvider>(context, listen: false);
+
     return showDialog(
-        context: context,
-        builder: (_) => Dialog(
-                child: Card(
-              elevation: 10,
-              shadowColor: Colors.black,
-              child: Container(
-                // decoration: const BoxDecoration(
-                //   image: DecorationImage(
-                //     image: AssetImage('assets/tata_dialog_background.png'),
-                //     fit: BoxFit.cover,
-                //   ),
-                // ),
-                padding: const EdgeInsets.all(10.0),
-                height: 550,
-                width: 1000,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        child: Text(
-                          user,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.person_2_sharp,
-                            color: Colors.black,
-                            size: 20,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(bottom: 5.0),
-                            child:const  Text(
-                              'Designation',
-                              style: TextStyle(
-                                  decorationThickness: 2.0,
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  letterSpacing: 1),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                          padding: const EdgeInsets.all(5.0),
-                          child: customRowBuilderForDialog(currentRoles)),
-                      Container(
-                        padding: const EdgeInsets.only(bottom: 5.0, top: 20.0),
-                        child:const  Row(
-                          children: [
-                             Icon(
-                              Icons.person_4_sharp,
-                              color: Colors.black,
-                              size: 20,
-                            ),
-                            Text(
-                              'Society Name',
-                              style: TextStyle(
-                                  decorationThickness: 2.0,
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  letterSpacing: 1),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(left: 15.0),
-                        child: Row(
-                          children: [
+        context: mainContext,
+        builder: (context) => Consumer<ImageUploadProvider>(
+              builder: (context, value, child) {
+                return Dialog(
+                    child: Card(
+                        elevation: 10,
+                        shadowColor: Colors.black,
+                        child: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          width: 500,
+                          height: 500,
+                          child: Column(children: [
                             const Padding(
-                              padding: EdgeInsets.only(right: 10),
-                              child: Icon(
-                                Icons.circle,
-                                size: 10,
+                                padding: EdgeInsets.only(top: 10, bottom: 10)),
+                            Container(
+                              width: 500,
+                              color: Colors.purple,
+                              child: Text(
+                                user,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    fontSize: 20, color: Colors.white),
                               ),
                             ),
-                            Text(
-                              currentsocietyname.toString().isNotEmpty
-                                  ? currentsocietyname
-                                  : '',
-                              style: TextStyle(
-                                color: Colors.grey[800],
-                                fontSize: 13,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      // Container(
-                      //   padding: const EdgeInsets.only(bottom: 5.0, top: 30.0),
-                      //   child: Row(
-                      //     children: [
-                      //       const Icon(
-                      //         Icons.person_4_sharp,
-                      //         color: Colors.black,
-                      //         size: 20,
-                      //       ),
-                      //       Text(
-                      //         'Cities',
-                      //         style: GoogleFonts.average(
-                      //             decorationThickness: 2.0,
-                      //             color: Colors.black,
-                      //             fontSize: 15,
-                      //             letterSpacing: 1),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // Container(child: customRowBuilderForDialog(cities)),
-                      // Container(
-                      //   padding: const EdgeInsets.only(bottom: 10.0, top: 30.0),
-                      //   child: Row(
-                      //     children: [
-                      //       const Icon(
-                      //         Icons.bus_alert_outlined,
-                      //         color: Colors.black,
-                      //         size: 20,
-                      //       ),
-                      //       Text(
-                      //         'Depots',
-                      //         style: GoogleFonts.average(
-                      //             decorationThickness: 2.0,
-                      //             color: Colors.black,
-                      //             fontSize: 15,
-                      //             letterSpacing: 1),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //     width: 900,
-                      //     height: 120,
-                      //     child: SingleChildScrollView(
-                      //       child: customRowGridBuilder(depots),
-                      //     ))
-                    ]),
-              ),
-            )));
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.person_2_sharp,
+                                            color: Colors.black,
+                                            size: 20,
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 5.0),
+                                            child: const Text(
+                                              'Designation',
+                                              style: TextStyle(
+                                                  decorationThickness: 2.0,
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                  letterSpacing: 1),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: customRowBuilderForDialog(
+                                              currentRoles)),
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 5.0, top: 20.0),
+                                        child: const Row(
+                                          children: [
+                                            Icon(
+                                              Icons.apartment,
+                                              color: Colors.black,
+                                              size: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              'Society Name',
+                                              style: TextStyle(
+                                                  decorationThickness: 2.0,
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                  letterSpacing: 1),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        padding:
+                                            const EdgeInsets.only(left: 15.0),
+                                        child: Row(
+                                          children: [
+                                            const Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 10),
+                                              child: Icon(
+                                                Icons.circle,
+                                                size: 10,
+                                              ),
+                                            ),
+                                            Text(
+                                              currentsocietyname
+                                                      .toString()
+                                                      .isNotEmpty
+                                                  ? currentsocietyname
+                                                  : '',
+                                              style: TextStyle(
+                                                color: Colors.grey[800],
+                                                fontSize: 13,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 5.0, top: 30.0),
+                                        child: const Row(
+                                          children: [
+                                            Icon(
+                                              Icons.email_sharp,
+                                              color: Colors.black,
+                                              size: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              'Email ID',
+                                              style: TextStyle(
+                                                  decorationThickness: 2.0,
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                  letterSpacing: 1),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 5.0, top: 30.0),
+                                        child: const Row(
+                                          children: [
+                                            Icon(
+                                              Icons.phone_in_talk,
+                                              color: Colors.black,
+                                              size: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              'Phone Number 1',
+                                              style: TextStyle(
+                                                  decorationThickness: 2.0,
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                  letterSpacing: 1),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      // Container(
+                                      //   padding: const EdgeInsets.all(5.0),
+                                      //   child: customRowBuilder([phoneNumber]),
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Expanded(
+                                    child: Column(
+                                  children: [
+                                    InkWell(
+                                      onTap: () async {
+                                        byteData =
+                                            await uploadFile().whenComplete(() {
+                                          provider.reloadImage(true);
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 100,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(),
+                                            borderRadius:
+                                                BorderRadius.circular(5.0)),
+                                        child: isImageUploaded
+                                            ? Image.memory(byteData,
+                                                fit: BoxFit.cover)
+                                            : Container(
+                                                alignment: Alignment.center,
+                                                child:
+                                                    const Text('Upload Image'),
+                                              ),
+                                      ),
+                                    )
+                                  ],
+                                ))
+                              ],
+                            ),
+                          ]),
+                        )));
+              },
+            ));
+  }
+
+  Future<void> pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
   }
 
   //StreamBuilder2 Function
@@ -684,22 +791,30 @@ class _TotalUsersState extends State<TotalUsers> {
         width: 170,
         child: Column(
           children: [
-            SizedBox(
-              width: 120,
+            Container(
+              margin: const EdgeInsets.all(10.0),
+              height: 24.9,
               child: Text(
-                user,
-                style:const  TextStyle(
-                  fontSize: 18,
+                user.split('&')[0].toString(),
+                style: const TextStyle(
+                  fontSize: 12,
                 ),
                 textAlign: TextAlign.center,
               ),
             ),
             Row(
               children: [
-                const Icon(
-                  Icons.person_2_sharp,
-                  color: Colors.black87,
-                  size: 14,
+                const CircleAvatar(
+                  radius: 12,
+                  backgroundColor: Colors.purple,
+                  child: Icon(
+                    Icons.person_2_sharp,
+                    color: Colors.white,
+                    size: 15,
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
                 ),
                 Container(
                   padding: const EdgeInsets.only(bottom: 5.0),
@@ -720,10 +835,17 @@ class _TotalUsersState extends State<TotalUsers> {
               padding: const EdgeInsets.only(bottom: 5.0, top: 5.0),
               child: const Row(
                 children: [
-                  Icon(
-                    Icons.person_4_sharp,
-                    color: Colors.black87,
-                    size: 14,
+                  CircleAvatar(
+                    radius: 12,
+                    backgroundColor: Colors.purple,
+                    child: Icon(
+                      Icons.apartment,
+                      color: Colors.white,
+                      size: 15,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
                   ),
                   Text(
                     'Society Name',
@@ -861,5 +983,22 @@ class _TotalUsersState extends State<TotalUsers> {
       tempBool.add(false);
     }
     selectedDesign = tempBool;
+  }
+
+  Future<Uint8List?> uploadFile() async {
+    isImageUploaded = false;
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      onFileLoading: (status) => print(status),
+      allowedExtensions: ['pdf', 'jpg', 'png'],
+    );
+
+    if (result != null) {
+      isImageUploaded = true;
+      Uint8List? bytes = result.files.first.bytes;
+      return bytes;
+    } else {
+      return null;
+    }
   }
 }

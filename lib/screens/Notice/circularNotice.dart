@@ -77,11 +77,19 @@ class _CircularNoticeState extends State<CircularNotice> {
           child: Consumer<DeleteNoticeProvider>(
             builder: (context, value, child) => Column(
               children: [
-                ListView.builder(
+                GridView.builder(
                     shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 5,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 2.0,
+                      mainAxisSpacing: 10,
+                    ),
                     itemCount: value.noticeList.length,
                     itemBuilder: (context, index) {
                       return Card(
+                        color: Colors.blue,
                         elevation: 5,
                         child: Padding(
                           padding: const EdgeInsets.all(1.0),
@@ -89,7 +97,7 @@ class _CircularNoticeState extends State<CircularNotice> {
                             minVerticalPadding: 0.3,
                             title: Text(
                               value.noticeList[index]['title'],
-                              style: const TextStyle(color: textColor),
+                              style: const TextStyle(color: Colors.white),
                             ),
                             trailing: IconButton(
                               onPressed: () {
@@ -115,11 +123,19 @@ class _CircularNoticeState extends State<CircularNotice> {
                         ),
                       );
                     }),
-                ListView.builder(
-                    itemCount: value.noticePdfList.length,
+                GridView.builder(
                     shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 5,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 2.0,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: value.noticePdfList.length,
                     itemBuilder: (context, index) {
                       return Card(
+                        color: const Color.fromARGB(255, 231, 99, 89),
                         elevation: 5,
                         child: Padding(
                           padding: const EdgeInsets.all(1.0),
@@ -127,7 +143,7 @@ class _CircularNoticeState extends State<CircularNotice> {
                             minVerticalPadding: 0.3,
                             title: Text(
                               value.noticePdfList[index].toString(),
-                              style: const TextStyle(color: textColor),
+                              style: const TextStyle(color: Colors.white),
                             ),
                             trailing: IconButton(
                               onPressed: () {
@@ -211,10 +227,8 @@ class _CircularNoticeState extends State<CircularNotice> {
 
   openPdf(String title) async {
     final storage = FirebaseStorage.instance;
-    final Reference ref = storage
-        .ref('Notices')
-        .child(widget.society!)
-        .child(title);
+    final Reference ref =
+        storage.ref('Notices').child(widget.society!).child(title);
     String url = await ref.getDownloadURL();
 
     if (kIsWeb) {

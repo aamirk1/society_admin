@@ -10,6 +10,7 @@ import 'package:society_admin/Provider/filteration_provider.dart';
 import 'package:society_admin/Provider/menuUserPageProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
 
+import '../../authScreen/loginScreen.dart';
 import 'menu_screen/assigned_user.dart';
 import 'menu_screen/totalUser.dart';
 import 'menu_screen/unAssignedUserPage.dart';
@@ -105,6 +106,19 @@ class _MenuUserPageState extends State<MenuUserPage> {
         iconTheme: const IconThemeData(color: primaryColor),
         title: Text(widget.society),
         backgroundColor: primaryColor,
+        actions: [
+          IconButton(
+            padding: const EdgeInsets.only(right: 20.0),
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
+            },
+            icon: const Icon(
+              Icons.power_settings_new,
+              color: Colors.white,
+            ),
+          )
+        ],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -143,8 +157,8 @@ class _MenuUserPageState extends State<MenuUserPage> {
                         if (snapshot.hasData) {
                           return SingleChildScrollView(
                             child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey[50],
+                              decoration: const BoxDecoration(
+                                color: Color.fromARGB(255, 63, 155, 221),
                               ),
                               padding: const EdgeInsets.only(left: 10.0),
                               child: getDepooData
@@ -164,7 +178,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
                                                     style: const ButtonStyle(
                                                         backgroundColor:
                                                             MaterialStatePropertyAll(
-                                                                Colors.grey)),
+                                                                Colors.yellow)),
                                                     onPressed: () {},
                                                     child: const Text(
                                                       'Select Member: ',
@@ -172,7 +186,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
                                                           fontSize: 10,
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          color: Colors.white),
+                                                          color: Colors.black),
                                                     ),
                                                   )),
                                               const SizedBox(
@@ -259,69 +273,67 @@ class _MenuUserPageState extends State<MenuUserPage> {
                                                 height: 30,
                                                 width: 130,
                                                 child: ElevatedButton(
-                                                    style: const ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStatePropertyAll(
-                                                                Colors.green)),
-                                                    onPressed: () async {
-                                                      for (int i = 0;
-                                                          i < assignedUsers;
-                                                          i++) {
-                                                        if (assignedUserList[
-                                                                i] ==
-                                                            selectedUserName) {
-                                                          // isDefined = true;
-                                                        }
+                                                  style: const ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStatePropertyAll(
+                                                              Colors.green)),
+                                                  onPressed: () async {
+                                                    for (int i = 0;
+                                                        i < assignedUsers;
+                                                        i++) {
+                                                      if (assignedUserList[i] ==
+                                                          selectedUserName) {
+                                                        // isDefined = true;
                                                       }
+                                                    }
 
-                                                      if (selectedUserName !=
-                                                          selectedSocietyName) {
-                                                        // if (isDefined ==
-                                                        //     false) {
-                                                        role.isEmpty
-                                                            ? customAlertBox(
-                                                                'Please Select Designation')
-                                                            : selectedSocietyName
-                                                                    .isEmpty
-                                                                ? customAlertBox(
-                                                                    'Please Select Society')
-                                                                : storeAssignData();
-                                                        getTotalUsers()
-                                                            .whenComplete(
-                                                                () async {
-                                                          DocumentReference
-                                                              documentReference =
-                                                              FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'unAssignedRole')
-                                                                  .doc(
-                                                                      selectedUserName);
+                                                    if (selectedUserName !=
+                                                        selectedSocietyName) {
+                                                      role.isEmpty
+                                                          ? customAlertBox(
+                                                              'Please Select Designation')
+                                                          : selectedSocietyName
+                                                                  .isEmpty
+                                                              ? customAlertBox(
+                                                                  'Please Select Society')
+                                                              : storeAssignData();
+                                                      getTotalUsers()
+                                                          .whenComplete(
+                                                              () async {
+                                                        DocumentReference
+                                                            documentReference =
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'unAssignedRole')
+                                                                .doc(
+                                                                    selectedUserName);
 
-                                                          await documentReference
-                                                              .delete();
+                                                        await documentReference
+                                                            .delete();
 
-                                                          provider
-                                                              .setLoadWidget(
-                                                                  true);
-                                                        });
-                                                        // } else {
-                                                        //   customAlertBox(
-                                                        //       '$selectedUserName is Already Assigned a Role');
-                                                        // }
-                                                      } else if (selectedUserName
-                                                              .isEmpty &&
-                                                          selectedSocietyName
-                                                              .isEmpty) {
-                                                        customAlertBox(
-                                                            'Please Select Member and User');
-                                                      } else {
-                                                        customAlertBox(
-                                                            'Reporting Manager and User cannot be same');
-                                                      }
-                                                    },
-                                                    child: const Text(
-                                                        'Assign Role')),
+                                                        provider.setLoadWidget(
+                                                            true);
+                                                      });
+                                                      // } else {
+                                                      //   customAlertBox(
+                                                      //       '$selectedUserName is Already Assigned a Role');
+                                                      // }
+                                                    } else if (selectedUserName
+                                                            .isEmpty &&
+                                                        selectedSocietyName
+                                                            .isEmpty) {
+                                                      customAlertBox(
+                                                          'Please Select Member and User');
+                                                    } else {
+                                                      customAlertBox(
+                                                          'Reporting Manager and User cannot be same');
+                                                    }
+                                                  },
+                                                  child: const Text(
+                                                    'Assign Role',
+                                                  ),
+                                                ),
                                               )
                                             ],
                                           ),
@@ -364,7 +376,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
                                                     style: const ButtonStyle(
                                                         backgroundColor:
                                                             MaterialStatePropertyAll(
-                                                                Colors.grey)),
+                                                                Colors.yellow)),
                                                     onPressed: () {},
                                                     child: const Text(
                                                       'Designation :',
@@ -372,7 +384,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
                                                           fontSize: 10,
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          color: Colors.white),
+                                                          color: Colors.black),
                                                     ),
                                                   ),
                                                 ),
@@ -410,16 +422,13 @@ class _MenuUserPageState extends State<MenuUserPage> {
                                                             (context, index) {
                                                           return ElevatedButton(
                                                             style: ButtonStyle(
-                                                                backgroundColor: MaterialStatePropertyAll(changeColorForRole[
-                                                                        index]
-                                                                    ? Colors
-                                                                        .white
-                                                                    : const Color
-                                                                            .fromARGB(
-                                                                        255,
-                                                                        150,
-                                                                        149,
-                                                                        151))),
+                                                                backgroundColor:
+                                                                    MaterialStatePropertyAll(changeColorForRole[
+                                                                            index]
+                                                                        ? Colors
+                                                                            .white
+                                                                        : Colors
+                                                                            .lightGreen)),
                                                             onPressed: () {
                                                               if (designation[
                                                                       index] ==
@@ -485,10 +494,8 @@ class _MenuUserPageState extends State<MenuUserPage> {
   Future<void> getTotalUsers() async {
     await getAssignedUsers();
     await getUnAssignedUser();
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('TotalUsers')
-        .where('societyname', isEqualTo: widget.society)
-        .get();
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('TotalUsers').get();
     totalUsers = querySnapshot.docs.length;
   }
 
@@ -542,48 +549,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
     }
   }
 
-//Function to fetch depo name when any city name is clicked on the pag Ce
-  Future getDepoNames(String selectedCity) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('DepoName')
-        .doc(selectedCity)
-        .collection('AllDepots')
-        .get();
-
-    List<dynamic> temp = querySnapshot.docs.map((e) => e.id).toList();
-
-    for (int i = 0; i < temp.length; i++) {
-      depodata.add(temp[i]);
-    }
-  }
-
-  Future<void> removeSelectedDepo(String selectedCity) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('DepoName')
-        .doc(selectedCity)
-        .collection('AllDepots')
-        .get();
-
-    List<dynamic> temp = querySnapshot.docs.map((e) => e.id).toList();
-    for (int i = 0; i < temp.length; i++) {
-      depodata.remove(temp[i]);
-    }
-  }
-
-  Future<void> removeCityDepo(List<dynamic> cityList) async {
-    for (int i = 0; i < cityList.length; i++) {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('DepoName')
-          .doc(cityList[i])
-          .collection('AllDepots')
-          .get();
-
-      List<dynamic> temp = querySnapshot.docs.map((e) => e.id).toList();
-      for (int i = 0; i < temp.length; i++) {
-        depodata.remove(temp[i]);
-      }
-    }
-  }
+//Function to fetch depo name when any city name is clicked on the pag C
 
   getUserdata(String input) async {
     searchedList.clear();
@@ -593,26 +559,9 @@ class _MenuUserPageState extends State<MenuUserPage> {
         searchedList.add(societyList[i]);
       }
     }
-    // print(searchedList);
     societyList.clear();
     return searchedList;
   }
-
-  // Future<void> setTotalUsers() async {
-  //   FirebaseFirestore.instance.collection('User').get().then((value) {
-  //     String tempData = '';
-  //     value.docs.forEach((element) {
-  //       var data = element['FirstName'];
-  //       var data1 = element['LastName'];
-
-  //       tempData = '${data.toString().trim()} $data1}';
-  //       FirebaseFirestore.instance.collection('TotalUsers').doc(tempData).set(
-
-  //           {'alphabet': tempData[0].toUpperCase(), 'position': 'unAssigned'}
-  //           );
-  //     });
-  //   });
-  // }
 
   Future<void> getUnAssignedUser() async {
     QuerySnapshot querySnapshot =
@@ -628,12 +577,12 @@ class _MenuUserPageState extends State<MenuUserPage> {
     if (userExist) {
       updateUserData(selectedUserName);
     } else {
+      String phoneNum = await getPhoneNumber(selectedUserName);
       await FirebaseFirestore.instance
           .collection('AssignedRole')
           .doc(selectedUserName)
           .set({
-        // 'username': selectedUserName.trim(),
-        // 'userId': selectedUserId,
+        "phoneNum": phoneNum,
         'alphabet': selectedUserName[0][0].toUpperCase(),
         'position': 'Assigned',
         'roles': role,
@@ -660,6 +609,38 @@ class _MenuUserPageState extends State<MenuUserPage> {
         // 'cities': selectedCity,
       });
     }
+  }
+
+  Future getPhoneNumber(String selectedUser) async {
+    String phoneNum = '';
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection("members")
+        .doc(widget.society)
+        .get();
+
+    if (documentSnapshot.exists) {
+      Map<String, dynamic> allUserMapData =
+          documentSnapshot.data() as Map<String, dynamic>;
+      List<dynamic> allUserData = allUserMapData["data"];
+
+      for (int i = 0; i < allUserData.length; i++) {
+        if (allUserData[i]['Member Name'] == selectedUser) {
+          phoneNum = allUserData[i]['Mobile No.'];
+        }
+      }
+      print("MobileNum - $phoneNum");
+    }
+    if (phoneNum.isEmpty) {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("societyAdmin")
+          .where("fullName", isEqualTo: selectedUser)
+          .get();
+      List<dynamic> adminData =
+          querySnapshot.docs.map((e) => e.data()).toList();
+
+      phoneNum = adminData[0]['mobile'];
+    }
+    return phoneNum;
   }
 
   Future<List<dynamic>> getAssignedUsers() async {
@@ -727,10 +708,6 @@ class _MenuUserPageState extends State<MenuUserPage> {
                           getDesigationLen();
                           selectedDepo.clear();
                           role.clear();
-                          removeCityDepo(selectedCity).then((_) {
-                            selectedCity.clear();
-                            menuProvider.setLoadWidget(true);
-                          });
                         });
                       });
                     },

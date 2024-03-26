@@ -86,7 +86,7 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
                           return Card(
                             elevation: selectedDesign[index] ? 5 : 0,
                             child: SizedBox(
-                              width: 40,
+                              width: 37,
                               child: ElevatedButton(
                                 style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
@@ -104,7 +104,8 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
                                 },
                                 child: Text(
                                   alpha[index],
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 12),
                                 ),
                               ),
                             ),
@@ -149,7 +150,7 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
                           return Container(
                             padding: const EdgeInsets.all(5.0),
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.width * 0.39,
+                            height: MediaQuery.of(context).size.width * 0.37, //
                             child: GridView.builder(
                               shrinkWrap: true,
                               gridDelegate:
@@ -180,21 +181,24 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
     return Card(
       elevation: 15,
       child: Container(
+        margin: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
             image: const DecorationImage(
                 image: AssetImage('assets/unAssigned_background2.jpeg'),
                 fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(10.0)),
         padding: const EdgeInsets.all(5.0),
-        height: 200,
+        height: 260,
         width: 170,
         child: Column(
           children: [
-            SizedBox(
-              width: 120,
+            Container(
+              margin: EdgeInsets.all(10.0),
+              height: 23,
+              // width: 120,
               child: Text(
                 user.split("&")[0].toString(),
-                style:const TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                 ),
                 textAlign: TextAlign.center,
@@ -202,10 +206,17 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
             ),
             Row(
               children: [
-                Icon(
-                  Icons.person_2_sharp,
-                  color: Colors.blue[900],
-                  size: 14,
+                const CircleAvatar(
+                  radius: 12,
+                  backgroundColor: Colors.purple,
+                  child: Icon(
+                    Icons.person_2_sharp,
+                    color: Colors.white,
+                    size: 14,
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
                 ),
                 Container(
                   padding: const EdgeInsets.only(bottom: 5.0),
@@ -226,10 +237,17 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
               padding: const EdgeInsets.only(bottom: 5.0, top: 5.0),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.person_4_sharp,
-                    color: Colors.blue[900],
-                    size: 14,
+                  CircleAvatar(
+                    radius: 12,
+                    backgroundColor: Colors.purple,
+                    child: Icon(
+                      Icons.apartment,
+                      color: Colors.white,
+                      size: 14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
                   ),
                   const Text(
                     'Society Name',

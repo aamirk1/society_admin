@@ -20,6 +20,7 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
   String? userFlatNumber;
 
@@ -164,6 +165,36 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
                     const SizedBox(height: 10),
                     TextFormField(
                       style: const TextStyle(color: Colors.white),
+                      textInputAction: TextInputAction.next,
+                      controller: emailController,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: Colors.white,
+                        )),
+                        labelText: 'Email Id',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        // enabledBorder: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: Colors.white,
+                        )),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your Email Id';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      style: const TextStyle(color: Colors.white),
                       textInputAction: TextInputAction.done,
                       controller: passwordController,
                       obscureText: true,
@@ -217,7 +248,8 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
                                       lastNameController.text,
                                       mobileController.text,
                                       passwordController.text,
-                                      context);
+                                      context,
+                                      emailController.text);
                                 }
                               },
                               child: const Text(
@@ -254,7 +286,7 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
   }
 
   Future<void> register(String firstName, String lastName, String mobile,
-      String password, BuildContext context) async {
+      String password, BuildContext context, String emailId) async {
     firstInitial = firstName[0][0].trim().toUpperCase();
     lastInitial = lastName[0][0].trim().toUpperCase();
     mobileLastFour = mobile.substring(mobile.length - 4);
@@ -270,6 +302,7 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
       'mobile': mobile,
       'password': password,
       'fullName': '$fullName',
+      'emailId': emailId
       // Add more fields as needed
     });
     FirebaseFirestore.instance.collection('unAssignedRole').doc(fullName).set({

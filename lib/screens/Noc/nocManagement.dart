@@ -7,7 +7,8 @@ import 'package:society_admin/screens/Noc/typeOfNoc.dart';
 
 // ignore: must_be_immutable
 class NocManagement extends StatefulWidget {
-  NocManagement({super.key, required this.society, required this.userId, List? allRoles});
+  NocManagement(
+      {super.key, required this.society, required this.userId, List? allRoles});
   String society;
   List<dynamic> allRoles = [];
   String userId;
@@ -40,34 +41,37 @@ class _NocManagementState extends State<NocManagement> {
             )
           : Column(
               children: [
-                ListView.builder(
+                GridView.builder(
                   shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 5,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 2.0,
+                      mainAxisSpacing: 10),
                   itemCount: dataList.length,
                   itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          minVerticalPadding: 0.3,
-                          title: Text(
-                            dataList[index]['flatno'],
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                          // subtitle: Text(data.docs[index]['city']),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) {
-                                return TypeOfNoc(
-                                  society: widget.society,
-                                  flatNo: dataList[index]['flatno'],
-                                  userId: widget.userId,
-                                );
-                              }),
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return TypeOfNoc(
+                              society: widget.society,
+                              flatNo: dataList[index]['flatno'],
+                              userId: widget.userId,
                             );
-                          },
-                        ),
+                          }),
+                        );
+                      },
+                      child: Card(
+                        color: Color.fromARGB(255, 91, 171, 236),
+                        elevation: 5,
+                        child: Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              dataList[index]['flatno'],
+                              style: const TextStyle(color: Colors.white),
+                            )),
                       ),
                     );
                   },
@@ -87,7 +91,7 @@ class _NocManagementState extends State<NocManagement> {
 
     List<dynamic> allFlat =
         flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
-  
+
     // ignore: unused_local_variable
     dataList = allFlat;
     setState(() {

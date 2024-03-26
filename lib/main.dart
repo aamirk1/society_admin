@@ -5,11 +5,13 @@ import 'package:society_admin/Provider/assigned_user_provider.dart';
 import 'package:society_admin/Provider/deleteNoticeProvider.dart';
 import 'package:society_admin/Provider/emplist_builder_provider.dart';
 import 'package:society_admin/Provider/filteration_provider.dart';
+import 'package:society_admin/Provider/image_upload_provider.dart';
 import 'package:society_admin/Provider/list_builder_provider.dart';
 import 'package:society_admin/Provider/menuUserPageProvider.dart';
-import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
+
+import 'homeScreen/side.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,12 +50,14 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (_) => AssignedUserProvider()),
         ChangeNotifierProvider(create: (_) => FilterProvider()),
+        ChangeNotifierProvider(create: (_) => ImageUploadProvider()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Society Management',
           theme: ThemeData(
             primarySwatch: Colors.blue,
+            colorScheme: const ColorScheme.light(error: Colors.white),
             textTheme: Theme.of(context).textTheme.apply(
                   bodyColor: Colors.blueGrey,
                 ),
@@ -81,7 +85,15 @@ class MyApp extends StatelessWidget {
             return null;
           },
           // home: const customSide()
-          home: const LoginScreen()),
+          home: customSide(
+            society: 'siddivinayak',
+            allRoles: const ['Admin'],
+            userId: 'AK9512',
+          )
+
+          //const LoginScreen()
+
+          ),
     );
   }
 

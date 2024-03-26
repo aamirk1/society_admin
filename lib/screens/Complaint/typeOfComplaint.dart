@@ -29,6 +29,17 @@ class _TypeOfComplaintState extends State<TypeOfComplaint> {
     getTypeOfComplaint(widget.society, widget.flatNo);
   }
 
+  List<dynamic> colors = [
+    const Color.fromARGB(255, 233, 87, 76),
+    const Color.fromARGB(255, 102, 174, 233),
+    const Color.fromARGB(255, 7, 141, 12),
+    const Color.fromARGB(255, 216, 109, 235),
+    const Color.fromARGB(255, 243, 103, 150),
+    const Color.fromARGB(255, 167, 92, 49),
+    const Color.fromARGB(255, 23, 48, 163),
+    const Color.fromARGB(255, 82, 72, 212),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +52,18 @@ class _TypeOfComplaintState extends State<TypeOfComplaint> {
                 child: CircularProgressIndicator(),
               )
             : Column(children: [
-                ListView.builder(
+                GridView.builder(
                   shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 5,
+                    crossAxisSpacing: 5,
+                    childAspectRatio: 3.0,
+                    mainAxisSpacing: 10,
+                  ),
                   itemCount: dataList.length,
                   itemBuilder: (context, index) {
                     return Card(
+                      color: colors[index % colors.length],
                       elevation: 5,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -53,7 +71,7 @@ class _TypeOfComplaintState extends State<TypeOfComplaint> {
                           minVerticalPadding: 0.3,
                           title: Text(
                             dataList[index]['complaintsType'],
-                            style: const TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           // subtitle: Text(data.docs[index]['city']),
                           onTap: () {
