@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/deleteNoticeProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
+import 'package:society_admin/screens/Notice/noticeSideBar.dart';
 import 'package:society_admin/screens/Notice/viewNotice.dart';
 
 // ignore: must_be_immutable
@@ -29,7 +30,7 @@ class _CircularNoticeState extends State<CircularNotice> {
   List<dynamic> dataList = [];
   List<String> fileList = [];
   String url = '';
-  final date = DateFormat('dd-MM-yyyy ').format(DateTime.now());
+  final date = DateFormat('dd-MM-yyyy').format(DateTime.now());
   @override
   void initState() {
     getNotice(widget.society);
@@ -59,7 +60,7 @@ class _CircularNoticeState extends State<CircularNotice> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
-                        return AddNotice(
+                        return NoticeSidebar(
                             societyName: widget.society, userId: widget.userId);
                       }),
                     );

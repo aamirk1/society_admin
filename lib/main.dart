@@ -11,7 +11,7 @@ import 'package:society_admin/Provider/menuUserPageProvider.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
 
-import 'homeScreen/side.dart';
+import 'homeScreen/sideBar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

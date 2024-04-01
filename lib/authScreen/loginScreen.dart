@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/authScreen/registerScreen.dart';
-import 'package:society_admin/homeScreen/side.dart';
+import 'package:society_admin/homeScreen/sideBar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
