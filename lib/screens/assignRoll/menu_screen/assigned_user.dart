@@ -57,7 +57,7 @@ class _AssignedUserState extends State<AssignedUser> {
               child: AppBar(
                   title: const Text(
                     'Assigned Members',
-                    style: TextStyle(color: secondaryColor),
+                    style: TextStyle(color: white),
                   ),
                   backgroundColor: primaryColor),
             ),

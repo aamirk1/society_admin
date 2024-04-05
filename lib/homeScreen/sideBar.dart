@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/nocManagementProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/homeScreen/homeScreen.dart';
 import 'package:society_admin/screens/Complaint/complaintManagement.dart';
@@ -51,32 +53,64 @@ class _customSideState extends State<customSide> {
   @override
   Widget build(BuildContext context) {
     pages = [
-      CircularNotice(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
-      NocManagement(society: widget.society!, allRoles: widget.allRoles, userId:widget.userId),
-      ComplaintManagement(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
-      ServiceProvider(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
-      MemberNameList(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
-      MenuUserPage(society: widget.society!,userId:widget.userId),
-      GatePass(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
-      Settings(society: widget.society!, allRoles: widget.allRoles!,userId:widget.userId),
+      CircularNotice(
+          society: widget.society!,
+          allRoles: widget.allRoles!,
+          userId: widget.userId),
+      NocManagement(
+          society: widget.society!,
+          allRoles: widget.allRoles,
+          userId: widget.userId),
+      ComplaintManagement(
+          society: widget.society!,
+          allRoles: widget.allRoles!,
+          userId: widget.userId),
+      ServiceProvider(
+          society: widget.society!,
+          allRoles: widget.allRoles!,
+          userId: widget.userId),
+      MemberNameList(
+          society: widget.society!,
+          allRoles: widget.allRoles!,
+          userId: widget.userId),
+      MenuUserPage(society: widget.society!, userId: widget.userId),
+      GatePass(
+          society: widget.society!,
+          allRoles: widget.allRoles!,
+          userId: widget.userId),
+      Settings(
+          society: widget.society!,
+          allRoles: widget.allRoles!,
+          userId: widget.userId),
     ];
     return Scaffold(
       body: Row(
         children: [
           Container(
             padding: const EdgeInsets.only(top: 20),
-            width: 250,
-            color: Colors.purple,
+            width: 150,
+            color: primaryColor,
             child: Column(
               children: [
                 Container(
-                  width: 100,
-                  height: 80,
+                  width: 80,
+                  height: 50,
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Image.asset('assets/images/devlogo.png'),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: SizedBox(
+                    width: 80,
+                    child: Center(
+                        child: Text(
+                      widget.society!,
+                      style: const TextStyle(color: white),
+                    )),
+                  ),
+                ),
                 const Divider(
-                  color: secondaryColor,
+                  color: white,
                 ),
                 SingleChildScrollView(
                   child: SizedBox(
@@ -101,8 +135,10 @@ class _customSideState extends State<customSide> {
   }
 
   Widget customListTile(String title, dynamic icon, int index) {
+    final provider = Provider.of<NocManagementProvider>(context, listen: false);
     return InkWell(
       onTap: () {
+        provider.setLoadWidget(false);
         setDesignBool();
         _selectedIndex = index;
         design[index] = !design[index];

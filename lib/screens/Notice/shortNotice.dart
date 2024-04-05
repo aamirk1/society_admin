@@ -11,22 +11,26 @@ import 'package:society_admin/Provider/deleteNoticeProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
 
 // ignore: must_be_immutable
-class AddNotice extends StatefulWidget {
-  static const id = "/addNotice";
-  AddNotice({super.key, this.societyName, required this.userId});
+class ShortNotice extends StatefulWidget {
+  static const id = "/ShortNotice";
+  ShortNotice(
+      {super.key,
+      this.societyName,
+      required this.userId,
+      this.isIndex1 = false});
   String? societyName;
   String userId;
+  bool isIndex1;
 
   @override
-  State<AddNotice> createState() => _AddNoticeState();
+  State<ShortNotice> createState() => _ShortNoticeState();
 }
 
-class _AddNoticeState extends State<AddNotice> {
+class _ShortNoticeState extends State<ShortNotice> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController customNoticeController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
   List<String> searchedList = [];
-  PlatformFile? selectedFile;
   @override
   void dispose() {
     customNoticeController.dispose();
@@ -34,16 +38,15 @@ class _AddNoticeState extends State<AddNotice> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  final date = DateFormat('dd-MM-yyyy ').format(DateTime.now());
+  final date = DateFormat('dd-MM-yyyy').format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        title: const Text('Short Notice'),
+      ),
       body: Center(
         child: Form(
           key: _formKey,
@@ -51,11 +54,13 @@ class _AddNoticeState extends State<AddNotice> {
             Row(
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.99,
+                  width: MediaQuery.of(context).size.width * 0.85,
                   padding: const EdgeInsets.all(8),
                   child: Column(
                     children: [
                       TextFormField(
+                        autofocus: widget.isIndex1,
+                        // autofocus: true,
                         controller: titleController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -63,13 +68,15 @@ class _AddNoticeState extends State<AddNotice> {
                         ),
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 40,
                       ),
-                      TextFormField(
+                      TextField(
+                        maxLines: 10,
                         controller: customNoticeController,
                         decoration: const InputDecoration(
+                          hintText: 'Write a short notice',
                           border: OutlineInputBorder(),
-                          labelText: 'Notice',
+                          // alignLabelWithHint: true,
                         ),
                       ),
                     ],
@@ -80,59 +87,34 @@ class _AddNoticeState extends State<AddNotice> {
             const SizedBox(
               height: 10,
             ),
-            ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(primaryColor),
+            Padding(
+              padding: const EdgeInsets.only(right: 50.0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.08,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      minimumSize: MaterialStatePropertyAll(
+                        Size(MediaQuery.of(context).size.width * 0.09, 50),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(primaryColor),
+                    ),
+                    onPressed: () {
+                      storeNotice(titleController.text,
+                          customNoticeController.text, widget.userId);
+                    },
+                    child: const Text(
+                      'Submit',
+                      style: TextStyle(color: white),
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  storeNotice(titleController.text, customNoticeController.text,
-                      widget.userId);
-                },
-                child: const Text('Submit')),
+              ),
+            ),
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              'OR',
-              style: TextStyle(fontSize: 20, color: Colors.black),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryColor),
-                      onPressed: () async {
-                        selectedFile = await pickAndUploadPDF();
-                        setState(() {});
-                      },
-                      child: const Text('Pick PDF'),
-                    ),
-                    Text(
-                      selectedFile?.name ?? 'No file selected',
-                      style: const TextStyle(color: textColor),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryColor),
-                      onPressed: () {
-                        if (selectedFile == null) {
-                          return alertbox();
-                        } else {
-                          uploadFile(selectedFile!, selectedFile!.name);
-                        }
-                      },
-                      child: const Text('Upload PDF'),
-                    ),
-                    // Text('${fileName} Uploaded successfully');
-                  ]),
-            )
           ]),
         ),
       ),

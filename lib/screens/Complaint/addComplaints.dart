@@ -25,21 +25,10 @@ class _AddComplaintState extends State<AddComplaint> {
   List<dynamic> dataList = [];
   bool isLoading = true;
   PlatformFile? selectedFile;
-  @override
-  void initState() {
-    super.initState();
-    // getTypeOfNoc(widget.society, widget.flatNo, widget.nocType,widget.text);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.purple,
-        leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.arrow_back)),
-      ),
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(

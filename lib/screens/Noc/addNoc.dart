@@ -36,12 +36,6 @@ class _AddNocState extends State<AddNoc> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.purple,
-        leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.arrow_back)),
-      ),
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.60,

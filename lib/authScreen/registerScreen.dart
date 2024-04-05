@@ -43,242 +43,250 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purple[400],
+      backgroundColor: primaryColor,
       body: Center(
         child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.9,
           width: MediaQuery.of(context).size.width * 0.5,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "Society Manager",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      style: const TextStyle(color: Colors.white),
-                      textInputAction: TextInputAction.next,
-                      controller: firstNameController,
-                      decoration: const InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: Colors.white,
-                        )),
-                        labelText: 'First Name',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        // enabledBorder: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: Colors.white,
-                        )),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter First Name';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      style: const TextStyle(color: Colors.white),
-                      textInputAction: TextInputAction.next,
-                      controller: lastNameController,
-                      decoration: const InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: Colors.white,
-                        )),
-                        labelText: 'Last Name',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        // enabledBorder: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: Colors.white,
-                        )),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Last Name';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      maxLength: 10,
-                      keyboardType: TextInputType.phone,
-                      style: const TextStyle(color: Colors.white),
-                      textInputAction: TextInputAction.next,
-                      controller: mobileController,
-                      decoration: const InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: Colors.white,
-                        )),
-                        labelText: 'Mobile No.',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        // enabledBorder: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: Colors.white,
-                        )),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Mobile No.';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      style: const TextStyle(color: Colors.white),
-                      textInputAction: TextInputAction.next,
-                      controller: emailController,
-                      decoration: const InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: Colors.white,
-                        )),
-                        labelText: 'Email Id',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        // enabledBorder: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: Colors.white,
-                        )),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your Email Id';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      style: const TextStyle(color: Colors.white),
-                      textInputAction: TextInputAction.done,
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
+          child: Card(
+            elevation: 10,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Society Manager",
+                  style: TextStyle(
+                      color: primaryColor,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          style: const TextStyle(color: textColor),
+                          textInputAction: TextInputAction.next,
+                          controller: firstNameController,
+                          decoration: const InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                              color: primaryColor,
+                            )),
+                            labelText: 'First Name',
+                            labelStyle: TextStyle(
+                              color: textColor,
+                            ),
+                            // enabledBorder: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                              color: primaryColor,
+                            )),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: primaryColor),
+                            ),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter First Name';
+                            }
+                            return null;
+                          },
                         ),
-                        labelText: 'Password',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
+                        const SizedBox(
+                          height: 10,
                         ),
-                        // enabledBorder: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: Colors.white,
-                        )),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white)),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Password';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Center(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  foregroundColor:
-                                      const Color.fromARGB(255, 0, 0, 12),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  minimumSize: Size(
-                                      MediaQuery.of(context).size.width, 40)),
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  register(
-                                      firstNameController.text,
-                                      lastNameController.text,
-                                      mobileController.text,
-                                      passwordController.text,
-                                      context,
-                                      emailController.text);
-                                }
-                              },
-                              child: const Text(
-                                'Sign Up',
-                                style: TextStyle(fontSize: 20),
+                        TextFormField(
+                          style: const TextStyle(color: textColor),
+                          textInputAction: TextInputAction.next,
+                          controller: lastNameController,
+                          decoration: const InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                              color: primaryColor,
+                            )),
+                            labelText: 'Last Name',
+                            labelStyle: TextStyle(
+                              color: textColor,
+                            ),
+                            // enabledBorder: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                              color: primaryColor,
+                            )),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: primaryColor),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Last Name';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          maxLength: 10,
+                          keyboardType: TextInputType.phone,
+                          style: const TextStyle(color: textColor),
+                          textInputAction: TextInputAction.next,
+                          controller: mobileController,
+                          decoration: const InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                              color: primaryColor,
+                            )),
+                            labelText: 'Mobile No.',
+                            labelStyle: TextStyle(
+                              color: textColor,
+                            ),
+                            // enabledBorder: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                              color: primaryColor,
+                            )),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: primaryColor),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Mobile No.';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          style: const TextStyle(color: textColor),
+                          textInputAction: TextInputAction.next,
+                          controller: emailController,
+                          decoration: const InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                              color: primaryColor,
+                            )),
+                            labelText: 'Email Id',
+                            labelStyle: TextStyle(
+                              color: textColor,
+                            ),
+                            // enabledBorder: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                              color: primaryColor,
+                            )),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: primaryColor),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your Email Id';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          style: const TextStyle(color: textColor),
+                          textInputAction: TextInputAction.done,
+                          controller: passwordController,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: primaryColor,
                               ),
                             ),
-                            const SizedBox(
-                              height: 10,
+                            labelText: 'Password',
+                            labelStyle: TextStyle(
+                              color: textColor,
                             ),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return const LoginScreen();
-                                  }));
-                                },
-                                child: const Text(
-                                  'Already have an account? Login',
-                                  style: TextStyle(color: Colors.white),
-                                ))
-                          ],
+                            // enabledBorder: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                              color: primaryColor,
+                            )),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(color: primaryColor)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Password';
+                            }
+                            return null;
+                          },
                         ),
-                      ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Column(
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: primaryColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      minimumSize: Size(
+                                          MediaQuery.of(context).size.width *
+                                              0.17,
+                                          MediaQuery.of(context).size.height *
+                                              0.06)),
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      register(
+                                          firstNameController.text,
+                                          lastNameController.text,
+                                          mobileController.text,
+                                          passwordController.text,
+                                          context,
+                                          emailController.text);
+                                    }
+                                  },
+                                  child: const Text(
+                                    'Sign Up',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextButton(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: primaryColor,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return const LoginScreen();
+                                      }));
+                                    },
+                                    child: const Text(
+                                      'Already have an account? Login',
+                                      style: TextStyle(color: white),
+                                    ))
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -2,16 +2,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/assigned_user_provider.dart';
+import 'package:society_admin/Provider/complaintManagementProvider.dart';
 import 'package:society_admin/Provider/deleteNoticeProvider.dart';
 import 'package:society_admin/Provider/emplist_builder_provider.dart';
 import 'package:society_admin/Provider/filteration_provider.dart';
+import 'package:society_admin/Provider/gatePassProvider.dart';
 import 'package:society_admin/Provider/image_upload_provider.dart';
 import 'package:society_admin/Provider/list_builder_provider.dart';
 import 'package:society_admin/Provider/menuUserPageProvider.dart';
+import 'package:society_admin/Provider/nocManagementProvider.dart';
+import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
-
-import 'homeScreen/sideBar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +53,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AssignedUserProvider()),
         ChangeNotifierProvider(create: (_) => FilterProvider()),
         ChangeNotifierProvider(create: (_) => ImageUploadProvider()),
+        ChangeNotifierProvider(create: (_) => NocManagementProvider()),
+        ChangeNotifierProvider(create: (_) => ComplaintManagementProvider()),
+        ChangeNotifierProvider(create: (_) => GatePassProvider()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -65,7 +70,7 @@ class MyApp extends StatelessWidget {
                   bodyColor: Colors.purple,
                 ),
             primaryIconTheme: const IconThemeData(
-              color: Color.fromARGB(255, 91, 3, 255),
+              color: Color.fromARGB(255, 3, 20, 255),
             ),
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
@@ -84,16 +89,13 @@ class MyApp extends StatelessWidget {
             }
             return null;
           },
-          // home: const customSide()
-          home: customSide(
-            society: 'siddivinayak',
-            allRoles: const ['Admin'],
-            userId: 'AK9512',
-          )
+          // home: customSide(
+          //   society: 'siddivinayak',
+          //   allRoles: const ['Admin'],
+          //   userId: 'AK9512',
+          // )
 
-          //const LoginScreen()
-
-          ),
+          home: const LoginScreen()),
     );
   }
 

@@ -66,7 +66,7 @@ class _ViewEmployeeState extends State<ViewEmployee> {
           },
           child: Text(
             'All Employee in ${widget.CompanyName}',
-            style: const TextStyle(color: secondaryColor),
+            style: const TextStyle(color: white),
           ),
         ),
         backgroundColor: primaryColor,
@@ -78,7 +78,7 @@ class _ViewEmployeeState extends State<ViewEmployee> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(secondaryColor),
+                          MaterialStateProperty.all(white),
                       minimumSize: MaterialStateProperty.all(
                         const Size(20, 10),
                       )),

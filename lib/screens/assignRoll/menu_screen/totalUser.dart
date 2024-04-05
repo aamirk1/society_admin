@@ -51,7 +51,7 @@ class _TotalUsersState extends State<TotalUsers> {
                 child: AppBar(
                   title: const Text(
                     'Total Comittee Members',
-                    style: TextStyle(color: secondaryColor),
+                    style: TextStyle(color: white),
                   ),
                   backgroundColor: primaryColor,
                 )),

@@ -55,7 +55,7 @@ class _MemberNameListState extends State<MemberNameList> {
         appBar: AppBar(
           title: Text(
             "All Members of ${widget.society}",
-            style: const TextStyle(color: secondaryColor),
+            style: const TextStyle(color: white),
           ),
           backgroundColor: primaryColor,
         ),

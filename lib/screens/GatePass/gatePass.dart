@@ -2,7 +2,10 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/gatePassProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
+import 'package:society_admin/screens/GatePass/addGatePass.dart';
 import 'package:society_admin/screens/GatePass/typeOfGatePass.dart';
 
 // ignore: must_be_immutable
@@ -21,7 +24,12 @@ class GatePass extends StatefulWidget {
 }
 
 class _GatePassState extends State<GatePass> {
-  List<dynamic> dataList = [];
+  List<dynamic> dataListOfPassType = [];
+  List<dynamic> dataListOfFlatNo = [];
+
+  String selectedFlatno = '';
+  bool isClicked = false;
+  bool isGatePassLoaded = false;
   bool isLoading = true;
   @override
   void initState() {
@@ -33,6 +41,8 @@ class _GatePassState extends State<GatePass> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<GatePassProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flat No. Of Members'),
@@ -42,47 +52,94 @@ class _GatePassState extends State<GatePass> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : Column(
+          : Row(
               children: [
-                GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 2.0,
-                      mainAxisSpacing: 10),
-                  itemCount: dataList.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) {
-                            return TypeOfGatePass(
-                              society: widget.society,
-                              flatNo: dataList[index]['flatno'],
-                            );
-                          }),
-                        );
-                      },
-                      child: Card(
-                        color: const Color.fromARGB(255, 91, 171, 236),
-                        elevation: 5,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                dataList[index]['flatno'],
-                                style: const TextStyle(color: Colors.white),
-                              )
-                              // subtitle: Text(data.docs[index]['city']),
-
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: dataListOfFlatNo.length,
+                        itemBuilder: (context, index) {
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.12,
+                            child: Card(
+                              color: primaryColor,
+                              elevation: 5,
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: ListTile(
+                                    onTap: () {
+                                      selectedFlatno =
+                                          dataListOfFlatNo[index]['flatno'];
+                                      getTypeOfGatePass(
+                                        widget.society,
+                                        selectedFlatno,
+                                      ).whenComplete(() {
+                                        isGatePassLoaded = true;
+                                        // isClicked = true;
+                                        setState(() {});
+                                      });
+                                    },
+                                    minVerticalPadding: 0.3,
+                                    title: Center(
+                                      child: Text(
+                                        dataListOfFlatNo[index]['flatno'],
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 14),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                        ),
+                            ),
+                          );
+                        },
                       ),
+                    ],
+                  ),
+                ),
+                Consumer(builder: ((context, value, child) {
+                  return Expanded(
+                      flex: 1,
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        width: 500,
+                        child: TypeOfGatePass(
+                          flatNo: selectedFlatno,
+                          society: widget.society,
+                          passType: dataListOfPassType,
+                        ),
+                      ));
+                })),
+                Consumer<GatePassProvider>(
+                  builder: ((context, value, child) {
+                    return Expanded(
+                      flex: 5,
+                      child: provider.loadWidget
+                          ? SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              width: 500,
+                              child: isGatePassLoaded
+                                  ? AddGatePass(
+                                      gatePassType: dataListOfPassType[
+                                              globalSelectedIndexForGatePass]
+                                          ['gatePassType'],
+                                      text: dataListOfPassType[
+                                              globalSelectedIndexForGatePass]
+                                          ['text'],
+                                      society: widget.society,
+                                      flatNo: selectedFlatno,
+                                    )
+                                  : Container(),
+                            )
+                          : Container(),
                     );
-                  },
+                  }),
                 ),
               ],
             ),
@@ -101,9 +158,24 @@ class _GatePassState extends State<GatePass> {
         flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
 
     // ignore: unused_local_variable
-    dataList = allFlat;
+    dataListOfFlatNo = allFlat;
     setState(() {
       isLoading = false;
     });
+  }
+
+  Future<void> getTypeOfGatePass(society, flatNo) async {
+    QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
+        .collection('gatePassApplications')
+        .doc(society)
+        .collection('flatno')
+        .doc(flatNo)
+        .collection('gatePassType')
+        .get();
+
+    List<dynamic> allNocType =
+        flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
+
+    dataListOfPassType = allNocType;
   }
 }

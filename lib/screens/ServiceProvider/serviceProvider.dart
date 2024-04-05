@@ -10,7 +10,11 @@ import 'package:society_admin/screens/ServiceProvider/EmployeeDetails/viewEmploy
 
 // ignore: must_be_immutable
 class ServiceProvider extends StatefulWidget {
-  ServiceProvider({super.key, required this.society, required this.allRoles, required this.userId});
+  ServiceProvider(
+      {super.key,
+      required this.society,
+      required this.allRoles,
+      required this.userId});
   String society;
   List<dynamic> allRoles = [];
   String userId;
@@ -34,21 +38,21 @@ class _ServiceProviderState extends State<ServiceProvider> {
         backgroundColor: primaryColor,
         actions: [
           Padding(
-              padding:const EdgeInsets.only(right: 10.0),
+              padding: const EdgeInsets.only(right: 10.0),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(secondaryColor),
+                      backgroundColor: MaterialStateProperty.all(white),
                       minimumSize: MaterialStateProperty.all(
-                       const  Size(20, 10),
+                        const Size(20, 10),
                       )),
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
-                        return AddCompany(society: widget.society,userId: widget.userId);
+                        return AddCompany(
+                            society: widget.society, userId: widget.userId);
                       }),
                     );
                   },
@@ -120,8 +124,6 @@ class _ServiceProviderState extends State<ServiceProvider> {
     QuerySnapshot companyQuerySnapshot = await FirebaseFirestore.instance
         .collection('vendorList')
         .doc(selectedSociety)
-        .collection('userId')
-        .doc(widget.userId)
         .collection('companyList')
         .get();
 
@@ -138,8 +140,6 @@ class _ServiceProviderState extends State<ServiceProvider> {
     DocumentReference deleteEmployee = FirebaseFirestore.instance
         .collection('vendorList')
         .doc(selectedSociety)
-        .collection('userId')
-        .doc(widget.userId)
         .collection('companyList')
         .doc(company);
 

@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/deleteNoticeProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
-import 'package:society_admin/screens/Notice/addNotice.dart';
 import 'package:society_admin/screens/Notice/noticeSideBar.dart';
 import 'package:society_admin/screens/Notice/viewNotice.dart';
 
@@ -30,7 +29,15 @@ class _CircularNoticeState extends State<CircularNotice> {
   List<dynamic> dataList = [];
   List<String> fileList = [];
   String url = '';
+  bool isClicked = false;
   final date = DateFormat('dd-MM-yyyy').format(DateTime.now());
+
+  String societyName = '';
+  String userId = '';
+  String title = '';
+  String notice = '';
+  String dates = '';
+
   @override
   void initState() {
     getNotice(widget.society);
@@ -51,8 +58,7 @@ class _CircularNoticeState extends State<CircularNotice> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(secondaryColor),
+                      backgroundColor: MaterialStateProperty.all(white),
                       minimumSize: MaterialStateProperty.all(
                         const Size(20, 10),
                       )),
@@ -78,88 +84,130 @@ class _CircularNoticeState extends State<CircularNotice> {
           child: Consumer<DeleteNoticeProvider>(
             builder: (context, value, child) => Column(
               children: [
-                GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 2.0,
-                      mainAxisSpacing: 10,
-                    ),
-                    itemCount: value.noticeList.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: Colors.blue,
-                        elevation: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: ListTile(
-                            minVerticalPadding: 0.3,
-                            title: Text(
-                              value.noticeList[index]['title'],
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            trailing: IconButton(
-                              onPressed: () {
-                                deleteNotice(widget.society,
-                                    value.noticeList[index]['title'], index);
-                              },
-                              icon: const Icon(Icons.delete),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                  return ViewNotice(
-                                      userId: widget.userId,
-                                      society: widget.society,
-                                      title: value.noticeList[index]['title'],
-                                      notice: value.noticeList[index]['notice'],
-                                      date: value.noticeList[index]['date']);
+                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Expanded(
+                      flex: 1,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: value.noticeList.length,
+                                itemBuilder: (context, index) {
+                                  return SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.15,
+                                    child: Card(
+                                      color: Colors.blue,
+                                      elevation: 5,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(1.0),
+                                        child: ListTile(
+                                          minVerticalPadding: 0.3,
+                                          title: Text(
+                                            value.noticeList[index]['title'],
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14),
+                                            textAlign: TextAlign.justify,
+                                          ),
+                                          trailing: IconButton(
+                                            onPressed: () {
+                                              deleteNotice(
+                                                  widget.society,
+                                                  value.noticeList[index]
+                                                      ['title'],
+                                                  index);
+                                            },
+                                            icon: const Icon(Icons.delete,
+                                                color: white),
+                                          ),
+                                          onTap: () {
+                                            if (!value.noticeList[index]
+                                                    ['title']
+                                                .toString()
+                                                .endsWith('.pdf')) {
+                                              isClicked = !isClicked;
+                                              userId = widget.userId;
+                                              societyName = widget.society!;
+                                              title = value.noticeList[index]
+                                                  ['title'];
+                                              notice = value.noticeList[index]
+                                                  ['notice'];
+                                              dates = value.noticeList[index]
+                                                  ['date'];
+                                              setState(() {});
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  );
                                 }),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    }),
-                GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 2.0,
-                      mainAxisSpacing: 10,
-                    ),
-                    itemCount: value.noticePdfList.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: const Color.fromARGB(255, 231, 99, 89),
-                        elevation: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: ListTile(
-                            minVerticalPadding: 0.3,
-                            title: Text(
-                              value.noticePdfList[index].toString(),
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            trailing: IconButton(
-                              onPressed: () {
-                                deleteNoticePdf(widget.society,
-                                    value.noticePdfList[index], index);
-                              },
-                              icon: const Icon(Icons.delete),
-                            ),
-                            onTap: () {
-                              openPdf(value.noticePdfList[index]);
-                            },
-                          ),
-                        ),
-                      );
-                    })
+                            ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: value.noticePdfList.length,
+                                itemBuilder: (context, index) {
+                                  return SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.15,
+                                    child: Card(
+                                      color: const Color.fromARGB(
+                                          255, 231, 99, 89),
+                                      elevation: 5,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(1.0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ListTile(
+                                            minVerticalPadding: 0.3,
+                                            title: Text(
+                                              value.noticePdfList[index]
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14),
+                                              textAlign: TextAlign.justify,
+                                            ),
+                                            trailing: IconButton(
+                                              onPressed: () {
+                                                deleteNoticePdf(
+                                                    widget.society,
+                                                    value.noticePdfList[index],
+                                                    index);
+                                              },
+                                              icon: const Icon(
+                                                Icons.delete,
+                                                color: white,
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              openPdf(
+                                                  value.noticePdfList[index]);
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                })
+                          ])),
+                  Expanded(
+                      flex: 5,
+                      child: isClicked
+                          ? SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              width: 500,
+                              child: ViewNotice(
+                                title: title,
+                                userId: widget.userId,
+                                date: dates,
+                                notice: notice,
+                                society: societyName,
+                              ),
+                            )
+                          : Container()),
+                ])
               ],
             ),
           ),

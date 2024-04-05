@@ -1,7 +1,8 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
-import 'package:society_admin/screens/Noc/nocManagement.dart';
-import 'package:society_admin/screens/Notice/circularNotice.dart';
+import 'package:society_admin/screens/Notice/addNoticePdf.dart';
+import 'package:society_admin/screens/Notice/shortNotice.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class NoticeSidebar extends StatefulWidget {
@@ -27,33 +28,39 @@ class _NoticeSidebarState extends State<NoticeSidebar> {
   List<bool> design = [true, false, false];
 
   int _selectedIndex = 0;
-
+  bool isIndex1 = false;
   List<Widget> pages = [];
 
   @override
   Widget build(BuildContext context) {
     pages = [
-      CircularNotice(society: widget.societyName!, userId: widget.userId),
-      NocManagement(society: widget.societyName!, userId: widget.userId),
-      // ComplaintManagement(society: widget.society!, userId: widget.userId, ),
+      ShortNotice(
+          userId: widget.userId,
+          societyName: widget.societyName,
+          isIndex1: isIndex1),
+      ShortNotice(
+        userId: widget.userId,
+        societyName: widget.societyName,
+      ),
+      AddNoticePdf(userId: widget.userId, societyName: widget.societyName),
     ];
     return Scaffold(
       body: Row(
         children: [
           Container(
             padding: const EdgeInsets.only(top: 20),
-            width: 250,
-            color: Colors.purple,
+            width: 150,
+            color: primaryColor,
             child: Column(
               children: [
                 Container(
-                  width: 100,
-                  height: 80,
+                  width: 80,
+                  height: 50,
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Image.asset('assets/images/devlogo.png'),
                 ),
                 const Divider(
-                  color: secondaryColor,
+                  color: white,
                 ),
                 SingleChildScrollView(
                   child: SizedBox(
@@ -80,6 +87,7 @@ class _NoticeSidebarState extends State<NoticeSidebar> {
   Widget customListTile(String title, dynamic icon, int index) {
     return InkWell(
       onTap: () {
+        index == 0 ? isIndex1 = true : () {};
         setDesignBool();
         _selectedIndex = index;
         design[index] = !design[index];
@@ -111,13 +119,18 @@ class _NoticeSidebarState extends State<NoticeSidebar> {
     design = tempBool;
   }
 
-  // Widget getPage(int index) {
-  //   if (index == 0) {
-  //     return HomePage(
-  //       society: widget.society!,
-  //       allRoles: widget.allRoles[index],
-  //     );
-  //   }
-  //   return const Text('');
-  // }
+  Future<PlatformFile> pickAndUploadPDF() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+    PlatformFile? file;
+
+    if (result != null) {
+      file = result.files.first;
+    } else {
+      print('File picking canceled');
+    }
+    return file!;
+  }
 }

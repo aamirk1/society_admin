@@ -2,26 +2,35 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:society_admin/authScreen/common.dart';
-import 'package:society_admin/screens/GatePass/addGatePass.dart';
+import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/gatePassProvider.dart';
+
+int globalSelectedIndexForGatePass = 0;
 
 // ignore: must_be_immutable
 class TypeOfGatePass extends StatefulWidget {
-  TypeOfGatePass({super.key, required this.society, required this.flatNo});
+  TypeOfGatePass(
+      {super.key,
+      required this.society,
+      required this.flatNo,
+      required this.passType});
   String society;
   String flatNo;
+  List<dynamic> passType = [];
 
   @override
   State<TypeOfGatePass> createState() => _TypeOfGatePassState();
 }
 
 class _TypeOfGatePassState extends State<TypeOfGatePass> {
-  List<dynamic> dataList = [];
+  bool? isApproved;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   bool isLoading = true;
   @override
   void initState() {
     super.initState();
-    getTypeOfGatePass(widget.society, widget.flatNo);
+    // getTypeOfGatePass(widget.society, widget.flatNo);
   }
 
   List<dynamic> colors = [
@@ -38,75 +47,67 @@ class _TypeOfGatePassState extends State<TypeOfGatePass> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Type of Gate Pass'),
-          backgroundColor: primaryColor,
-        ),
-        body: isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : Column(children: [
-                GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 5,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 3.0,
-                    mainAxisSpacing: 10,
+        // appBar: AppBar(
+        //   title: const Text('Type of Gate Pass'),
+        //   backgroundColor: primaryColor,
+        // ),
+        body: SingleChildScrollView(
+      child: Column(children: [
+        ListView.builder(
+          shrinkWrap: true,
+          itemCount: widget.passType.length,
+          itemBuilder: (context, index) {
+            return Card(
+              color: colors[index % colors.length],
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  minVerticalPadding: 0.3,
+                  title: Text(
+                    widget.passType[index]['gatePassType'],
+                    style: TextStyle(color: Colors.white),
                   ),
-                  shrinkWrap: true,
-                  itemCount: dataList.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: colors[index % colors.length],
-                      elevation: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          minVerticalPadding: 0.3,
-                          title: Text(
-                            dataList[index]['gatePassType'],
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          // subtitle: Text(data.docs[index]['city']),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) {
-                                return AddGatePass(
-                                  gatePassType: dataList[index]['gatePassType'],
-                                  text: dataList[index]['text'],
-                                  society: widget.society,
-                                  flatNo: widget.flatNo,
-                                );
-                              }),
-                            );
-                          },
-                        ),
-                      ),
-                    );
+                  // subtitle: Text(data.docs[index]['city']),
+                  onTap: () async {
+                    final provider =
+                        Provider.of<GatePassProvider>(context, listen: false);
+                    provider.setSelectedPass(
+                        widget.passType[index]['gatePassType']);
+                    globalSelectedIndexForGatePass = index;
+                    await getpassforApproved(
+                            widget.flatNo, provider.selectedPass)
+                        .whenComplete(() {
+                      provider.setLoadWidget(true);
+                    });
+                    // NocManagementProvider();
                   },
                 ),
-              ]));
+              ),
+            );
+          },
+        ),
+      ]),
+    ));
   }
 
-  Future<void> getTypeOfGatePass(society, flatNo) async {
-    isLoading = true;
-    QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
+  Future<void> getpassforApproved(String flatNo, String gatePassType) async {
+    final provider = Provider.of<GatePassProvider>(context, listen: false);
+    DocumentSnapshot documentSnapshot = await firestore
         .collection('gatePassApplications')
-        .doc(society)
+        .doc(widget.society)
         .collection('flatno')
         .doc(flatNo)
         .collection('gatePassType')
+        .doc(gatePassType)
         .get();
 
-    List<dynamic> allNocType =
-        flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
-
-    // ignore: unused_local_variable
-    dataList = allNocType;
-    setState(() {
-      isLoading = false;
-    });
+    if (documentSnapshot.exists) {
+      Map<String, dynamic> mapData =
+          documentSnapshot.data() as Map<String, dynamic>;
+      isApproved = mapData['isApproved'];
+      provider.setIsApproved(isApproved);
+    }
+    print("isApproved - $isApproved");
   }
 }

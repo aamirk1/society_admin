@@ -25,6 +25,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   TextEditingController _newPassword = TextEditingController();
   TextEditingController _confirmPassword = TextEditingController();
 
+  @override
   void dispose() {
     _newPassword.dispose();
     _confirmPassword.dispose();

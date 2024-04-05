@@ -38,7 +38,7 @@ class _AddCompanyState extends State<AddCompany> {
       appBar: AppBar(
         title: const Text(
           'Add Company',
-          style: TextStyle(color: secondaryColor),
+          style: TextStyle(color: white),
         ),
         backgroundColor: primaryColor,
       ),

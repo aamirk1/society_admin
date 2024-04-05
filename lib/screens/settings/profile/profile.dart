@@ -41,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
       ),
       body: Center(
         child: Column(
@@ -58,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            Container(
+            SizedBox(
               width: 250,
               child: ElevatedButton(
                 onPressed: _getImageFromGallery,

@@ -40,7 +40,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       appBar: AppBar(
         title: Text(
           'Add Employee in ${widget.CompanyName}',
-          style: const TextStyle(color: secondaryColor),
+          style: const TextStyle(color: white),
         ),
         backgroundColor: primaryColor,
       ),

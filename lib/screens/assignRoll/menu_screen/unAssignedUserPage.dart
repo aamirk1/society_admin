@@ -40,7 +40,7 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
             child: AppBar(
               title: const Text(
                 'UnAssigned Members',
-                style: TextStyle(color: secondaryColor),
+                style: TextStyle(color: white),
               ),
               backgroundColor: primaryColor,
             )),
@@ -181,7 +181,7 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
     return Card(
       elevation: 15,
       child: Container(
-        margin: EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
             image: const DecorationImage(
                 image: AssetImage('assets/unAssigned_background2.jpeg'),
@@ -193,7 +193,7 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(10.0),
               height: 23,
               // width: 120,
               child: Text(
@@ -215,7 +215,7 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
                     size: 14,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Container(
@@ -235,7 +235,7 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
             customRowBuilder(['', '', '']),
             Container(
               padding: const EdgeInsets.only(bottom: 5.0, top: 5.0),
-              child: Row(
+              child: const Row(
                 children: [
                   CircleAvatar(
                     radius: 12,
@@ -249,7 +249,7 @@ class _UnAssingedUsersState extends State<UnAssingedUsers> {
                   SizedBox(
                     width: 8,
                   ),
-                  const Text(
+                  Text(
                     'Society Name',
                     style: TextStyle(
                         decoration: TextDecoration.underline,

@@ -27,7 +27,7 @@ class _ViewCompanyDataState extends State<ViewCompanyData> {
       appBar: AppBar(
         title: Text(
           'View Full Detais of ${widget.CompanyName}',
-          style: const TextStyle(color: secondaryColor),
+          style: const TextStyle(color: white),
         ),
         backgroundColor: primaryColor,
       ),

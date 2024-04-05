@@ -1,13 +1,15 @@
-// ignore_for_file: must_be_immutable, file_names, avoid_print
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 
-
 class ViewNotice extends StatefulWidget {
   ViewNotice(
-      {super.key, this.society, required this.title, this.notice, this.date,required this.userId});
+      {super.key,
+      this.society,
+      required this.title,
+      this.notice,
+      this.date,
+      required this.userId});
   String? notice;
   String? date;
   String? society;
@@ -30,13 +32,6 @@ class _ViewNoticeState extends State<ViewNotice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'View Notice',
-          style: TextStyle(color: secondaryColor),
-        ),
-        backgroundColor: primaryColor,
-      ),
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.60,
@@ -110,6 +105,4 @@ class _ViewNoticeState extends State<ViewNotice> {
     }
     return file!;
   }
-
-
 }

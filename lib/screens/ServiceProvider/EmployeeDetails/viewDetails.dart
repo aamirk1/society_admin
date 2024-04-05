@@ -31,7 +31,7 @@ class _ViewDataState extends State<ViewData> {
       appBar: AppBar(
         title: Text(
           'View Full Detais of ${widget.name}',
-          style: const TextStyle(color: secondaryColor),
+          style: const TextStyle(color: white),
         ),
         backgroundColor: primaryColor,
       ),
