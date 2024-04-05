@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/gatePassProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
+import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/screens/GatePass/addGatePass.dart';
 import 'package:society_admin/screens/GatePass/typeOfGatePass.dart';
 
@@ -47,6 +48,19 @@ class _GatePassState extends State<GatePass> {
       appBar: AppBar(
         title: const Text('Flat No. Of Members'),
         backgroundColor: primaryColor,
+        actions: [
+          IconButton(
+            padding: const EdgeInsets.only(right: 20.0),
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
+            },
+            icon: const Icon(
+              Icons.power_settings_new,
+              color: Colors.white,
+            ),
+          )
+        ],
       ),
       body: isLoading
           ? const Center(

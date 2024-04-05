@@ -35,160 +35,159 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  List<dynamic> roles = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
       body: Center(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.5,
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: Card(
-            elevation: 10,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Society Manager",
-                  style: TextStyle(
-                      color: primaryColor,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Form(
-                  key: _formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          keyboardType: TextInputType.phone,
-                          style: const TextStyle(color: textColor),
-                          textInputAction: TextInputAction.next,
-                          controller: userIdController,
-                          decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                              color: primaryColor,
-                            )),
-                            labelText: 'UserID',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            // enabledBorder: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                              color: primaryColor,
-                            )),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: primaryColor),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter UserID';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        TextFormField(
-                          style: const TextStyle(color: textColor),
-                          textInputAction: TextInputAction.done,
-                          controller: passwordController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
+          child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.5,
+        width: MediaQuery.of(context).size.width * 0.5,
+        child: Card(
+          elevation: 10,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Society Manager",
+                style: TextStyle(
+                    color: primaryColor,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        keyboardType: TextInputType.phone,
+                        style: const TextStyle(color: textColor),
+                        textInputAction: TextInputAction.next,
+                        controller: userIdController,
+                        decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: primaryColor,
-                              ),
-                            ),
-                            labelText: 'Password',
-                            labelStyle: TextStyle(
-                              color: textColor,
-                            ),
-                            // enabledBorder: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                            color: primaryColor,
+                          )),
+                          labelText: 'UserID',
+                          labelStyle: TextStyle(
+                            color: textColor,
+                          ),
+                          // enabledBorder: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                            color: primaryColor,
+                          )),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: primaryColor),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter UserID';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        style: const TextStyle(color: textColor),
+                        textInputAction: TextInputAction.done,
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
                               color: primaryColor,
-                            )),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: primaryColor)),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Password';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Center(
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Column(
-                              children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: primaryColor,
-                                      foregroundColor:
-                                          const Color.fromARGB(255, 0, 0, 12),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      minimumSize: Size(
-                                          MediaQuery.of(context).size.width *
-                                              0.17,
-                                          MediaQuery.of(context).size.height *
-                                              0.06)),
-                                  onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      login(userIdController.text,
-                                          passwordController.text, context);
-                                    }
-                                  },
-                                  child: const Text(
-                                    'Login',
-                                    style:
-                                        TextStyle(fontSize: 14, color: white),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: primaryColor,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return const RegisrationScreen();
-                                    }));
-                                  },
-                                  child: const Text(
-                                    'Don\'t have an account? Sign Up',
-                                    style: TextStyle(color: white),
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
+                          labelText: 'Password',
+                          labelStyle: TextStyle(
+                            color: textColor,
+                          ),
+                          // enabledBorder: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                            color: primaryColor,
+                          )),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: primaryColor)),
                         ),
-                      ],
-                    ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Password';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Center(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: primaryColor,
+                                    foregroundColor:
+                                        const Color.fromARGB(255, 0, 0, 12),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    minimumSize: Size(
+                                        MediaQuery.of(context).size.width *
+                                            0.17,
+                                        MediaQuery.of(context).size.height *
+                                            0.06)),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    login(userIdController.text,
+                                        passwordController.text, context);
+                                  }
+                                },
+                                child: const Text(
+                                  'Login',
+                                  style: TextStyle(fontSize: 14, color: white),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: primaryColor,
+                                ),
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return const RegisrationScreen();
+                                  }));
+                                },
+                                child: const Text(
+                                  'Don\'t have an account? Sign Up',
+                                  style: TextStyle(color: white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      ),
+      )),
     );
   }
 
@@ -244,13 +243,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 String societyname = data['societyname'];
 
                 // print(societyname);
-                List<dynamic> roles = data['roles'];
+                roles = data['roles'];
 
-                // print(roles);
-                // print(roles);
-                // ignore: use_build_context_synchronously
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                // ignore: use_build_context_synchronously
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -262,13 +256,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     (route) => false);
               }
-            } else {
-              // ignore: unused_local_variable
-              SnackBar snackBar = const SnackBar(
-                  backgroundColor: Colors.red,
-                  content: Center(
-                    child: Text('Roles not assigned'),
-                  ));
             }
           }
 

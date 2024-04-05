@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/deleteNoticeProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
+import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/screens/Notice/noticeSideBar.dart';
 import 'package:society_admin/screens/Notice/viewNotice.dart';
 
@@ -76,7 +77,18 @@ class _CircularNoticeState extends State<CircularNotice> {
                     color: textColor,
                   ),
                 ),
-              ))
+              )),
+          IconButton(
+            padding: const EdgeInsets.only(right: 20.0),
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
+            },
+            icon: const Icon(
+              Icons.power_settings_new,
+              color: Colors.white,
+            ),
+          )
         ],
       ),
       body: Material(

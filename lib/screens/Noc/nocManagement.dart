@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/nocManagementProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
+import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/screens/Noc/addNoc.dart';
 import 'package:society_admin/screens/Noc/typeOfNoc.dart';
 
@@ -45,6 +46,19 @@ class _NocManagementState extends State<NocManagement> {
       appBar: AppBar(
         title: const Text('Flat No. Of Members'),
         backgroundColor: primaryColor,
+        actions: [
+          IconButton(
+            padding: const EdgeInsets.only(right: 20.0),
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
+            },
+            icon: const Icon(
+              Icons.power_settings_new,
+              color: Colors.white,
+            ),
+          )
+        ],
       ),
       body: isLoading
           ? const Center(

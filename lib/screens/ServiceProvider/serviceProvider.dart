@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/list_builder_provider.dart';
 import 'package:society_admin/authScreen/common.dart';
+import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/screens/ServiceProvider/CompanyDetails/addCompanyDetails.dart';
 import 'package:society_admin/screens/ServiceProvider/EmployeeDetails/viewEmployeeDetails.dart';
 
@@ -61,7 +62,18 @@ class _ServiceProviderState extends State<ServiceProvider> {
                     color: textColor,
                   ),
                 ),
-              ))
+              )),
+          IconButton(
+            padding: const EdgeInsets.only(right: 20.0),
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
+            },
+            icon: const Icon(
+              Icons.power_settings_new,
+              color: Colors.white,
+            ),
+          )
         ],
       ),
       body: SingleChildScrollView(

@@ -94,18 +94,21 @@ class _customSideState extends State<customSide> {
               children: [
                 Container(
                   width: 80,
-                  height: 50,
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Image.asset('assets/images/devlogo.png'),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(2.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 1.0, horizontal: 0.5),
                   child: SizedBox(
-                    width: 80,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: 100,
                     child: Center(
-                        child: Text(
-                      widget.society!,
-                      style: const TextStyle(color: white),
+                        child: SingleChildScrollView(
+                      child: Text(
+                        widget.society!,
+                        style: const TextStyle(color: white),
+                      ),
                     )),
                   ),
                 ),
@@ -114,7 +117,7 @@ class _customSideState extends State<customSide> {
                 ),
                 SingleChildScrollView(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.65,
                     child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,

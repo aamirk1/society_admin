@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/authScreen/common.dart';
+import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/screens/Complaint/addComplaints.dart';
 import 'package:society_admin/screens/Complaint/typeOfComplaint.dart';
 
@@ -44,7 +45,21 @@ class _ComplaintManagementState extends State<ComplaintManagement> {
         appBar: AppBar(
           title: const Text('Flat No. Of Members'),
           backgroundColor: primaryColor,
+          actions: [
+          IconButton(
+            padding: const EdgeInsets.only(right: 20.0),
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
+            },
+            icon: const Icon(
+              Icons.power_settings_new,
+              color: Colors.white,
+            ),
+          )
+        ],
         ),
+        
         body: isLoading
             ? const Center(
                 child: CircularProgressIndicator(),

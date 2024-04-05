@@ -58,44 +58,45 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => GatePassProvider()),
       ],
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Society Management',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            colorScheme: const ColorScheme.light(error: Colors.white),
-            textTheme: Theme.of(context).textTheme.apply(
-                  bodyColor: Colors.blueGrey,
-                ),
-            primaryTextTheme: Theme.of(context).textTheme.apply(
-                  bodyColor: Colors.purple,
-                ),
-            primaryIconTheme: const IconThemeData(
-              color: Color.fromARGB(255, 3, 20, 255),
-            ),
-            visualDensity: VisualDensity.adaptivePlatformDensity,
+        debugShowCheckedModeBanner: false,
+        title: 'Society Management',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          colorScheme: const ColorScheme.light(error: Colors.white),
+          textTheme: Theme.of(context).textTheme.apply(
+                bodyColor: Colors.blueGrey,
+              ),
+          primaryTextTheme: Theme.of(context).textTheme.apply(
+                bodyColor: Colors.purple,
+              ),
+          primaryIconTheme: const IconThemeData(
+            color: Color.fromARGB(255, 3, 20, 255),
           ),
-          onGenerateRoute: (settings) {
-            final page = _getPageWidget(settings);
-            if (page != null) {
-              return PageRouteBuilder(
-                  settings: settings,
-                  pageBuilder: (_, __, ___) => page,
-                  transitionsBuilder: (_, anim, __, child) {
-                    return FadeTransition(
-                      opacity: anim,
-                      child: child,
-                    );
-                  });
-            }
-            return null;
-          },
-          // home: customSide(
-          //   society: 'siddivinayak',
-          //   allRoles: const ['Admin'],
-          //   userId: 'AK9512',
-          // )
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        onGenerateRoute: (settings) {
+          final page = _getPageWidget(settings);
+          if (page != null) {
+            return PageRouteBuilder(
+                settings: settings,
+                pageBuilder: (_, __, ___) => page,
+                transitionsBuilder: (_, anim, __, child) {
+                  return FadeTransition(
+                    opacity: anim,
+                    child: child,
+                  );
+                });
+          }
+          return null;
+        },
+        // home: customSide(
+        //   society: 'Chhatrapati Shivaji Maharaj Vastu Sangrahalaya',
+        //   allRoles: const ['Treasurer'],
+        //   userId: 'SM2211',
+        // ),
 
-          home: const LoginScreen()),
+        home: const LoginScreen(),
+      ),
     );
   }
 
