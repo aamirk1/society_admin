@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 10),
                       TextFormField(
                         style: const TextStyle(color: textColor),
-                        textInputAction: TextInputAction.done,
+                        textInputAction: TextInputAction.next,
                         controller: passwordController,
                         obscureText: true,
                         decoration: const InputDecoration(
@@ -214,49 +214,49 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (password == storedPassword) {
           storeLoginData(true, userID);
-          // Login successful
-          SnackBar snackBar = const SnackBar(
-            backgroundColor: Colors.green,
-            content: Center(
-              child: Text('Login successful'),
-            ),
-          );
 
-          QuerySnapshot querySnapshot =
-              await FirebaseFirestore.instance.collection('AssignedRole').get();
-          List<dynamic> assignedRoles =
-              querySnapshot.docs.map((e) => e.id).toList();
-          for (int i = 0; i < assignedRoles.length; i++) {
-            if (fullName == assignedRoles[i]) {
-              DocumentSnapshot roleDoc = await FirebaseFirestore.instance
-                  .collection('AssignedRole')
-                  .doc(fullName)
-                  .get();
+          QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+              .collection('AssignedRole')
+              .where("fullName", isEqualTo: fullName)
+              .get();
 
-              // Access the role field
-              Map<String, dynamic>? data =
-                  roleDoc.data() as Map<String, dynamic>?;
-              String position = data!['position'];
+          List<dynamic> mapData =
+              querySnapshot.docs.map((doc) => doc.data()).toList();
+          if (mapData.isNotEmpty) {
+            final society = mapData[0]['societyname'];
 
-              if (position == 'Assigned') {
-                // print(position);
-                String societyname = data['societyname'];
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.green,
+                content: Center(
+                  child: Text(
+                    "Login Successful!",
+                  ),
+                ),
+              ),
+            );
 
-                // print(societyname);
-                roles = data['roles'];
-
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => customSide(
-                        society: societyname,
-                        allRoles: roles,
-                        userId: userID,
-                      ),
-                    ),
-                    (route) => false);
-              }
-            }
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => customSide(
+                    society: society,
+                    allRoles: roles,
+                    userId: userID,
+                  ),
+                ),
+                (route) => false);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.redAccent,
+                content: Center(
+                  child: Text(
+                    "Unable to login as no role is assigned!",
+                  ),
+                ),
+              ),
+            );
           }
 
           // Navigate to the home screen or perform any other necessary actions

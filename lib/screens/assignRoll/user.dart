@@ -582,6 +582,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
           .collection('AssignedRole')
           .doc(selectedUserName)
           .set({
+        "fullName": selectedUserName,
         "phoneNum": phoneNum,
         'alphabet': selectedUserName[0][0].toUpperCase(),
         'position': 'Assigned',

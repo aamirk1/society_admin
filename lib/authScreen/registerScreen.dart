@@ -197,7 +197,7 @@ class _RegisrationScreenState extends State<RegisrationScreen> {
                         const SizedBox(height: 10),
                         TextFormField(
                           style: const TextStyle(color: textColor),
-                          textInputAction: TextInputAction.done,
+                          textInputAction: TextInputAction.next,
                           controller: passwordController,
                           obscureText: true,
                           decoration: const InputDecoration(
