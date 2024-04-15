@@ -22,8 +22,8 @@ class _ResetPasswordState extends State<ResetPassword> {
   bool _obscureText = true;
   bool _obscureText1 = true;
 
-  TextEditingController _newPassword = TextEditingController();
-  TextEditingController _confirmPassword = TextEditingController();
+  final TextEditingController _newPassword = TextEditingController();
+  final TextEditingController _confirmPassword = TextEditingController();
 
   @override
   void dispose() {

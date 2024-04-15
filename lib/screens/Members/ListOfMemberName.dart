@@ -13,7 +13,11 @@ import 'package:society_admin/authScreen/common.dart';
 
 class MemberNameList extends StatefulWidget {
   static const id = "/MemberNameList";
-  MemberNameList({super.key, required this.society, required this.allRoles, required this.userId});
+  MemberNameList(
+      {super.key,
+      required this.society,
+      required this.allRoles,
+      required this.userId});
   String society;
   List<dynamic> allRoles = [];
   String userId;
@@ -33,7 +37,6 @@ class _MemberNameListState extends State<MemberNameList> {
   //     isActive = !isActive;
   //   });
   // }
-
 
   List<dynamic> columnName = [];
   List<String> searchedList = [];
@@ -81,7 +84,8 @@ class _MemberNameListState extends State<MemberNameList> {
                                     border:
                                         TableBorder.all(color: Colors.black),
                                     headingRowColor:
-                                        const MaterialStatePropertyAll(primaryColor),
+                                        const MaterialStatePropertyAll(
+                                            primaryColor),
                                     headingTextStyle: const TextStyle(
                                         color: Colors.white, fontSize: 50.0),
                                     columnSpacing: 3.0,
