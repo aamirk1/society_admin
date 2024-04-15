@@ -97,7 +97,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                           ),
                           trailing: IconButton(
                             onPressed: () {
-                              deleteEmp(widget.society,
+                              alertbox(widget.society,
                                   value.list[index]['companyName'], index);
                             },
                             icon: const Icon(Icons.delete),
@@ -149,32 +149,58 @@ class _ServiceProviderState extends State<ServiceProvider> {
   Future<void> deleteEmp(
       String selectedSociety, String company, int index) async {
     final provider = Provider.of<ListBuilderProvider>(context, listen: false);
-    DocumentReference deleteEmployee = FirebaseFirestore.instance
+    DocumentReference deleteCompany = FirebaseFirestore.instance
         .collection('vendorList')
         .doc(selectedSociety)
         .collection('companyList')
         .doc(company);
 
-    await deleteEmployee.delete();
+    await deleteCompany.delete();
 
     provider.removeData(index);
+
+    deletCom(company);
   }
 
-  alertbox() {
+  Future<void> deletCom(String company) async {
+    DocumentReference deleteCompanyFromEmployee = FirebaseFirestore.instance
+        .collection('vendorEmployeeList')
+        .doc(company);
+
+    await deleteCompanyFromEmployee.delete();
+  }
+
+  alertbox(String society, companyName, int index) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
               actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      'OK',
-                      style: TextStyle(color: textColor),
-                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          deleteEmp(society, companyName, index);
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'YES',
+                          style: TextStyle(color: textColor),
+                        )),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'NO',
+                          style: TextStyle(color: textColor),
+                        )),
+                  ],
+                ),
               ],
               title: const Text(
-                'Please select a file first!',
+                'Are you sure? Do you want to delete this company?',
                 style: TextStyle(color: Colors.red),
               ));
         });

@@ -110,7 +110,7 @@ class _AddCompanyState extends State<AddCompany> {
                             }
                             return null;
                           },
-                          textInputAction: TextInputAction.done,
+                          textInputAction: TextInputAction.next,
                           keyboardType: TextInputType.text,
                           controller: addressController,
                           decoration: const InputDecoration(

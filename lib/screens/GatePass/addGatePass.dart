@@ -78,11 +78,13 @@ class _AddGatePassState extends State<AddGatePass> {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green),
-                        onPressed: provider.isApproved != null
-                            ? () {}
-                            : () {
-                                approvedAlertbox(true, 'Approved');
-                              },
+                        onPressed: provider.isApproved == false
+                            ? null
+                            : provider.isApproved != null
+                                ? () {}
+                                : () {
+                                    approvedAlertbox(true, 'Approved');
+                                  },
                         child: provider.isApproved == true
                             ? const Text('Approved')
                             : const Text('Approve'),
@@ -90,11 +92,13 @@ class _AddGatePassState extends State<AddGatePass> {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red),
-                        onPressed: provider.isApproved != null
-                            ? () {}
-                            : () {
-                                approvedAlertbox(false, 'Rejected');
-                              },
+                        onPressed: provider.isApproved == true
+                            ? null
+                            : provider.isApproved != null
+                                ? () {}
+                                : () {
+                                    approvedAlertbox(false, 'Rejected');
+                                  },
                         child: provider.isApproved == false
                             ? const Text('Rejected')
                             : const Text('Reject'),

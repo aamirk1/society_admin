@@ -77,8 +77,7 @@ class _ViewEmployeeState extends State<ViewEmployee> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(white),
+                      backgroundColor: MaterialStateProperty.all(white),
                       minimumSize: MaterialStateProperty.all(
                         const Size(20, 10),
                       )),
@@ -131,8 +130,8 @@ class _ViewEmployeeState extends State<ViewEmployee> {
                             // margin: EdgeInsets.only(right: 10),
                             child: IconButton(
                               onPressed: () {
-                                deleteEmp(widget.CompanyName,
-                                    value.empList[index]['empName'], index);
+                                alertbox(widget.CompanyName,
+                                    value.empList[index]['empEmail'], index);
                               },
                               icon: const Icon(Icons.delete),
                             ),
@@ -186,38 +185,52 @@ class _ViewEmployeeState extends State<ViewEmployee> {
     print('hello -  $allCompany');
   }
 
-  Future<void> deleteEmp(String company, String name, int index) async {
+  Future<void> deleteEmp(String company, String email, int index) async {
     final provider =
         Provider.of<EmpListBuilderProvider>(context, listen: false);
     DocumentReference deleteEmployee = FirebaseFirestore.instance
         .collection('vendorEmployeeList')
         .doc(company)
         .collection('employeeList')
-        .doc(name);
+        .doc(email);
     await deleteEmployee.delete();
 
     provider.removeData(index);
   }
 
-  alertbox() {
+  alertbox(String society, String email, int index) {
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          actions: [
-            TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  'OK',
-                  style: TextStyle(color: textColor),
-                )),
-          ],
-          title: const Text(
-            'No data found!',
-            style: TextStyle(color: Colors.red),
-          ),
-        );
-      },
-    );
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                        onPressed: () async {
+                          await deleteEmp(society, email, index);
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'YES',
+                          style: TextStyle(color: textColor),
+                        )),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'NO',
+                          style: TextStyle(color: textColor),
+                        )),
+                  ],
+                ),
+              ],
+              title: const Text(
+                'Are you sure to delete ?',
+                style: TextStyle(color: Colors.red),
+              ));
+        });
   }
 }

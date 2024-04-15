@@ -128,7 +128,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                             }
                             return null;
                           },
-                          textInputAction: TextInputAction.done,
+                          textInputAction: TextInputAction.next,
                           keyboardType: TextInputType.text,
                           controller: empAddressController,
                           decoration: const InputDecoration(
