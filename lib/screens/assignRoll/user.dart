@@ -78,11 +78,6 @@ class _MenuUserPageState extends State<MenuUserPage> {
 
   @override
   void initState() {
-    // getCityName().whenComplete(() => {
-    //       isLoading = false,
-    //       getCityLen(),
-    //       if (mounted) {setState(() {})}
-    //     });
     getDesigationLen();
     getTotalUsers().whenComplete(() => {
           isLoading = false,
@@ -315,10 +310,6 @@ class _MenuUserPageState extends State<MenuUserPage> {
                                                         provider.setLoadWidget(
                                                             true);
                                                       });
-                                                      // } else {
-                                                      //   customAlertBox(
-                                                      //       '$selectedUserName is Already Assigned a Role');
-                                                      // }
                                                     } else if (selectedUserName
                                                             .isEmpty &&
                                                         selectedSocietyName
@@ -508,23 +499,6 @@ class _MenuUserPageState extends State<MenuUserPage> {
     changeColorForRole = tempBool;
   }
 
-  void getCityLen() {
-    List<bool> tempBool = [];
-    for (int i = 0; i < cityData.length; i++) {
-      tempBool.add(true);
-    }
-    changeColorForCity = tempBool;
-  }
-
-//Function for changing depo name button color on tap
-  void getDepoLen() {
-    List<bool> tempListForDepo = [];
-    for (int i = 0; i < depodata.length; i++) {
-      tempListForDepo.add(true);
-    }
-    changeColorForDepo = tempListForDepo;
-  }
-
   void insertSelectedRole(int currentIndex) {
     if (changeColorForRole[currentIndex] == false) {
       role.add(designation[currentIndex]);
@@ -704,8 +678,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
                           _controllerSociety.text = '';
                           _controllerForUser.text = '';
                           isProjectManager = false;
-                          getDepoLen();
-                          getCityLen();
+
                           getDesigationLen();
                           selectedDepo.clear();
                           role.clear();

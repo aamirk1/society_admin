@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/nocManagementProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/homeScreen/homeScreen.dart';
+import 'package:society_admin/screens/Bill/MemberBillLadger.dart';
 import 'package:society_admin/screens/Complaint/complaintManagement.dart';
 import 'package:society_admin/screens/GatePass/gatePass.dart';
 import 'package:society_admin/screens/Members/ListOfMemberName.dart';
 import 'package:society_admin/screens/Noc/nocManagement.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
+import 'package:society_admin/screens/Receipt/MemberBillReceipt.dart';
 import 'package:society_admin/screens/ServiceProvider/serviceProvider.dart';
 import 'package:society_admin/screens/assignRoll/user.dart';
 import 'package:society_admin/screens/settings/settings.dart';
@@ -30,6 +32,8 @@ class _customSideState extends State<customSide> {
     'Complaint Management',
     'Service Provider \n Management',
     'Member Name List',
+    'Member Bill List',
+    'Member Receipt List',
     'Assign Roles',
     'Gate Pass',
     'Settings',
@@ -40,11 +44,24 @@ class _customSideState extends State<customSide> {
     Icons.house_outlined,
     Icons.account_balance_outlined,
     Icons.group,
+    Icons.account_balance_wallet,
+    Icons.receipt_long,
     Icons.person,
     Icons.insert_drive_file,
     Icons.settings_outlined,
   ];
-  List<bool> design = [true, false, false, false, false, false, false, false];
+  List<bool> design = [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
 
   int _selectedIndex = 0;
 
@@ -70,6 +87,14 @@ class _customSideState extends State<customSide> {
           allRoles: widget.allRoles!,
           userId: widget.userId),
       MemberNameList(
+          society: widget.society!,
+          allRoles: widget.allRoles!,
+          userId: widget.userId),
+      MemberBillLadger(
+          society: widget.society!,
+          allRoles: widget.allRoles!,
+          userId: widget.userId),
+      MemberBillReceipt(
           society: widget.society!,
           allRoles: widget.allRoles!,
           userId: widget.userId),
@@ -167,7 +192,7 @@ class _customSideState extends State<customSide> {
 
   void setDesignBool() {
     List<bool> tempBool = [];
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 10; i++) {
       tempBool.add(false);
     }
     design = tempBool;
