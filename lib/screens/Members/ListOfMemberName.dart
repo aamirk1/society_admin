@@ -255,7 +255,7 @@ class _MemberNameListState extends State<MemberNameList> {
     return const AlertDialog(
       title: Center(
           child: Text(
-        'No Data Found',
+        'Data Not Found',
         style: TextStyle(fontSize: 20, color: Colors.red),
       )),
     );

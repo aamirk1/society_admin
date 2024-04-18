@@ -10,9 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:society_admin/authScreen/common.dart';
 
 class MemberBillLadger extends StatefulWidget {
-
   static const id = "/MemberBillLadger";
-   MemberBillLadger(
+  MemberBillLadger(
       {super.key,
       required this.society,
       required this.allRoles,
@@ -193,8 +192,7 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                                             style: const ButtonStyle(
                                               backgroundColor:
                                                   MaterialStatePropertyAll(
-                                                Colors.purple,
-                                              ),
+                                                      buttonColor),
                                             ),
                                             onPressed: () {
                                               // print("Paid");
@@ -364,7 +362,7 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
     return const AlertDialog(
       title: Center(
           child: Text(
-        'No Data Found',
+        'Data Not Found! Please Select Month',
         style: TextStyle(fontSize: 20, color: Colors.red),
       )),
     );

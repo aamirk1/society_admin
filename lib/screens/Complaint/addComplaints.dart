@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, file_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
@@ -11,12 +12,14 @@ class AddComplaint extends StatefulWidget {
       required this.text,
       required this.society,
       required this.flatNo,
-      required this.userId});
+      required this.userId,
+      this.response});
   String complaintType;
   String text;
   String society;
   String flatNo;
   String userId;
+  String? response;
   @override
   State<AddComplaint> createState() => _AddComplaintState();
 }
@@ -26,6 +29,8 @@ class _AddComplaintState extends State<AddComplaint> {
   bool isLoading = true;
   PlatformFile? selectedFile;
 
+  TextEditingController responseMsgController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +38,7 @@ class _AddComplaintState extends State<AddComplaint> {
         child: Center(
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.60,
-            height: MediaQuery.of(context).size.height * 0.98,
+            height: MediaQuery.of(context).size.height * 0.90,
             child: Card(
               elevation: 5,
               child: Column(children: [
@@ -66,7 +71,7 @@ class _AddComplaintState extends State<AddComplaint> {
                   height: 7,
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.77,
+                  height: MediaQuery.of(context).size.height * 0.50,
                   child: SingleChildScrollView(
                     child: Wrap(
                       children: [
@@ -83,23 +88,146 @@ class _AddComplaintState extends State<AddComplaint> {
                     ),
                   ),
                 ),
+                Text(
+                  'Response: ${widget.response ?? 'Response not sent.'}',
+                  style: TextStyle(color: textColor, fontSize: 15),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
-                ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(primaryColor),
-                      minimumSize: MaterialStateProperty.all(
-                        const Size(20, 30),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.50,
+                  height: MediaQuery.of(context).size.height * 0.20,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextFormField(
+                          style: const TextStyle(color: textColor),
+                          controller: responseMsgController,
+                          decoration: const InputDecoration(
+                            hintText: 'Enter Response',
+                            border: OutlineInputBorder(),
+                          )),
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    onPressed: () {},
-                    child: const Text('Response'))
+                      ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(primaryColor),
+                            minimumSize: MaterialStateProperty.all(
+                              const Size(20, 30),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (responseMsgController.text.isNotEmpty) {
+                              storeData().whenComplete(() {
+                                successAlertBox();
+                              });
+                            } else {
+                              errorAlertBox();
+                            }
+                          },
+                          child: const Text('Send Response'))
+                    ],
+                  ),
+                )
               ]),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> storeData() async {
+    if (responseMsgController.text.isNotEmpty) {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      firestore
+          .collection('complaints')
+          .doc(widget.society)
+          .collection('flatno')
+          .doc(widget.flatNo)
+          .collection('typeofcomplaints')
+          .doc(widget.complaintType)
+          .update({'response': responseMsgController.text});
+    }
+  }
+
+  successAlertBox() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.20,
+              width: 250,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.green,
+                    size: 50,
+                  ),
+                  const Text(
+                    'Response sent successfully',
+                    style: TextStyle(color: textColor),
+                    textAlign: TextAlign.center,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      responseMsgController.clear();
+                      Navigator.pop(context);
+                    },
+                    child: const Center(
+                      child: Text(
+                        'OK',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  errorAlertBox() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.20,
+              width: 250,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.yellow[700],
+                    size: 50,
+                  ),
+                  const Text(
+                    'Please enter response',
+                    style: TextStyle(color: textColor),
+                    textAlign: TextAlign.center,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Center(
+                      child: Text(
+                        'OK',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

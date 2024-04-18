@@ -160,6 +160,9 @@ class _ComplaintManagementState extends State<ComplaintManagement> {
                                       society: widget.society,
                                       userId: widget.userId,
                                       flatNo: selectedFlatno,
+                                      response:complaintDataList[
+                                              globalSelectedIndexForComplaint]
+                                          ['response'],
                                     )
                                   : Container(),
                             )
