@@ -61,6 +61,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Society Management',
         theme: ThemeData(
+          scrollbarTheme: const ScrollbarThemeData(
+            thumbColor: MaterialStatePropertyAll(
+              Color.fromARGB(255, 3, 20, 255),
+            ),
+          ),
           primarySwatch: Colors.blue,
           colorScheme: const ColorScheme.light(error: Colors.white),
           textTheme: Theme.of(context).textTheme.apply(

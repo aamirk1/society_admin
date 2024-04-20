@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, unnecessary_brace_in_string_interps, file_names, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/nocManagementProvider.dart';
@@ -32,14 +30,14 @@ class _TypeOfNocState extends State<TypeOfNoc> {
   }
 
   List<dynamic> colors = [
-    Color.fromARGB(255, 233, 87, 76),
+    const Color.fromARGB(255, 233, 87, 76),
     const Color.fromARGB(255, 102, 174, 233),
-    Color.fromARGB(255, 7, 141, 12),
-    Color.fromARGB(255, 216, 109, 235),
+    const Color.fromARGB(255, 7, 141, 12),
+    const Color.fromARGB(255, 216, 109, 235),
     const Color.fromARGB(255, 243, 103, 150),
-    Color.fromARGB(255, 167, 92, 49),
-    Color.fromARGB(255, 23, 48, 163),
-    Color.fromARGB(255, 82, 72, 212),
+    const Color.fromARGB(255, 167, 92, 49),
+    const Color.fromARGB(255, 23, 48, 163),
+    const Color.fromARGB(255, 82, 72, 212),
   ];
   @override
   Widget build(BuildContext context) {
@@ -78,24 +76,5 @@ class _TypeOfNocState extends State<TypeOfNoc> {
     ));
   }
 
-  // Future<void> getTypeOfNoc(society, flatNo) async {
-  // isLoading = true;
-  //   QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
-  //       .collection('nocApplications')
-  //       .doc(society)
-  //       .collection('flatno')
-  //       .doc(flatNo)
-  //       .collection('typeofNoc')
-  //       .get();
-
-  //   List<dynamic> allNocType =
-  //       flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
-  //   print('heloloeeoc $allNocType');
-  //   // ignore: unused_local_variable
-  //   widget.nocTypeList = allNocType;
-  //   print('dataList ${widget.nocTypeList}');
-  //   setState(() {
-  //     // isLoading = false;
-  //   });
-  // }
+  
 }

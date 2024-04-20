@@ -42,7 +42,7 @@ class _SettingsState extends State<Settings> {
       ),
       body: Column(
         children: [
-          Container(
+          SizedBox(
             child: GridView.builder(
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

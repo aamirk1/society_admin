@@ -1,6 +1,3 @@
-// ignore: duplicate_ignore
-// ignore_for_file: file_names
-//ignore: avoid_web_libraries_in_flutter
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,6 +30,8 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
   List<String> searchedList = [];
   List<String> dateList = [];
   List<List<dynamic>> data = [];
+
+  List<dynamic> headers = [];
   // ignore: prefer_collection_literals
   Map<String, dynamic> mapExcelData = Map();
   List<dynamic> alldata = [];
@@ -62,10 +61,10 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: buttonColor),
+          iconTheme: const IconThemeData(color: buttonColor),
           title: Text(
             "All Members Receipt of ${widget.society}",
-            style: TextStyle(color: buttonTextColor),
+            style: const TextStyle(color: buttonTextColor),
           ),
           backgroundColor: buttonColor,
           actions: [
@@ -145,7 +144,8 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                   border: TableBorder.all(color: Colors.black),
                                   headingRowColor:
                                       const MaterialStatePropertyAll(
-                                          buttonColor),
+                                    buttonColor,
+                                  ),
                                   headingTextStyle: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 50.0,
@@ -154,13 +154,20 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                   columns:
                                       List.generate(columnName.length, (index) {
                                     return DataColumn2(
-                                      fixedWidth: index == 2 ? 500 : 130,
-                                      label: Text(
-                                        columnName[index],
-                                        style: const TextStyle(
-                                            // overflow: TextOverflow.ellipsis,
-                                            fontSize: 12.0,
-                                            fontWeight: FontWeight.bold),
+                                      fixedWidth:
+                                          headers[index] == 'Member Name'
+                                              ? 500
+                                              : 130,
+                                      label: Container(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          columnName[index],
+                                          style: const TextStyle(
+                                              // overflow: TextOverflow.ellipsis,
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ),
                                       ),
                                     );
                                   }),
@@ -180,6 +187,7 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                                 child: TextFormField(
                                                     style: const TextStyle(
                                                         fontSize: 12),
+                                                    textAlign: TextAlign.center,
                                                     // controller: controllers[index1][index2],
                                                     onChanged: (value) {
                                                       data[index1][index2] =
@@ -214,24 +222,24 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                 ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 15.0, top: 5),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: FloatingActionButton(
-                                backgroundColor: Colors.green,
-                                onPressed: storeEditedData,
-                                child: const Icon(Icons.check),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+                      // Padding(
+                      //   padding: const EdgeInsets.only(right: 15.0, top: 5),
+                      //   child: Row(
+                      //     crossAxisAlignment: CrossAxisAlignment.end,
+                      //     mainAxisAlignment: MainAxisAlignment.end,
+                      //     children: [
+                      //       SizedBox(
+                      //         height: 40,
+                      //         width: 40,
+                      //         child: FloatingActionButton(
+                      //           backgroundColor: Colors.green,
+                      //           onPressed: storeEditedData,
+                      //           child: const Icon(Icons.check),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // )
                     ],
                   ),
       );
@@ -304,24 +312,47 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
       Map<String, dynamic> data1 = docSnapshot.data() as Map<String, dynamic>;
       List<dynamic> mapData = data1['data'];
       List<List<dynamic>> temp = [];
+      headers = mapData.first.keys.toList();
+      headers.sort();
       for (int i = 0; i < mapData.length; i++) {
-        temp.add([
-          mapData[i]['Flat No.'] ?? '',
-          mapData[i]['Receipt Date'] ?? '',
-          mapData[i]['Member Name'] ?? '',
-          mapData[i]['Amount'] ?? '',
-          mapData[i]['ChqNo'] ?? '',
-          mapData[i]['ChqDate'] ?? '',
-          mapData[i]['Bank Name'] ?? '',
-        ]);
+        List<dynamic> rowData = [];
+        for (int j = 0; j < headers.length; j++) {
+          rowData.add(
+            mapData[i][headers[j]],
+          );
+        }
+        temp.add(rowData);
       }
-      columnName = temp[0];
+      columnName = headers;
       data = temp;
-      // print(data);
       data.removeAt(0);
 
+      print('dataaaaa - $data');
       // Use the data map as needed
     }
+
+    // if (docSnapshot.exists) {
+    //   Map<String, dynamic> data1 = docSnapshot.data() as Map<String, dynamic>;
+    //   List<dynamic> mapData = data1['data'];
+    //   List<List<dynamic>> temp = [];
+    //   for (int i = 0; i < mapData.length; i++) {
+    //     temp.add([
+    //       mapData[i]['Flat No.'] ?? '',
+    //       mapData[i]['Receipt Date'] ?? '',
+    //       mapData[i]['Member Name'] ?? '',
+    //       mapData[i]['Amount'] ?? '',
+    //       mapData[i]['ChqNo'] ?? '',
+    //       mapData[i]['ChqDate'] ?? '',
+    //       mapData[i]['Bank Name'] ?? '',
+    //     ]);
+    //   }
+    //   columnName = temp[0];
+    //   data = temp;
+    //   // print(data);
+    //   data.removeAt(0);
+
+    //   // Use the data map as needed
+    // }
     setState(() {
       isLoading = false;
     });

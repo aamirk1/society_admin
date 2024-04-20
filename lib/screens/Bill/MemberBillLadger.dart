@@ -33,6 +33,8 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
   List<String> searchedList = [];
   List<String> dateList = [];
   List<List<dynamic>> data = [];
+
+  List<dynamic> headers = [];
   // ignore: prefer_collection_literals
   Map<String, dynamic> mapExcelData = Map();
   List<dynamic> alldata = [];
@@ -61,10 +63,10 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: buttonColor),
+          iconTheme: const IconThemeData(color: buttonColor),
           title: Text(
             "All Members Bill of ${widget.society}",
-            style: TextStyle(color: buttonTextColor),
+            style: const TextStyle(color: buttonTextColor),
           ),
           backgroundColor: buttonColor,
           actions: [
@@ -144,13 +146,17 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                             columnSpacing: 3.0,
                             columns: List.generate(columnName.length, (index) {
                               return DataColumn2(
-                                fixedWidth: index == 2 ? 500 : 130,
-                                label: Text(
-                                  columnName[index],
-                                  style: const TextStyle(
-                                      // overflow: TextOverflow.ellipsis,
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.bold),
+                                fixedWidth:
+                                    headers[index] == 'Member Name' ? 500 : 130,
+                                label: Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    columnName[index],
+                                    style: const TextStyle(
+                                        // overflow: TextOverflow.ellipsis,
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               );
                             }),
@@ -167,8 +173,10 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                                           // child: Text(data[index1][index2]),
 
                                           child: TextFormField(
-                                            style:
-                                                const TextStyle(fontSize: 12),
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black),
+                                            textAlign: TextAlign.center,
                                             // controller: controllers[index1][index2],
                                             onChanged: (value) {
                                               data[index1][index2] = value;
@@ -208,24 +216,24 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: FloatingActionButton(
-                                backgroundColor: Colors.green,
-                                onPressed: storeEditedData,
-                                child: const Icon(Icons.check),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+                      // Padding(
+                      //   padding: const EdgeInsets.only(right: 15.0),
+                      //   child: Row(
+                      //     crossAxisAlignment: CrossAxisAlignment.end,
+                      //     mainAxisAlignment: MainAxisAlignment.end,
+                      //     children: [
+                      //       SizedBox(
+                      //         height: 40,
+                      //         width: 40,
+                      //         child: FloatingActionButton(
+                      //           backgroundColor: Colors.green,
+                      //           onPressed: storeEditedData,
+                      //           child: const Icon(Icons.check),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // )
                     ],
                   ),
       );
@@ -303,35 +311,58 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
       Map<String, dynamic> data1 = docSnapshot.data() as Map<String, dynamic>;
       List<dynamic> mapData = data1['data'];
       List<List<dynamic>> temp = [];
+      headers = mapData.first.keys.toList();
+      headers.sort();
       for (int i = 0; i < mapData.length; i++) {
-        temp.add([
-          mapData[i]['Bill Date'] ?? '',
-          mapData[i]['Flat No.'] ?? '',
-          mapData[i]['Member Name'] ?? '',
-          mapData[i]['Bill No'] ?? '',
-          mapData[i]['Municipal Tax'] ?? '',
-          mapData[i]['Maintenance Charges'] ?? '',
-          mapData[i]['Sinking Fund'] ?? '',
-          mapData[i]['Repair Fund'] ?? '',
-          mapData[i]['Mhada Lease Rent'] ?? '',
-          mapData[i]['Non Occupancy Chg'] ?? '',
-          mapData[i]['Parking Charges'] ?? '',
-          mapData[i]['Other Charges'] ?? '',
-          mapData[i]['TOWER BENEFIT'] ?? '',
-          mapData[i]['Legal Notice Charges'] ?? '',
-          mapData[i]['Interest'] ?? '',
-          mapData[i]['Bill Amount'] ?? '',
-          mapData[i]['T_Arrears'] ?? '',
-          mapData[i]['Payable'] ?? '',
-        ]);
+        List<dynamic> rowData = [];
+        for (int j = 0; j < headers.length; j++) {
+          rowData.add(
+            mapData[i][headers[j]],
+          );
+        }
+        temp.add(rowData);
       }
-      columnName = temp[0];
+      columnName = headers;
       data = temp;
       data.removeAt(0);
 
       print('dataaaaa - $data');
       // Use the data map as needed
     }
+
+    // if (docSnapshot.exists) {
+    //   Map<String, dynamic> data1 = docSnapshot.data() as Map<String, dynamic>;
+    //   List<dynamic> mapData = data1['data'];
+    //   List<List<dynamic>> temp = [];
+    //   for (int i = 0; i < mapData.length; i++) {
+    //     temp.add([
+    //       mapData[i]['Bill Date'] ?? '',
+    //       mapData[i]['Flat No.'] ?? '',
+    //       mapData[i]['Member Name'] ?? '',
+    //       mapData[i]['Bill No'] ?? '',
+    //       mapData[i]['Municipal Tax'] ?? '',
+    //       mapData[i]['Maintenance Charges'] ?? '',
+    //       mapData[i]['Sinking Fund'] ?? '',
+    //       mapData[i]['Repair Fund'] ?? '',
+    //       mapData[i]['Mhada Lease Rent'] ?? '',
+    //       mapData[i]['Non Occupancy Chg'] ?? '',
+    //       mapData[i]['Parking Charges'] ?? '',
+    //       mapData[i]['Other Charges'] ?? '',
+    //       mapData[i]['TOWER BENEFIT'] ?? '',
+    //       mapData[i]['Legal Notice Charges'] ?? '',
+    //       mapData[i]['Interest'] ?? '',
+    //       mapData[i]['Bill Amount'] ?? '',
+    //       mapData[i]['T_Arrears'] ?? '',
+    //       mapData[i]['Payable'] ?? '',
+    //     ]);
+    //   }
+    //   columnName = temp[0];
+    //   data = temp;
+    //   data.removeAt(0);
+
+    //   // print('dataaaaa - $data');
+    //   // Use the data map as needed
+    // }
     setState(() {
       isLoding = false;
     });
