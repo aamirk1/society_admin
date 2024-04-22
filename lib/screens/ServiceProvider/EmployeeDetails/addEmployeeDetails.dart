@@ -142,6 +142,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                           ),
                           onPressed: () {
                             storedData(
+                                widget.society,
                                 widget.CompanyName,
                                 empNameController.text,
                                 empEmailController.text,
@@ -159,8 +160,14 @@ class _AddEmployeeState extends State<AddEmployee> {
     );
   }
 
-  Future<void> storedData(String CompanyName, String empName, String email,
-      String phone, String address, String designation) async {
+  Future<void> storedData(
+      String societyName,
+      String CompanyName,
+      String empName,
+      String email,
+      String phone,
+      String address,
+      String designation) async {
     final provider =
         Provider.of<EmpListBuilderProvider>(context, listen: false);
     if (_formKey.currentState!.validate()) {
@@ -170,6 +177,7 @@ class _AddEmployeeState extends State<AddEmployee> {
           .collection('employeeList')
           .doc(email)
           .set({
+        'society': societyName,
         'companyName': CompanyName,
         'empName': empName,
         'empEmail': email,
@@ -186,6 +194,7 @@ class _AddEmployeeState extends State<AddEmployee> {
         'companyName': CompanyName,
       });
       provider.addSingleList({
+        'society': societyName,
         'companyName': CompanyName,
         'empName': empName,
         'empEmail': email,
