@@ -11,6 +11,7 @@ import 'package:society_admin/screens/Noc/nocManagement.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
 import 'package:society_admin/screens/Receipt/MemberBillReceipt.dart';
 import 'package:society_admin/screens/ServiceProvider/serviceProvider.dart';
+import 'package:society_admin/screens/assignRoll/role.dart';
 import 'package:society_admin/screens/assignRoll/user.dart';
 import 'package:society_admin/screens/settings/settings.dart';
 
@@ -98,7 +99,7 @@ class _customSideState extends State<customSide> {
           society: widget.society!,
           allRoles: widget.allRoles!,
           userId: widget.userId),
-      MenuUserPage(society: widget.society!, userId: widget.userId),
+      RoleScreen(society: widget.society!, userId: widget.userId),
       GatePass(
           society: widget.society!,
           allRoles: widget.allRoles!,

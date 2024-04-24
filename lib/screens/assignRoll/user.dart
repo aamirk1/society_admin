@@ -634,6 +634,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
   // ignore: non_constant_identifier_names
   UserCard(BuildContext context, int number, String title, Color color,
       Widget name) {
+    // ignore: unused_local_variable
     final menuProvider =
         Provider.of<MenuUserPageProvider>(context, listen: true);
     return Column(

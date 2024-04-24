@@ -47,6 +47,7 @@ dependencies:
   provider: ^6.1.1
   data_table_2: ^2.5.10
   image_picker: ^1.0.7
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:

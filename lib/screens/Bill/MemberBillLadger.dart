@@ -147,7 +147,7 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                             columns: List.generate(columnName.length, (index) {
                               return DataColumn2(
                                 fixedWidth:
-                                    headers[index] == 'Member Name' ? 500 : 130,
+                                    headers[index] == 'Member Name' ? 500 : 85,
                                 label: Container(
                                   alignment: Alignment.center,
                                   child: Text(

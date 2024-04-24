@@ -92,7 +92,7 @@ class _MemberNameListState extends State<MemberNameList> {
                                     columns: List.generate(columnName.length,
                                         (index) {
                                       return DataColumn2(
-                                        fixedWidth: index == 1 ? 500 : 130,
+                                        fixedWidth: index == 1 ? 500 : 90,
                                         label: Text(
                                           columnName[index],
                                           style: const TextStyle(

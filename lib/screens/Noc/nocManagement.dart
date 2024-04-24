@@ -44,7 +44,7 @@ class _NocManagementState extends State<NocManagement> {
     final provider = Provider.of<NocManagementProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flat No. Of Members'),
+        title: const Text('NOC Application'),
         backgroundColor: primaryColor,
         actions: [
           IconButton(

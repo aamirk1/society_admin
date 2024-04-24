@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:society_admin/authScreen/common.dart';
 
 class MemberBillReceipt extends StatefulWidget {
-  static const id = "/MemberBillReceipt";
+  static const id = "/MemberB                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       illReceipt";
   MemberBillReceipt(
       {super.key,
       required this.society,
@@ -157,7 +157,7 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                       fixedWidth:
                                           headers[index] == 'Member Name'
                                               ? 500
-                                              : 130,
+                                              : 85,
                                       label: Container(
                                         alignment: Alignment.center,
                                         child: Text(

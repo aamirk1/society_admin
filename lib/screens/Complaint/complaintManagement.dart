@@ -43,7 +43,7 @@ class _ComplaintManagementState extends State<ComplaintManagement> {
     final provider = Provider.of<ComplaintManagementProvider>(context);
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Flat No. Of Members'),
+          title: const Text('Complaint Application'),
           backgroundColor: primaryColor,
           actions: [
           IconButton(
