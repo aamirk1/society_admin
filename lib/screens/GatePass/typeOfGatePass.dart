@@ -75,11 +75,12 @@ class _TypeOfGatePassState extends State<TypeOfGatePass> {
                     provider.setSelectedPass(
                         widget.passType[index]['gatePassType']);
                     globalSelectedIndexForGatePass = index;
-                    await getpassforApproved(
-                            widget.flatNo, provider.selectedPass)
-                        .whenComplete(() {
-                      provider.setLoadWidget(true);
-                    });
+                    // await getpassforApproved(
+                    //         widget.flatNo, provider.selectedPass)
+
+                    provider.getFetchDateOfGatePass().whenComplete(() => provider.setLoadWidget(true));
+            
+
                     // NocManagementProvider();
                   },
                 ),
@@ -91,23 +92,23 @@ class _TypeOfGatePassState extends State<TypeOfGatePass> {
     ));
   }
 
-  Future<void> getpassforApproved(String flatNo, String gatePassType) async {
-    final provider = Provider.of<GatePassProvider>(context, listen: false);
-    DocumentSnapshot documentSnapshot = await firestore
-        .collection('gatePassApplications')
-        .doc(widget.society)
-        .collection('flatno')
-        .doc(flatNo)
-        .collection('gatePassType')
-        .doc(gatePassType)
-        .get();
+  // Future<void> getpassforApproved(String flatNo, String gatePassType) async {
+  //   final provider = Provider.of<GatePassProvider>(context, listen: false);
+  //   DocumentSnapshot documentSnapshot = await firestore
+  //       .collection('gatePassApplications')
+  //       .doc(widget.society)
+  //       .collection('flatno')
+  //       .doc(flatNo)
+  //       .collection('gatePassType')
+  //       .doc(gatePassType)
+  //       .get();
 
-    if (documentSnapshot.exists) {
-      Map<String, dynamic> mapData =
-          documentSnapshot.data() as Map<String, dynamic>;
-      isApproved = mapData['isApproved'];
-      provider.setIsApproved(isApproved);
-    }
-    print("isApproved - $isApproved");
-  }
+  //   if (documentSnapshot.exists) {
+  //     Map<String, dynamic> mapData =
+  //         documentSnapshot.data() as Map<String, dynamic>;
+  //     isApproved = mapData['isApproved'];
+  //     provider.setIsApproved(isApproved);
+  //   }
+  //   print("isApproved - $isApproved");
+  // }
 }

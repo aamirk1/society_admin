@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/nocManagementProvider.dart';
 
-int globalSelectedIndex = 0;
-
 class TypeOfNoc extends StatefulWidget {
   TypeOfNoc(
       {super.key,
@@ -39,6 +37,16 @@ class _TypeOfNocState extends State<TypeOfNoc> {
     const Color.fromARGB(255, 23, 48, 163),
     const Color.fromARGB(255, 82, 72, 212),
   ];
+
+  List<String> nocTypeApplication = [
+    'SALE NOC',
+    'GAS NOC',
+    'ELECTRIC METER NOC',
+    'PASSPORT NOC',
+    'RENOVATION NOC',
+    'NOC FOR GIFT DEED',
+    'BANK',
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +54,7 @@ class _TypeOfNocState extends State<TypeOfNoc> {
       child: Column(children: [
         ListView.builder(
           shrinkWrap: true,
-          itemCount: widget.nocTypeList.length,
+          itemCount: nocTypeApplication.length,
           itemBuilder: (context, index) {
             return Card(
               color: colors[index % colors.length],
@@ -56,16 +64,20 @@ class _TypeOfNocState extends State<TypeOfNoc> {
                 child: ListTile(
                   minVerticalPadding: 0.3,
                   title: Text(
-                    widget.nocTypeList[index]['nocType'],
-                    style: TextStyle(color: Colors.white),
+                    nocTypeApplication[index],
+                    style: const TextStyle(color: Colors.white),
                   ),
                   // subtitle: Text(data.docs[index]['city']),
-                  onTap: () {
-                    globalSelectedIndex = index;
-                    print('globalIndex - ${globalSelectedIndex}');
+                  onTap: () async {
+
                     final provider = Provider.of<NocManagementProvider>(context,
                         listen: false);
-                    provider.setLoadWidget(true); // NocManagementProvider();
+                    provider.setSelectedNoc(
+                      nocTypeApplication[index],
+                    );
+                    await provider.getNocData();
+                    provider.setLoadWidget(false);
+                    // print('typeOfNoc2 - ${provider.selectedNoc}');
                   },
                 ),
               ),
@@ -75,6 +87,4 @@ class _TypeOfNocState extends State<TypeOfNoc> {
       ]),
     ));
   }
-
-  
 }

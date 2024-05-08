@@ -7,7 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:society_admin/authScreen/common.dart';
 
 class MemberBillReceipt extends StatefulWidget {
-  static const id = "/MemberB                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       illReceipt";
+  static const id =
+      "/MemberB                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       illReceipt";
   MemberBillReceipt(
       {super.key,
       required this.society,
@@ -140,7 +141,7 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                           child: columnName.isEmpty
                               ? alertBox()
                               : DataTable2(
-                                  minWidth: 1500,
+                                  minWidth: 3000,
                                   border: TableBorder.all(color: Colors.black),
                                   headingRowColor:
                                       const MaterialStatePropertyAll(

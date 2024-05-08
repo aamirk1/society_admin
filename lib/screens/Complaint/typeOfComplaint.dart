@@ -9,13 +9,13 @@ int globalSelectedIndexForComplaint = 0;
 
 // ignore: must_be_immutable
 class TypeOfComplaint extends StatefulWidget {
-  TypeOfComplaint(
-      {super.key,
-      required this.dataList,
-      required this.society,
-      required this.flatNo,
-      required this.userId,
-      required List TypeOfComplaint});
+  TypeOfComplaint({
+    super.key,
+    required this.dataList,
+    required this.society,
+    required this.flatNo,
+    required this.userId,
+  });
   String society;
   String flatNo;
   String userId;
@@ -37,33 +37,53 @@ class _TypeOfComplaintState extends State<TypeOfComplaint> {
     const Color.fromARGB(255, 82, 72, 212),
   ];
 
+  List<String> complaintsTypeList = [
+    'House Keeping Complaint',
+    'Security Issues',
+    'Parking Issue',
+    'Admin Issue',
+    'Accounts Issue',
+    'Vendor Complaints',
+    'Water Related',
+    'Leackage Related',
+    'Pet Animals Related',
+    'Others'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: ListView.builder(
       shrinkWrap: true,
-      itemCount: widget.dataList.length,
+      itemCount: complaintsTypeList.length,
       itemBuilder: (context, index) {
-        return Card(
-          color: colors[index % colors.length],
-          elevation: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListTile(
-              minVerticalPadding: 0.3,
-              title: Text(
-                widget.dataList[index]['complaintsType'],
-                style: const TextStyle(color: Colors.white),
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.12,
+          child: Card(
+            color: colors[index % colors.length],
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                minVerticalPadding: 0.3,
+                title: Text(
+                  complaintsTypeList[index],
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                // subtitle: Text(data.docs[index]['city']),
+                onTap: () async {
+                  globalSelectedIndexForComplaint = index;
+                  print('globalIndex - $globalSelectedIndexForComplaint');
+                  final provider = Provider.of<ComplaintManagementProvider>(
+                      context,
+                      listen: false);
+                  provider.setSelectedComplaint(
+                    complaintsTypeList[index],
+                  );
+                  await provider.getComplaintData();
+                  provider.setLoadWidget(false);
+                },
               ),
-              // subtitle: Text(data.docs[index]['city']),
-              onTap: () {
-                globalSelectedIndexForComplaint = index;
-                print('globalIndex - $globalSelectedIndexForComplaint');
-                final provider = Provider.of<ComplaintManagementProvider>(
-                    context,
-                    listen: false);
-                provider.setLoadWidget(true);
-              },
             ),
           ),
         );

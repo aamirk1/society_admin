@@ -9,16 +9,16 @@ class AddComplaint extends StatefulWidget {
   AddComplaint(
       {super.key,
       required this.complaintType,
-      required this.text,
       required this.society,
+      required this.text,
       required this.flatNo,
-      required this.userId,
+      required this.date,
       this.response});
   String complaintType;
-  String text;
   String society;
+  String text;
   String flatNo;
-  String userId;
+  String date;
   String? response;
   @override
   State<AddComplaint> createState() => _AddComplaintState();
@@ -150,6 +150,8 @@ class _AddComplaintState extends State<AddComplaint> {
           .doc(widget.flatNo)
           .collection('typeofcomplaints')
           .doc(widget.complaintType)
+          .collection('dateOfComplaint')
+          .doc(widget.date)
           .update({'response': responseMsgController.text});
     }
   }

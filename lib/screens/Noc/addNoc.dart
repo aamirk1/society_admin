@@ -13,11 +13,13 @@ class AddNoc extends StatefulWidget {
       required this.nocType,
       required this.text,
       required this.society,
-      required this.flatNo});
+      required this.flatNo,
+      required this.date});
   String nocType;
   String text;
   String society;
   String flatNo;
+  String date;
   @override
   State<AddNoc> createState() => _AddNocState();
 }
@@ -134,6 +136,7 @@ class _AddNocState extends State<AddNoc> {
             .child(widget.society)
             .child(widget.flatNo)
             .child(widget.nocType)
+            .child(widget.date)
             .child(fileName)
             .putData(file.bytes!);
       } else {
@@ -153,7 +156,7 @@ class _AddNocState extends State<AddNoc> {
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                     },
                     child: const Text('OK'),
                   )

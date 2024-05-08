@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/nocManagementProvider.dart';
@@ -17,19 +16,23 @@ class NocManagement extends StatefulWidget {
   String society;
   List<dynamic> allRoles = [];
   String userId;
-
   bool isClicked = false;
   @override
   State<NocManagement> createState() => _NocManagementState();
 }
 
 class _NocManagementState extends State<NocManagement> {
+  int selectedDateIndex = 0;
+
   List<dynamic> dataList = [];
   List<dynamic> dataListOfNocType = [];
+  List<dynamic> dateofNocList = [];
   String selectedFlatno = '';
   bool isNocLoaded = false;
-
+  Map<String, dynamic> allNocData = {};
   bool isLoading = true;
+
+  bool isShowNoc = false;
   // bool isClicked = false;
   @override
   void initState() {
@@ -42,6 +45,12 @@ class _NocManagementState extends State<NocManagement> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<NocManagementProvider>(context, listen: false);
+    provider.setFetchNocFuntion(
+      () => dateOfNoc(
+        widget.society,
+        selectedFlatno,
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
         title: const Text('NOC Application'),
@@ -80,29 +89,17 @@ class _NocManagementState extends State<NocManagement> {
                               color: primaryColor,
                               elevation: 5,
                               child: Container(
-                                alignment: Alignment.center ,
+                                alignment: Alignment.center,
                                 child: Padding(
                                   padding: const EdgeInsets.all(1.0),
                                   child: ListTile(
                                     onTap: () {
                                       selectedFlatno =
                                           dataList[index]['flatno'];
-                                      getTypeOfNoc(
-                                              widget.society, selectedFlatno)
-                                          .whenComplete(() {
-                                        isNocLoaded = true;
-                                        setState(() {});
+
+                                      setState(() {
+                                        isShowNoc = true;
                                       });
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(builder: (context) {
-                                      //     return TypeOfNoc(
-                                      //       society: widget.society,
-                                      //       flatNo: dataList[index]['flatno'],
-                                      //       userId: widget.userId,
-                                      //     );
-                                      //   }),
-                                      // );
                                     },
                                     minVerticalPadding: 0.3,
                                     title: Center(
@@ -128,13 +125,87 @@ class _NocManagementState extends State<NocManagement> {
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height,
                       width: 500,
-                      child: TypeOfNoc(
-                        nocTypeList: dataListOfNocType,
-                        flatNo: selectedFlatno,
-                        society: widget.society,
-                        userId: widget.userId,
-                      ),
+                      child: isShowNoc
+                          ? TypeOfNoc(
+                              nocTypeList: dataListOfNocType,
+                              flatNo: selectedFlatno.toString(),
+                              society: widget.society,
+                              userId: widget.userId,
+                            )
+                          : Container(),
                     )),
+                Consumer<NocManagementProvider>(
+                  builder: (context, value, child) {
+                    return Expanded(
+                      flex: 1,
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.9,
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: dateofNocList.length,
+                              itemBuilder: (context, index) {
+                                return SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.12,
+                                  child: Card(
+                                    color: primaryColor,
+                                    elevation: 5,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      child: Padding(
+                                          padding: const EdgeInsets.all(1.0),
+                                          child: ListTile(
+                                            onTap: () {
+                                              selectedFlatno =
+                                                  dataList[index]['flatno'];
+
+                                              selectedDateIndex = index;
+
+                                              allDatafetch(
+                                                      widget.society,
+                                                      selectedFlatno,
+                                                      dateofNocList[index]
+                                                          .toString())
+                                                  .whenComplete(() {
+                                                isNocLoaded = !isNocLoaded;
+                                                provider.setLoadWidget(true);
+                                                // setState(() {});
+                                              });
+                                            },
+                                            minVerticalPadding: 0.3,
+                                            title: Center(
+                                              child: Text(
+                                                dateofNocList[index].toString(),
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          )),
+                                    ),
+                                    //Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(builder: (context) {
+                                    //     return TypeOfComplaint(
+                                    //       userId: widget.userId,
+                                    //       society: widget.society,
+                                    //       flatNo: dataList[index]['flatno'],
+                                    //     );
+                                    //   }),
+                                    // );
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
                 Consumer<NocManagementProvider>(
                   builder: (context, value, child) {
                     return Expanded(
@@ -145,12 +216,12 @@ class _NocManagementState extends State<NocManagement> {
                                 width: 500,
                                 child: isNocLoaded
                                     ? AddNoc(
-                                        nocType: dataListOfNocType[
-                                            globalSelectedIndex]['nocType'],
-                                        text: dataListOfNocType[
-                                            globalSelectedIndex]['text'],
+                                        nocType: provider.selectedNoc,
+                                        text: allNocData['text'],
                                         society: widget.society,
                                         flatNo: selectedFlatno,
+                                        date: dateofNocList[selectedDateIndex]
+                                            .toString(),
                                       )
                                     : Container(),
                               )
@@ -180,21 +251,73 @@ class _NocManagementState extends State<NocManagement> {
     });
   }
 
-  Future<void> getTypeOfNoc(society, flatNo) async {
-    QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
-        .collection('nocApplications')
-        .doc(society)
-        .collection('flatno')
-        .doc(flatNo)
-        .collection('typeofNoc')
-        .get();
+  // Future<void> getTypeOfNoc(society, flatNo) async {
+  //   QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
+  //       .collection('nocApplications')
+  //       .doc(society)
+  //       .collection('flatno')
+  //       .doc(flatNo)
+  //       .collection('typeofNoc')
+  //       .get();
 
-    List<dynamic> allNocType =
-        flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
-    print('heloloeeoc $allNocType');
-    dataListOfNocType = allNocType;
-    if (kDebugMode) {
-      print('dataList $dataListOfNocType');
+  //   List<dynamic> allNocType =
+  //       flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
+  //   print('heloloeeoc $allNocType');
+  //   dataListOfNocType = allNocType;
+  //   if (kDebugMode) {
+  //     print('dataList $dataListOfNocType');
+  //   }
+  // }
+
+  Future<dynamic> dateOfNoc(String society, String flatNo) async {
+    try {
+      final provider =
+          Provider.of<NocManagementProvider>(context, listen: false);
+      QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
+          .collection('nocApplications')
+          .doc(society)
+          .collection('flatno')
+          .doc(flatNo)
+          .collection('typeofNoc')
+          .doc(provider.selectedNoc)
+          .collection('dateOfNoc')
+          .get();
+
+      if (flatNumQuerySnapshot.docs.isNotEmpty) {
+        List<dynamic> allNocType =
+            flatNumQuerySnapshot.docs.map((e) => e.id).toList();
+        print('heloloeeoc $allNocType');
+        dateofNocList = allNocType;
+      } else {
+        dateofNocList = [];
+      }
+    } catch (e) {
+      print("Error while fetching data $e");
+    }
+  }
+
+  Future<void> allDatafetch(String society, String flatNo, String date) async {
+    try {
+      final provider =
+          Provider.of<NocManagementProvider>(context, listen: false);
+      DocumentSnapshot fetchallData = await FirebaseFirestore.instance
+          .collection('nocApplications')
+          .doc(society)
+          .collection('flatno')
+          .doc(flatNo)
+          .collection('typeofNoc')
+          .doc(provider.selectedNoc)
+          .collection('dateOfNoc')
+          .doc(date)
+          .get();
+
+      if (fetchallData.exists) {
+        //allComplaintData = fetchallData.data().toString();
+        allNocData = fetchallData.data() as Map<String, dynamic>;
+        print('allNocData $allNocData');
+      }
+    } catch (e) {
+      print("Error while fetching data $e");
     }
   }
 }

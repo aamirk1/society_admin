@@ -164,7 +164,7 @@ class _RoleScreenState extends State<RoleScreen> {
                                         ),
                                         assignedUsers,
                                         AssignedUser(
-                                          society: widget.society!,
+                                          society: widget.society,
                                         ),
                                       );
                                     },

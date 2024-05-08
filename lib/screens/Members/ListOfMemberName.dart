@@ -134,7 +134,8 @@ class _MemberNameListState extends State<MemberNameList> {
                                                     // border:
                                                     //     const OutlineInputBorder(),
                                                     hintText: data[index1]
-                                                        [index2],
+                                                            [index2]
+                                                        .toString(),
                                                     hintStyle: const TextStyle(
                                                         fontSize: 11.0,
                                                         color: Colors.black))),

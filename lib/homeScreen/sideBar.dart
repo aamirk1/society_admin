@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/complaintManagementProvider.dart';
 import 'package:society_admin/Provider/nocManagementProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/homeScreen/homeScreen.dart';
@@ -10,9 +11,9 @@ import 'package:society_admin/screens/Members/ListOfMemberName.dart';
 import 'package:society_admin/screens/Noc/nocManagement.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
 import 'package:society_admin/screens/Receipt/MemberBillReceipt.dart';
+import 'package:society_admin/screens/Report/report.dart';
 import 'package:society_admin/screens/ServiceProvider/serviceProvider.dart';
 import 'package:society_admin/screens/assignRoll/role.dart';
-import 'package:society_admin/screens/assignRoll/user.dart';
 import 'package:society_admin/screens/settings/settings.dart';
 
 // ignore: camel_case_types, must_be_immutable
@@ -37,6 +38,7 @@ class _customSideState extends State<customSide> {
     'Member Receipt List',
     'Assign Roles',
     'Gate Pass',
+    'Report',
     'Settings',
   ];
   List<dynamic> tabIcon = [
@@ -49,10 +51,12 @@ class _customSideState extends State<customSide> {
     Icons.receipt_long,
     Icons.person,
     Icons.insert_drive_file,
+    Icons.local_print_shop_rounded,
     Icons.settings_outlined,
   ];
   List<bool> design = [
     true,
+    false,
     false,
     false,
     false,
@@ -101,6 +105,11 @@ class _customSideState extends State<customSide> {
           userId: widget.userId),
       RoleScreen(society: widget.society!, userId: widget.userId),
       GatePass(
+          society: widget.society!,
+          allRoles: widget.allRoles!,
+          userId: widget.userId),
+      ReportScreen(
+      
           society: widget.society!,
           allRoles: widget.allRoles!,
           userId: widget.userId),
@@ -165,8 +174,11 @@ class _customSideState extends State<customSide> {
 
   Widget customListTile(String title, dynamic icon, int index) {
     final provider = Provider.of<NocManagementProvider>(context, listen: false);
+    final complaintProvider =
+        Provider.of<ComplaintManagementProvider>(context, listen: false);
     return InkWell(
       onTap: () {
+        complaintProvider.setLoadWidget(false);
         provider.setLoadWidget(false);
         setDesignBool();
         _selectedIndex = index;
@@ -177,7 +189,7 @@ class _customSideState extends State<customSide> {
         padding: const EdgeInsets.all(12.0),
         child: ListTile(
           title: Icon(icon,
-              size: 30,
+              size: 40,
               color: design[index]
                   ? const Color.fromARGB(255, 8, 8, 8)
                   : Colors.white),
@@ -193,7 +205,7 @@ class _customSideState extends State<customSide> {
 
   void setDesignBool() {
     List<bool> tempBool = [];
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 11; i++) {
       tempBool.add(false);
     }
     design = tempBool;

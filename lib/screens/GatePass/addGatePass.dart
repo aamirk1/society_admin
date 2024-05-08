@@ -14,11 +14,13 @@ class AddGatePass extends StatefulWidget {
       required this.gatePassType,
       required this.text,
       required this.society,
-      required this.flatNo});
+      required this.flatNo,
+      required this.date});
   String gatePassType;
   String text;
   String society;
   String flatNo;
+  String date;
 
   @override
   @override
@@ -121,6 +123,8 @@ class _AddGatePassState extends State<AddGatePass> {
         .doc(widget.flatNo)
         .collection('gatePassType')
         .doc(provider.selectedPass)
+        .collection('dateOfGatePass')
+        .doc(widget.date)
         .update({"isApproved": approvedStatus});
   }
 
