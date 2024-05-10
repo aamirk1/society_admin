@@ -109,7 +109,6 @@ class _customSideState extends State<customSide> {
           allRoles: widget.allRoles!,
           userId: widget.userId),
       ReportScreen(
-      
           society: widget.society!,
           allRoles: widget.allRoles!,
           userId: widget.userId),
@@ -183,6 +182,7 @@ class _customSideState extends State<customSide> {
         setDesignBool();
         _selectedIndex = index;
         design[index] = !design[index];
+        counter = 0;
         setState(() {});
       },
       child: Padding(

@@ -228,18 +228,20 @@ class _AddNoticeState extends State<AddNotice> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text(
-                      'OK',
-                      style: TextStyle(color: textColor),
-                    )),
-              ],
-              title: const Text(
-                'Please select a file first!',
-                style: TextStyle(color: Colors.red),
-              ));
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(color: textColor),
+                ),
+              ),
+            ],
+            title: const Text(
+              'Please select a file first!',
+              style: TextStyle(color: Colors.red),
+            ),
+          );
         });
   }
 }

@@ -449,7 +449,7 @@ class _RoleScreenState extends State<RoleScreen> {
         ),
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: 180,
               height: 30,
               child: DropdownButtonHideUnderline(
@@ -465,7 +465,7 @@ class _RoleScreenState extends State<RoleScreen> {
                                     ? citiesController
                                     : depotController,
                     searchInnerWidgetHeight: 50,
-                    searchInnerWidget: Container(
+                    searchInnerWidget: SizedBox(
                       height: index == 4 ? 90 : 42,
                       child: Column(
                         children: [
@@ -627,7 +627,7 @@ class _RoleScreenState extends State<RoleScreen> {
                                     setState(() {});
                                     menuSetState(() {});
                                   },
-                                  child: Container(
+                                  child: SizedBox(
                                     height: double.infinity,
                                     child: Row(
                                       mainAxisAlignment:

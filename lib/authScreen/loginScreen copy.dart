@@ -311,10 +311,10 @@ class _LoginScreenState extends State<LoginScreen> {
       child: AlertDialog(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        content: Center(
+        content: const Center(
           child: Text(
             'Login Unsuccessful',
-            style: const TextStyle(color: Colors.red),
+            style: TextStyle(color: Colors.red),
           ),
         ),
         actions: [

@@ -71,7 +71,7 @@ class _MemberNameListState extends State<MemberNameList> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(8),
                           child: Container(
                             padding: const EdgeInsets.all(2.0),
                             height: MediaQuery.of(context).size.height * 0.80,

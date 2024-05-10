@@ -49,6 +49,7 @@ dependencies:
   image_picker: ^1.0.7
   dropdown_button2: ^2.3.9
   flutter_datetime_picker: ^1.5.1
+  syncfusion_flutter_datepicker: ^25.2.3
 
 dev_dependencies:
   flutter_test:

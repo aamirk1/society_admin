@@ -69,7 +69,6 @@ class _TypeOfNocState extends State<TypeOfNoc> {
                   ),
                   // subtitle: Text(data.docs[index]['city']),
                   onTap: () async {
-
                     final provider = Provider.of<NocManagementProvider>(context,
                         listen: false);
                     provider.setSelectedNoc(
