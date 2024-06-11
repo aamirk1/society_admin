@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:society_admin/authScreen/common.dart';
+import 'package:society_admin/screens/Receipt/uploadExcelBillReceipt.dart';
 
 class MemberBillReceipt extends StatefulWidget {
   static const id =
@@ -70,7 +71,35 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
           backgroundColor: buttonColor,
           actions: [
             Padding(
-              padding: const EdgeInsets.only(left: 150, right: 10.0),
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: const ButtonStyle(
+                  minimumSize: MaterialStatePropertyAll(Size(20, 10)),
+                  backgroundColor: MaterialStatePropertyAll(
+                    Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UpExcelBillReceipt(
+                          societyName: _societyNameController.text),
+                    ),
+                  );
+                },
+                child: const Icon(
+                  Icons.add,
+                  size: 15,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 50, right: 10.0),
               child: Row(
                 children: [
                   SizedBox(

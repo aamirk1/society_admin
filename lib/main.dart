@@ -12,6 +12,8 @@ import 'package:society_admin/Provider/list_builder_provider.dart';
 import 'package:society_admin/Provider/menuUserPageProvider.dart';
 import 'package:society_admin/Provider/nocManagementProvider.dart';
 import 'package:society_admin/Provider/role_page_total_number_provider.dart';
+import 'package:society_admin/Provider/upload_ledger_provider.dart';
+import 'package:society_admin/Provider/upload_receipt_provider.dart';
 import 'package:society_admin/authScreen/loginScreen.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
@@ -58,6 +60,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ComplaintManagementProvider()),
         ChangeNotifierProvider(create: (_) => GatePassProvider()),
         ChangeNotifierProvider(create: (_) => RolePageTotalNumProviderAdmin()),
+        ChangeNotifierProvider(create: (_) => UploadLedgerProvider()),
+        ChangeNotifierProvider(create: (_) => UploadReceiptProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

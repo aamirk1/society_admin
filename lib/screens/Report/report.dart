@@ -1,10 +1,15 @@
+import 'dart:convert';
+import 'dart:html' as html;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:society_admin/authScreen/common.dart';
-
-int counter = 0;
 
 class ReportScreen extends StatefulWidget {
   ReportScreen(
@@ -21,27 +26,14 @@ class ReportScreen extends StatefulWidget {
 }
 
 class _ReportScreenState extends State<ReportScreen> {
+  int counter = 0;
+
   @override
   initState() {
     super.initState();
-
-    getTableDataForGatePass(
-            widget.society, rangeStartDate ?? currentDate, rangeEndDate ?? '')
-        .whenComplete(() {
-      setState(() {
-        isLoading = false;
-      });
-    });
-    getTableDataForComplaint(
-            widget.society, rangeStartDate ?? currentDate, rangeEndDate ?? '')
-        .whenComplete(() {
-      setState(() {
-        isLoading = false;
-      });
-    });
-    getTableDataForNoc(
-            widget.society, rangeStartDate ?? currentDate, rangeEndDate ?? '')
-        .whenComplete(() {
+    getTableDataForGatePass(widget.society, rangeStartDate, rangeEndDate!)
+        .whenComplete(() async {
+      await getTableDataForNoc(widget.society, rangeStartDate, rangeEndDate!);
       setState(() {
         isLoading = false;
       });
@@ -67,14 +59,12 @@ class _ReportScreenState extends State<ReportScreen> {
     end: DateTime(2025, 01, 01),
   );
 
-  String? rangeStartDate;
-  String? rangeEndDate;
-  final currentDate = DateFormat('dd-MM-yyyy ').format(DateTime.now());
+  DateTime rangeStartDate = DateTime.now();
+  DateTime? rangeEndDate = DateTime.now();
+  // final currentDate = DateFormat('dd-MM-yyyy ').format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
-    final start = dateRange.start;
-    final end = dateRange.end;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
@@ -101,77 +91,35 @@ class _ReportScreenState extends State<ReportScreen> {
                       children: [
                         ElevatedButton(
                           child: Text(
-                            '${start.day}/${start.month}/${start.year}',
+                            '${rangeStartDate.day}/${rangeStartDate.month}/${rangeStartDate.year}',
                           ),
                           onPressed: () {
-                            pickDateRange();
+                            counter = 0;
+                            pickDateRange().whenComplete(() async {
+                              await getTableDataForGatePass(widget.society,
+                                  rangeStartDate, rangeEndDate!);
+                              await getTableDataForNoc(widget.society,
+                                  rangeStartDate, rangeEndDate!);
+                              await getTableDataForComplaint(widget.society,
+                                  rangeStartDate, rangeEndDate!);
+                              setState(() {
+                                isLoading = false;
+                              });
+                            });
                           },
                         ),
                         const SizedBox(width: 10),
                         ElevatedButton(
-                          child: Text('${end.day}/${end.month}/${end.year}'),
+                          child: Text(
+                              '${rangeEndDate!.day}/${rangeEndDate!.month}/${rangeEndDate!.year}'),
                           onPressed: () {
                             pickDateRange();
-
                             setState(() {});
                           },
                         ),
                       ],
                     ),
                   ),
-
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Row(
-                  //     children: [
-                  //       Expanded(
-                  //         child: InkWell(
-                  //           onTap: () async {
-                  //             final DateTime? picked = await showDatePicker(
-                  //               context: context,
-                  //               initialDate: startDate as DateTime,
-                  //               firstDate: DateTime(2000),
-                  //               lastDate: DateTime(2101),
-                  //             );
-                  //             if (picked != null) {
-                  //               setState(() {
-                  //                 startDate = picked as String;
-                  //               });
-                  //             }
-                  //           },
-                  //           child: Text(
-                  //             startDate.isNull
-                  //                 ? 'Select start date'
-                  //                 : startDate.toString(),
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       const SizedBox(width: 10),
-                  //       Expanded(
-                  //         child: InkWell(
-                  //           onTap: () async {
-                  //             final DateTime? picked = await showDatePicker(
-                  //               context: context,
-                  //               initialDate: endDate as DateTime,
-                  //               firstDate: DateTime(2000),
-                  //               lastDate: DateTime(2101),
-                  //             );
-                  //             if (picked != null) {
-                  //               setState(() {
-                  //                 endDate = picked as String;
-                  //               });
-                  //             }
-                  //           },
-                  //           child: Text(
-                  //             endDate.isNull
-                  //                 ? 'Select end date'
-                  //                 : endDate.toString(),
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -239,17 +187,253 @@ class _ReportScreenState extends State<ReportScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.red,
         onPressed: () {
-          print('hello world');
+          _generatePDF();
         },
         child: const Icon(Icons.print, color: Colors.white),
       ),
     );
   }
 
+  Future<void> _generatePDF() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final headerStyle =
+        pw.TextStyle(fontSize: 15, fontWeight: pw.FontWeight.bold);
+
+    final fontData1 = await rootBundle.load('fonts/IBMPlexSans-Medium.ttf');
+    final fontData2 = await rootBundle.load('fonts/IBMPlexSans-Bold.ttf');
+
+    const cellStyle = pw.TextStyle(
+      color: PdfColors.black,
+      fontSize: 14,
+    );
+
+    List<pw.TableRow> rows = [];
+
+    rows.add(pw.TableRow(children: [
+      pw.Container(
+          padding: const pw.EdgeInsets.all(2.0),
+          child: pw.Center(
+              child: pw.Text('Sr No',
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+      pw.Container(
+          padding:
+              const pw.EdgeInsets.only(top: 4, bottom: 4, left: 2, right: 2),
+          child: pw.Center(
+              child: pw.Text('Date',
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+      pw.Container(
+          padding: const pw.EdgeInsets.all(2.0),
+          child: pw.Center(
+              child: pw.Text('Unit No',
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+      pw.Container(
+          padding: const pw.EdgeInsets.all(2.0),
+          child: pw.Center(
+              child: pw.Text('Category',
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+      pw.Container(
+          padding: const pw.EdgeInsets.all(2.0),
+          child: pw.Center(
+              child: pw.Text('particulars',
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+      pw.Container(
+          padding: const pw.EdgeInsets.all(2.0),
+          child: pw.Center(
+              child: pw.Text('Status',
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+      // pw.Container(
+      //     padding: const pw.EdgeInsets.all(2.0),
+      //     child: pw.Center(
+      //         child: pw.Text('Image1',
+      //             style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+      //   pw.Container(
+      //       padding: const pw.EdgeInsets.all(2.0),
+      //       child: pw.Center(
+      //           child: pw.Text('Image2',
+      //               style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+    ]));
+
+    if (allData.isNotEmpty) {
+      // for (int i = 0; i < chosenDateList.length; i++){
+      // for (int j = 0; j < availableUserId.length; j++){
+      // final currentUserId = availableUserId[j];
+      for (int i = 0; i < allData.length; i++) {
+        //Text Rows of PDF Table
+        rows.add(pw.TableRow(children: [
+          pw.Container(
+              padding: const pw.EdgeInsets.all(3.0),
+              child: pw.Center(
+                  child: pw.Text('${i + 1}',
+                      style: const pw.TextStyle(fontSize: 14)))),
+          pw.Container(
+              padding: const pw.EdgeInsets.all(2.0),
+              child: pw.Center(
+                  child: pw.Text(allData[i][1].toString(),
+                      style: const pw.TextStyle(fontSize: 14)))),
+          pw.Container(
+              padding: const pw.EdgeInsets.all(2.0),
+              child: pw.Center(
+                  child: pw.Text(allData[i][2].toString(),
+                      style: const pw.TextStyle(fontSize: 14)))),
+          pw.Container(
+              padding: const pw.EdgeInsets.all(5.0),
+              child: pw.Center(
+                  child: pw.Text(allData[i][3].toString(),
+                      style: const pw.TextStyle(fontSize: 14)))),
+          pw.Container(
+              padding: const pw.EdgeInsets.all(2.0),
+              child: pw.Center(
+                  child: pw.Text(allData[i][4].toString(),
+                      textAlign: pw.TextAlign.center,
+                      style: const pw.TextStyle(fontSize: 14)))),
+          pw.Container(
+              padding: const pw.EdgeInsets.all(2.0),
+              child: pw.Center(
+                  child: pw.Text(allData[i][5].toString(),
+                      style: const pw.TextStyle(fontSize: 14)))),
+        ]));
+      }
+    }
+
+    final pdf = pw.Document(
+      pageMode: PdfPageMode.outlines,
+    );
+
+    //First Half Page
+
+    pdf.addPage(
+      pw.MultiPage(
+        maxPages: 100,
+        theme: pw.ThemeData.withFont(
+            base: pw.Font.ttf(fontData1), bold: pw.Font.ttf(fontData2)),
+        pageFormat: const PdfPageFormat(1600, 1000,
+            marginLeft: 70, marginRight: 70, marginBottom: 80, marginTop: 40),
+        orientation: pw.PageOrientation.natural,
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        header: (pw.Context context) {
+          return pw.Container(
+              alignment: pw.Alignment.centerRight,
+              margin: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+              padding: const pw.EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+              decoration: const pw.BoxDecoration(
+                  border: pw.Border(
+                      bottom:
+                          pw.BorderSide(width: 0.5, color: PdfColors.grey))),
+              child: pw.Column(children: [
+                pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Text('Report Table',
+                          textScaleFactor: 2,
+                          style: const pw.TextStyle(color: PdfColors.blue700)),
+                    ]),
+              ]));
+        },
+        // footer: (pw.Context context) {
+        //   return pw.Container(
+        //       alignment: pw.Alignment.centerRight,
+        //       margin: const pw.EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+        //       child: pw.Text('User ID - $user_id',
+        //           // 'Page ${context.pageNumber} of ${context.pagesCount}',
+        //           style: pw.Theme.of(context)
+        //               .defaultTextStyle
+        //               .copyWith(color: PdfColors.black)));
+        // },
+        build: (pw.Context context) => <pw.Widget>[
+          pw.Column(children: []),
+          pw.SizedBox(height: 10),
+          pw.Table(
+              columnWidths: {
+                0: const pw.FixedColumnWidth(30),
+                1: const pw.FixedColumnWidth(160),
+                2: const pw.FixedColumnWidth(70),
+                3: const pw.FixedColumnWidth(70),
+                4: const pw.FixedColumnWidth(70),
+                5: const pw.FixedColumnWidth(70),
+              },
+              defaultVerticalAlignment: pw.TableCellVerticalAlignment.middle,
+              tableWidth: pw.TableWidth.max,
+              border: pw.TableBorder.all(),
+              children: rows)
+        ],
+      ),
+    );
+
+    final List<int> pdfData = await pdf.save();
+    const String pdfPath = 'Report.pdf';
+
+    // Save the PDF file to device storage
+    if (kIsWeb) {
+      html.AnchorElement(
+          href: "data:application/octet-stream;base64,${base64Encode(pdfData)}")
+        ..setAttribute("download", pdfPath)
+        ..click();
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+// fetchEnergyData(String cityName, String depoName, String userId,
+//       DateTime date, DateTime endDate) async {
+//     final List<dynamic> timeIntervalList = [];
+//     final List<dynamic> energyConsumedList = [];
+//     int currentMonth = DateTime.now().month;
+//     String monthName = DateFormat('MMMM').format(DateTime.now());
+//     final List<EnergyManagementModel> fetchedData = [];
+//     _energydata.clear();
+//     timeIntervalList.clear();
+//     energyConsumedList.clear();
+//     for (DateTime initialdate = endDate;
+//         initialdate.isAfter(date.subtract(const Duration(days: 1)));
+//         initialdate = initialdate.subtract(const Duration(days: 1))) {
+//       // print(date.add(const Duration(days: 1)));
+//       // print(DateFormat.yMMMMd().format(initialdate));
+
+//       FirebaseFirestore.instance
+//           .collection('EnergyManagementTable')
+//           .doc(cityName)
+//           .collection('Depots')
+//           .doc(depoName)
+//           .collection('Year')
+//           .doc(DateTime.now().year.toString())
+//           .collection('Months')
+//           .doc(monthName)
+//           .collection('Date')
+//           .doc(DateFormat.yMMMMd().format(initialdate))
+//           .collection('UserId')
+//           .doc(userId)
+//           .get()
+//           .then((value) {
+//         if (value.data() != null) {
+//           for (int i = 0; i < value.data()!['data'].length; i++) {
+//             var data = value.data()!['data'][i];
+//             fetchedData.add(EnergyManagementModel.fromJson(data));
+//             timeIntervalList.add(value.data()!['data'][i]['timeInterval']);
+//             energyConsumedList.add(value.data()!['data'][i]['energyConsumed']);
+//           }
+//           _energydata = fetchedData;
+//           intervalListData = timeIntervalList;
+//           energyListData = energyConsumedList;
+//           notifyListeners();
+//         } else {
+//           intervalListData = timeIntervalList;
+//           energyListData = energyConsumedList;
+
+//           notifyListeners();
+//         }
+//       });
+//     }
+//   }
+
   Future<void> getTableDataForComplaint(
-      String selectedSociety, String startDate, String endDate) async {
+      String selectedSociety, DateTime startDate, DateTime endDate) async {
     // int counter = 0;
-    CollectionReference collectionReference = await FirebaseFirestore.instance
+    CollectionReference collectionReference = FirebaseFirestore.instance
         .collection('complaints')
         .doc(selectedSociety)
         .collection('flatno');
@@ -268,32 +452,36 @@ class _ReportScreenState extends State<ReportScreen> {
           complaintTypequery.docs.map((e) => e.id).toList();
 
       // fetching Date of Complaint
-      for (int j = 0; j < complaintTypeList.length; j++) {
-        QuerySnapshot complaintDateQuery = await collectionReference
-            .doc(flatNoList[i])
-            .collection('typeofcomplaints')
-            .doc(complaintTypeList[j])
-            .collection('dateOfComplaint')
-            .get();
-        List<dynamic> dateList =
-            complaintDateQuery.docs.map((e) => e.id).toList();
+      DateTime enddate = rangeEndDate!;
+      DateTime startdate = rangeStartDate;
+      //DateTime.parse(rangeEndDate!);
+      for (DateTime initialdate = enddate;
+          initialdate.isAfter(startdate.subtract(const Duration(days: 1)));
+          initialdate = initialdate.subtract(const Duration(days: 1))) {
+        String date2 = DateFormat('dd-MM-yyyy').format(initialdate);
 
-        List<dynamic> dateDataList =
-            complaintDateQuery.docs.map((e) => e.data()).toList();
-        // FETCHING COMPLAINT DATA
+        for (int j = 0; j < complaintTypeList.length; j++) {
+          DocumentSnapshot complaintDateQuery = await collectionReference
+              .doc(flatNoList[i])
+              .collection('typeofcomplaints')
+              .doc(complaintTypeList[j])
+              .collection('dateOfComplaint')
+              .doc(date2)
+              .get();
 
-        for (int k = 0; k < dateList.length; k++) {
-          counter = counter + 1;
-          allData.add([
-            counter,
-            dateList[k],
-            flatNoList[i],
-            'Complaint',
-            complaintTypeList[j],
-            dateDataList[k]['response'].toString().isNotEmpty
-                ? "Closed"
-                : "Open",
-          ]);
+          if (complaintDateQuery.exists) {
+            Map<String, dynamic> mapData =
+                complaintDateQuery.data() as Map<String, dynamic>;
+            counter = counter + 1;
+            allData.add([
+              counter,
+              date2,
+              flatNoList[i],
+              'Complaint',
+              complaintTypeList[j],
+              mapData['response'].toString().isNotEmpty ? "Closed" : "Open",
+            ]);
+          }
         }
       }
     }
@@ -302,7 +490,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
   // funtion for noc management
   Future<void> getTableDataForNoc(
-      String selectedSociety, String startDate, String endDate) async {
+      String selectedSociety, DateTime startDate, DateTime endDate) async {
     // int counter = 0;
     CollectionReference collectionReference = await FirebaseFirestore.instance
         .collection('nocApplications')
@@ -319,44 +507,49 @@ class _ReportScreenState extends State<ReportScreen> {
           .doc(flatNoList[i])
           .collection('typeofNoc')
           .get();
+
       List<dynamic> nocTypeList = nocTypequery.docs.map((e) => e.id).toList();
 
       // fetching Date of noc
       for (int j = 0; j < nocTypeList.length; j++) {
-        QuerySnapshot nocDateQuery = await collectionReference
-            .doc(flatNoList[i])
-            .collection('typeofNoc')
-            .doc(nocTypeList[j])
-            .collection('dateOfNoc')
-            .get();
-        List<dynamic> dateList = nocDateQuery.docs.map((e) => e.id).toList();
+        for (DateTime initialdate = endDate;
+            initialdate.isAfter(startDate.subtract(const Duration(days: 1)));
+            initialdate = initialdate.subtract(const Duration(days: 1))) {
+          String date2 = DateFormat('dd-MM-yyyy').format(initialdate);
 
-        List<dynamic> dateDataList =
-            nocDateQuery.docs.map((e) => e.data()).toList();
-        // FETCHING noc DATA
+          DocumentSnapshot documentSnapshot = await collectionReference
+              .doc(flatNoList[i])
+              .collection('typeofNoc')
+              .doc(nocTypeList[j])
+              .collection('dateOfNoc')
+              .doc(date2)
+              .get();
 
-        for (int k = 0; k < dateList.length; k++) {
-          counter = counter + 1;
-          allData.add([
-            counter,
-            dateList[k],
-            flatNoList[i],
-            'NOC',
-            nocTypeList[j],
-            dateDataList[k]['response'].toString().isNotEmpty
-                ? "Closed"
-                : "Open",
-          ]);
+          if (documentSnapshot.exists) {
+            Map<String, dynamic> mapData =
+                documentSnapshot.data() as Map<String, dynamic>;
+            counter = counter + 1;
+            allData.add([
+              counter,
+              date2,
+              flatNoList[i],
+              'NOC',
+              nocTypeList[j],
+              mapData['isApproved'].toString().isNotEmpty ? "Closed" : "Open",
+            ]);
+            print("Data Added - $allData");
+          }
         }
       }
+      print('allData--- $allData');
     }
-    print('allData--- $allData');
   }
 
   Future<void> getTableDataForGatePass(
-      String selectedSociety, String startDate, String endDate) async {
+      String selectedSociety, DateTime startDate, DateTime endDate) async {
+    allData.clear();
     // int counter = 0;
-    CollectionReference collectionReference = await FirebaseFirestore.instance
+    CollectionReference collectionReference = FirebaseFirestore.instance
         .collection('gatePassApplications')
         .doc(selectedSociety)
         .collection('flatno');
@@ -376,32 +569,36 @@ class _ReportScreenState extends State<ReportScreen> {
 
       // fetching Date of Complaint
       for (int j = 0; j < complaintTypeList.length; j++) {
-        QuerySnapshot complaintDateQuery = await collectionReference
-            .doc(flatNoList[i])
-            .collection('gatePassType')
-            .doc(complaintTypeList[j])
-            .collection('dateOfGatePass')
-            .get();
-        List<dynamic> dateList =
-            complaintDateQuery.docs.map((e) => e.id).toList();
+        for (DateTime initialdate = endDate;
+            initialdate.isAfter(startDate.subtract(const Duration(days: 1)));
+            initialdate = initialdate.subtract(const Duration(days: 1))) {
+          String date2 = DateFormat('dd-MM-yyyy').format(initialdate);
 
-        List<dynamic> dateDataList =
-            complaintDateQuery.docs.map((e) => e.data()).toList();
-        // FETCHING COMPLAINT DATA
+          DocumentSnapshot complaintDateQuery = await collectionReference
+              .doc(flatNoList[i])
+              .collection('gatePassType')
+              .doc(complaintTypeList[j])
+              .collection('dateOfGatePass')
+              .doc(date2)
+              .get();
 
-        for (int k = 0; k < dateList.length; k++) {
-          counter = counter + 1;
-          allData.add([
-            counter,
-            dateList[k],
-            flatNoList[i],
-            'GatePass',
-            complaintTypeList[j],
-            dateDataList[k]['isApproved'].toString().isNotEmpty
-                ? "Closed"
-                : "Open",
-          ]);
+          if (complaintDateQuery.exists) {
+            Map<String, dynamic> mapData =
+                complaintDateQuery.data() as Map<String, dynamic>;
+            counter = counter + 1;
+            allData.add([
+              counter,
+              date2,
+              flatNoList[i],
+              'GatePass',
+              complaintTypeList[j],
+              mapData['isApproved'].toString().isNotEmpty ? "Closed" : "Open",
+            ]);
+            print("Data Added - $allData");
+          }
         }
+
+        // FETCHING COMPLAINT DATA
       }
     }
   }
@@ -410,15 +607,10 @@ class _ReportScreenState extends State<ReportScreen> {
     DateTimeRange? newDateRange = await showDateRangePicker(
         context: context, firstDate: DateTime(2000), lastDate: DateTime(2100));
     if (newDateRange == null) return;
-    print('newDateRange2 $newDateRange');
     setState(() {
       dateRange = newDateRange;
-      rangeStartDate =
-          '${dateRange.start.day}-${dateRange.start.month}-${dateRange.start.year}';
-      rangeEndDate =
-          '${dateRange.end.day}-${dateRange.end.month}-${dateRange.end.year}';
-      print('rangeStartDate $rangeStartDate');
-      print('rangeEndDate $rangeEndDate');
+      rangeStartDate = dateRange.start;
+      rangeEndDate = dateRange.end;
     });
   }
 }

@@ -182,7 +182,6 @@ class _customSideState extends State<customSide> {
         setDesignBool();
         _selectedIndex = index;
         design[index] = !design[index];
-        counter = 0;
         setState(() {});
       },
       child: Padding(
