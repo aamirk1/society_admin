@@ -9,6 +9,8 @@ import 'package:society_admin/screens/Complaint/complaintManagement.dart';
 import 'package:society_admin/screens/GatePass/gatePass.dart';
 import 'package:society_admin/screens/Members/ListOfMemberName.dart';
 import 'package:society_admin/screens/Noc/nocManagement.dart';
+import 'package:society_admin/screens/Note/ListOfCreditNote.dart';
+import 'package:society_admin/screens/Note/ListOfDebitNote.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
 import 'package:society_admin/screens/Receipt/MemberBillReceipt.dart';
 import 'package:society_admin/screens/Report/report.dart';
@@ -36,6 +38,8 @@ class _customSideState extends State<customSide> {
     'Member Name List',
     'Member Bill List',
     'Member Receipt List',
+    'Credit Note',
+    'Debit Note',
     'Assign Roles',
     'Gate Pass',
     'Report',
@@ -49,6 +53,8 @@ class _customSideState extends State<customSide> {
     Icons.group,
     Icons.account_balance_wallet,
     Icons.receipt_long,
+    Icons.receipt,
+    Icons.receipt_outlined,
     Icons.person,
     Icons.insert_drive_file,
     Icons.local_print_shop_rounded,
@@ -56,6 +62,8 @@ class _customSideState extends State<customSide> {
   ];
   List<bool> design = [
     true,
+    false,
+    false,
     false,
     false,
     false,
@@ -103,6 +111,8 @@ class _customSideState extends State<customSide> {
           society: widget.society!,
           allRoles: widget.allRoles!,
           userId: widget.userId),
+      CreditNote(societyName: widget.society!),
+      DebitNote(societyName: widget.society!),
       RoleScreen(society: widget.society!, userId: widget.userId),
       GatePass(
           society: widget.society!,
