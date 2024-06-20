@@ -510,9 +510,9 @@ class _RoleScreenState extends State<RoleScreen> {
 
                                 if (isSelectAllDepots) {
                                   selectedDepotList.clear();
-                                  customDropDownList.forEach((element) {
+                                  for (var element in customDropDownList) {
                                     selectedDepotList.add(element);
-                                  });
+                                  }
                                 } else {
                                   selectedDepotList.clear();
                                 }
@@ -892,7 +892,6 @@ class _RoleScreenState extends State<RoleScreen> {
           phoneNum = allUserData[i]['Mobile No.'];
         }
       }
-      print("MobileNum - $phoneNum");
     }
     if (phoneNum.isEmpty) {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -934,7 +933,7 @@ class _RoleScreenState extends State<RoleScreen> {
 
     assignedUserList = querySnapshot.docs.map((e) => e.id).toList();
     assignedUsers = querySnapshot.docs.length;
-    print("assignedUser - $assignedUsers");
+    // print("assignedUser - $assignedUsers");
     // print('aasasasasasasasa -  $assignedUsers');
     return assignedUserList;
   }

@@ -5,6 +5,7 @@ import 'package:society_admin/screens/settings/reset_password/reset_password.dar
 
 import '../../authScreen/loginScreen.dart';
 
+// ignore: must_be_immutable
 class Settings extends StatefulWidget {
   String society;
   List<dynamic> allRoles;

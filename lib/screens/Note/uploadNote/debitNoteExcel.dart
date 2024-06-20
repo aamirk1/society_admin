@@ -61,10 +61,10 @@ class _DebitNoteExcelState extends State<DebitNoteExcel> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: white),
+          iconTheme: const IconThemeData(color: white),
           title: Text(
             "Upload Debit Note of ${widget.societyName}",
-            style: TextStyle(color: white),
+            style: const TextStyle(color: white),
           ),
           backgroundColor: buttonColor,
           actions: [

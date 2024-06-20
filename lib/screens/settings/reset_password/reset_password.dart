@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 
+// ignore: must_be_immutable
 class ResetPassword extends StatefulWidget {
   String society;
   List<dynamic> allRoles = [];

@@ -58,10 +58,10 @@ class _CreditNoteState extends State<CreditNote> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: white),
+          iconTheme: const IconThemeData(color: white),
           title: Text(
             "All Members Credit Note of ${widget.societyName}",
-            style: TextStyle(color: white),
+            style: const TextStyle(color: white),
           ),
           backgroundColor: buttonColor,
           actions: [
@@ -70,7 +70,7 @@ class _CreditNoteState extends State<CreditNote> {
               child: Row(
                 children: [
                   ElevatedButton(
-                    style: ButtonStyle(
+                    style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(white),
                     ),
                     onPressed: () {
@@ -158,7 +158,7 @@ class _CreditNoteState extends State<CreditNote> {
                   //   width: 10,
                   // ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.logout_rounded,
                       color: white,
                     ),
@@ -232,6 +232,7 @@ class _CreditNoteState extends State<CreditNote> {
 
   Future<void> signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
+    // ignore: use_build_context_synchronously
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/',

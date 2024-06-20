@@ -182,7 +182,7 @@ class _ViewEmployeeState extends State<ViewEmployee> {
     empName = allCompany.map((e) => e['empName']).toList();
 
     provider.setBuilderEmpList(allCompany);
-    print('hello -  $allCompany');
+    // print('hello -  $allCompany');
   }
 
   Future<void> deleteEmp(String company, String email, int index) async {
@@ -210,6 +210,7 @@ class _ViewEmployeeState extends State<ViewEmployee> {
                     TextButton(
                         onPressed: () async {
                           await deleteEmp(society, email, index);
+                          // ignore: use_build_context_synchronously
                           Navigator.pop(context);
                         },
                         child: const Text(

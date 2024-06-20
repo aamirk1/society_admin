@@ -20,7 +20,7 @@ import 'package:society_admin/screens/Members/ListOfMemberName.dart';
 
 class UpExcelBillReceipt extends StatefulWidget {
   static const String id = "/UpExcelBillReceipt";
-  UpExcelBillReceipt({super.key, required this.societyName});
+  const UpExcelBillReceipt({super.key, required this.societyName});
   final String societyName;
 
   @override
@@ -83,7 +83,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
           iconTheme: const IconThemeData(color: white),
           title: Text(
             "Upload Receipt of ${widget.societyName}",
-            style: TextStyle(color: white),
+            style: const TextStyle(color: white),
           ),
           backgroundColor: buttonColor,
           actions: [
@@ -202,7 +202,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
                               minWidth: 1700,
                               border: TableBorder.all(color: Colors.black),
                               headingRowColor:
-                                  const MaterialStatePropertyAll(Colors.purple),
+                                  const MaterialStatePropertyAll(buttonColor),
                               headingTextStyle: const TextStyle(
                                   color: Colors.white,
                                   // fontSize: 24,
@@ -307,7 +307,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
             ),
           ),
         ),
-        floatingActionButton: Container(
+        floatingActionButton: SizedBox(
           height: 40,
           width: 40,
           child: FloatingActionButton(
@@ -342,6 +342,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
                   .set({'name': widget.societyName});
               //       }
 
+              // ignore: use_build_context_synchronously
               Navigator.pop(context);
             },
             child: const Icon(

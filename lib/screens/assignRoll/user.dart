@@ -603,7 +603,6 @@ class _MenuUserPageState extends State<MenuUserPage> {
           phoneNum = allUserData[i]['Mobile No.'];
         }
       }
-      print("MobileNum - $phoneNum");
     }
     if (phoneNum.isEmpty) {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance

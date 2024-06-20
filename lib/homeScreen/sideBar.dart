@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/complaintManagementProvider.dart';
@@ -214,7 +215,7 @@ class _customSideState extends State<customSide> {
 
   void setDesignBool() {
     List<bool> tempBool = [];
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 13; i++) {
       tempBool.add(false);
     }
     design = tempBool;

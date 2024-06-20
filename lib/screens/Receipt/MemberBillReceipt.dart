@@ -83,8 +83,8 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => UpExcelBillReceipt(
-                          societyName: _societyNameController.text),
+                      builder: (context) =>
+                          UpExcelBillReceipt(societyName: widget.society),
                     ),
                   );
                 },
@@ -185,13 +185,15 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                       List.generate(columnName.length, (index) {
                                     return DataColumn2(
                                       fixedWidth:
-                                          headers[index] == 'Member Name'
+                                          headers[index] == '4_Member Name'
                                               ? 500
                                               : 85,
                                       label: Container(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          columnName[index],
+                                          columnName[index]
+                                              .split('${index + 1}_')
+                                              .join(''),
                                           style: const TextStyle(
                                               // overflow: TextOverflow.ellipsis,
                                               fontSize: 12.0,

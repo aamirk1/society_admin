@@ -36,7 +36,10 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
   List<List<dynamic>> data = [];
 
   List<Map<String, dynamic>> newData = [];
+  List<Map<String, dynamic>> dataMap1 = [];
+  List<dynamic> listofdata = [];
   // ignore: prefer_collection_literals
+  List<Map<String, dynamic>> dataMap = [];
   Map<String, dynamic> mapExcelData = Map();
   List<dynamic> alldata = [];
   // String monthyear = 'February 2024';
@@ -162,7 +165,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                           style: ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
                                   buttonBoolList[index] == true
-                                      ? Color.fromARGB(255, 1, 19, 124)
+                                      ? const Color.fromARGB(255, 1, 19, 124)
                                       : buttonColor)),
                           onPressed: () {
                             setButtonBoolean(index);
@@ -190,7 +193,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                         // )),
                         border: TableBorder.all(color: Colors.black),
                         headingRowColor:
-                            const MaterialStatePropertyAll(Colors.purple),
+                            const MaterialStatePropertyAll(buttonColor),
                         headingTextStyle: const TextStyle(
                             color: Colors.white,
                             // fontSize: 24,
@@ -232,7 +235,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                 child: Row(
                   children: [
                     ElevatedButton(
-                      style: ButtonStyle(
+                      style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(buttonColor),
                       ),
                       onPressed: () async {
@@ -297,14 +300,17 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
           backgroundColor: buttonColor,
           onPressed: () async {
             // for (int i = 0; i < mapExcelData.length; i++) {
-            await FirebaseFirestore.instance
+            DocumentReference docRef = await FirebaseFirestore.instance
                 .collection('ladgerBill')
                 .doc(widget.societyName)
                 .collection('month')
-                .doc(monthAndYear)
-                .set({
-              'data': newData,
-            }).then((value) {
+                .doc(monthAndYear);
+            // .set(indexdata, SetOptions(merge: true)
+
+            //     // newData,
+            //     )
+
+            await docRef.set({'data': newData}).then((value) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   backgroundColor: Colors.green,
@@ -376,6 +382,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
   }
 
   Future<List<List<dynamic>>> selectExcelFile() async {
+    List arraydata = [];
     final input = FileUploadInputElement()..accept = '.csv';
     input.click();
 
@@ -404,6 +411,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
         columnName.add(a.toString().trim());
       }
       for (var rows in data) {
+        Map<String, dynamic> entry = {};
         Map<String, dynamic> tempMap = {};
 
         print('columnname - $columnName');
@@ -412,14 +420,15 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
         for (var cell in rows) {
           rowData.add(cell?.toString() ?? '');
         }
-
         for (int i = 0; i < columnName.length; i++) {
           tempMap[columnName[i]] = rowData[i];
         }
         alldata.add(rowData);
 
         newData.add(tempMap);
+        print('alldata ${newData}');
         // print('alldata - $alldata');
+
         tempMap = {};
       }
 

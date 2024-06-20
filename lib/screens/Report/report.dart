@@ -1,4 +1,5 @@
 import 'dart:convert';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +12,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:society_admin/authScreen/common.dart';
 
+// ignore: must_be_immutable
 class ReportScreen extends StatefulWidget {
   ReportScreen(
       {super.key,
@@ -199,16 +201,10 @@ class _ReportScreenState extends State<ReportScreen> {
       isLoading = true;
     });
 
-    final headerStyle =
-        pw.TextStyle(fontSize: 15, fontWeight: pw.FontWeight.bold);
 
     final fontData1 = await rootBundle.load('fonts/IBMPlexSans-Medium.ttf');
     final fontData2 = await rootBundle.load('fonts/IBMPlexSans-Bold.ttf');
 
-    const cellStyle = pw.TextStyle(
-      color: PdfColors.black,
-      fontSize: 14,
-    );
 
     List<pw.TableRow> rows = [];
 
@@ -485,14 +481,14 @@ class _ReportScreenState extends State<ReportScreen> {
         }
       }
     }
-    print('allData--- $allData');
+    // print('allData--- $allData');
   }
 
   // funtion for noc management
   Future<void> getTableDataForNoc(
       String selectedSociety, DateTime startDate, DateTime endDate) async {
     // int counter = 0;
-    CollectionReference collectionReference = await FirebaseFirestore.instance
+    CollectionReference collectionReference = FirebaseFirestore.instance
         .collection('nocApplications')
         .doc(selectedSociety)
         .collection('flatno');
@@ -537,11 +533,11 @@ class _ReportScreenState extends State<ReportScreen> {
               nocTypeList[j],
               mapData['isApproved'].toString().isNotEmpty ? "Closed" : "Open",
             ]);
-            print("Data Added - $allData");
+            // print("Data Added - $allData");
           }
         }
       }
-      print('allData--- $allData');
+      // print('allData--- $allData');
     }
   }
 
@@ -594,7 +590,7 @@ class _ReportScreenState extends State<ReportScreen> {
               complaintTypeList[j],
               mapData['isApproved'].toString().isNotEmpty ? "Closed" : "Open",
             ]);
-            print("Data Added - $allData");
+            // print("Data Added - $allData");
           }
         }
 

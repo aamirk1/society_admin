@@ -13,7 +13,7 @@ class NocManagementProvider with ChangeNotifier {
 
  Future getNocData() async {
     await fetchNocData!();
-    print("Get NOC Data Running");
+    // print("Get NOC Data Running");
   }
 
   void setSelectedNoc(String value) {

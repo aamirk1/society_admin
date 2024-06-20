@@ -67,10 +67,10 @@ class _CreditNoteExcelState extends State<CreditNoteExcel> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: white),
+          iconTheme: const IconThemeData(color: white),
           title: Text(
             "Upload Credit Note of ${widget.societyName}",
-            style: TextStyle(color: white),
+            style: const TextStyle(color: white),
           ),
           backgroundColor: buttonColor,
           actions: [
@@ -115,7 +115,7 @@ class _CreditNoteExcelState extends State<CreditNoteExcel> {
                   //   width: 10,
                   // ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.logout_rounded,
                       color: white,
                     ),
@@ -324,7 +324,7 @@ class _CreditNoteExcelState extends State<CreditNoteExcel> {
                         height: 15,
                       ),
                       ElevatedButton(
-                        style: ButtonStyle(
+                        style: const ButtonStyle(
                           backgroundColor:
                               MaterialStatePropertyAll(buttonColor),
                         ),

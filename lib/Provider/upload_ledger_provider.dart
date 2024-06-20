@@ -7,6 +7,9 @@ class UploadLedgerProvider with ChangeNotifier {
   String _selectedMonth = '';
   String get selectedMonth => _selectedMonth;
 
+  final List<dynamic> _columnName = [];
+  List get columnName => _columnName;
+
   void reload(bool value) {
     _loadWidget = value;
     notifyListeners();
@@ -15,4 +18,6 @@ class UploadLedgerProvider with ChangeNotifier {
   void setMonth(String value) {
     _selectedMonth = value;
   }
+
+ 
 }

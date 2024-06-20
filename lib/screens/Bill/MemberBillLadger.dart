@@ -7,9 +7,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/upload_ledger_provider.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/screens/Bill/uploadExcelBillLadger.dart';
 
+// ignore: must_be_immutable
 class MemberBillLadger extends StatefulWidget {
   static const id = "/MemberBillLadger";
   MemberBillLadger(
@@ -85,7 +88,8 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => UpExcelBillLadger(
-                          societyName: _societyNameController.text),
+                        societyName: widget.society,
+                      ),
                     ),
                   );
                 },
@@ -175,12 +179,15 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                             columnSpacing: 3.0,
                             columns: List.generate(columnName.length, (index) {
                               return DataColumn2(
-                                fixedWidth:
-                                    headers[index] == 'Member Name' ? 500 : 85,
+                                fixedWidth: headers[index] == '4_Member Name'
+                                    ? 500
+                                    : 85,
                                 label: Container(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    columnName[index],
+                                    columnName[index]
+                                        .split('${index + 1}_')
+                                        .join(''),
                                     style: const TextStyle(
                                         // overflow: TextOverflow.ellipsis,
                                         fontSize: 12.0,
@@ -321,6 +328,7 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
 
   Future<void> signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
+    // ignore: use_build_context_synchronously
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/',
@@ -329,13 +337,13 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
   }
 
   Future<void> fetchMap(String societyName, String monthyear) async {
+    final provider = Provider.of<UploadLedgerProvider>(context, listen: false);
     DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
         .collection('ladgerBill')
         .doc(societyName)
         .collection('month')
         .doc(monthyear)
         .get();
-
     if (docSnapshot.exists) {
       Map<String, dynamic> data1 = docSnapshot.data() as Map<String, dynamic>;
       List<dynamic> mapData = data1['data'];
@@ -345,17 +353,17 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
       for (int i = 0; i < mapData.length; i++) {
         List<dynamic> rowData = [];
         for (int j = 0; j < headers.length; j++) {
-          rowData.add(
-            mapData[i][headers[j]],
-          );
+          rowData.add(mapData[i][headers[j]]);
         }
+
         temp.add(rowData);
       }
+
       columnName = headers;
       data = temp;
       data.removeAt(0);
 
-      print('dataaaaa - $data');
+      // print('dataaaaa - $data');
       // Use the data map as needed
     }
 
@@ -389,8 +397,8 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
     //   data = temp;
     //   data.removeAt(0);
 
-    //   // print('dataaaaa - $data');
-    //   // Use the data map as needed
+    // print('dataaaaa - $data');
+    // Use the data map as needed
     // }
     setState(() {
       isLoding = false;

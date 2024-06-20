@@ -247,6 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // print(societyname);
                 roles = data['roles'];
 
+                // ignore: use_build_context_synchronously
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 // ignore: use_build_context_synchronously
                 Navigator.pushAndRemoveUntil(

@@ -225,6 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (mapData.isNotEmpty) {
             final society = mapData[0]['societyname'];
 
+            // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 backgroundColor: Colors.green,
@@ -236,6 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             );
 
+            // ignore: use_build_context_synchronously
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
@@ -247,6 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 (route) => false);
           } else {
+            // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 backgroundColor: Colors.redAccent,
