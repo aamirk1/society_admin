@@ -72,7 +72,12 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
             "All Members Bill of ${widget.society}",
             style: const TextStyle(color: buttonTextColor),
           ),
-          backgroundColor: buttonColor,
+          flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [lightBlueColor, blueColor],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight))),
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -337,7 +342,7 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
   }
 
   Future<void> fetchMap(String societyName, String monthyear) async {
-    final provider = Provider.of<UploadLedgerProvider>(context, listen: false);
+    Provider.of<UploadLedgerProvider>(context, listen: false);
     DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
         .collection('ladgerBill')
         .doc(societyName)

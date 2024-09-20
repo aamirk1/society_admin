@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
         title: 'Society Management',
         theme: ThemeData(
           scrollbarTheme: const ScrollbarThemeData(
-            thumbColor: MaterialStatePropertyAll(
+            thumbColor: WidgetStatePropertyAll(
               Color.fromARGB(255, 3, 20, 255),
             ),
           ),

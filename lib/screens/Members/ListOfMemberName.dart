@@ -56,12 +56,16 @@ class _MemberNameListState extends State<MemberNameList> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(
-            "All Members of ${widget.society}",
-            style: const TextStyle(color: white),
-          ),
-          backgroundColor: primaryColor,
-        ),
+            title: Text(
+              "All Members of ${widget.society}",
+              style: const TextStyle(color: white),
+            ),
+            flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight)))),
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
             : columnName.isEmpty

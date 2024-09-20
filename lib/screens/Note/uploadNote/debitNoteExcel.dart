@@ -66,7 +66,12 @@ class _DebitNoteExcelState extends State<DebitNoteExcel> {
             "Upload Debit Note of ${widget.societyName}",
             style: const TextStyle(color: white),
           ),
-          backgroundColor: buttonColor,
+          flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight))),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 8.0),

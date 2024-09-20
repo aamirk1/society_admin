@@ -100,7 +100,12 @@ class _MenuUserPageState extends State<MenuUserPage> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: primaryColor),
         title: Text(widget.society),
-        backgroundColor: primaryColor,
+        flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [lightBlueColor, blueColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight))),
         actions: [
           IconButton(
             padding: const EdgeInsets.only(right: 20.0),

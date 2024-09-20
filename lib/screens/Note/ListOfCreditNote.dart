@@ -63,7 +63,12 @@ class _CreditNoteState extends State<CreditNote> {
             "All Members Credit Note of ${widget.societyName}",
             style: const TextStyle(color: white),
           ),
-          backgroundColor: buttonColor,
+        flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight))),
           actions: [
             Padding(
               padding: const EdgeInsets.only(left: 150, right: 10.0),

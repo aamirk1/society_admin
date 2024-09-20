@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:society_admin/authScreen/common.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -28,6 +29,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
+         flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight))),
       ),
       body: Center(
         child: Column(

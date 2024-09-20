@@ -27,7 +27,7 @@ class GatePass extends StatefulWidget {
 class _GatePassState extends State<GatePass> {
   List<dynamic> dataListOfPassType = [];
   List<dynamic> dataListOfFlatNo = [];
- int selectedDateIndex = 0;
+  int selectedDateIndex = 0;
   List<dynamic> dateofNocList = [];
   String selectedFlatno = '';
   bool isClicked = false;
@@ -53,7 +53,12 @@ class _GatePassState extends State<GatePass> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Gate Pass Application'),
-        backgroundColor: primaryColor,
+        flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [lightBlueColor, blueColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight))),
         actions: [
           IconButton(
             padding: const EdgeInsets.only(right: 20.0),
@@ -163,7 +168,7 @@ class _GatePassState extends State<GatePass> {
                                               selectedFlatno =
                                                   dataListOfFlatNo[index]
                                                       ['flatno'];
-                                                            selectedDateIndex = index;
+                                              selectedDateIndex = index;
 
                                               allDatafetch(
                                                       widget.society,
@@ -223,8 +228,7 @@ class _GatePassState extends State<GatePass> {
                                       text: allGatePassData['text'],
                                       society: widget.society,
                                       flatNo: selectedFlatno,
-                                      date: dateofNocList[selectedDateIndex]
-                                    )
+                                      date: dateofNocList[selectedDateIndex])
                                   : Container(),
                             )
                           : Container(),

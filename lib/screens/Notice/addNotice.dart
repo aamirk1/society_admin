@@ -9,7 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/deleteNoticeProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
-
+ import 'dart:convert';
+import 'package:http/http.dart' as http;
 // ignore: must_be_immutable
 class AddNotice extends StatefulWidget {
   static const id = "/addNotice";
@@ -160,6 +161,36 @@ class _AddNoticeState extends State<AddNotice> {
     });
     Navigator.pop(context);
   }
+
+
+
+Future<void> sendNotification(String token, String title, String body) async {
+  final url = Uri.parse('http://localhost:8000/notifications/send-notification/');
+
+  try {
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'token': token,
+        'title': title,
+        'body': body,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // Handle successful response
+      print('Notification sent successfully: ${response.body}');
+    } else {
+      // Handle error response
+      print('Failed to send notification: ${response.body}');
+    }
+  } catch (error) {
+    print('Error sending notification: $error');
+  }
+}
 
   Future<PlatformFile> pickAndUploadPDF() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(

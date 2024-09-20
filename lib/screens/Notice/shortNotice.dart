@@ -44,7 +44,12 @@ class _ShortNoticeState extends State<ShortNotice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: primaryColor,
+      flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight))),
         title: const Text('Short Notice'),
       ),
       body: Center(

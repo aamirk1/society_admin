@@ -85,7 +85,12 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
             "Upload Receipt of ${widget.societyName}",
             style: const TextStyle(color: white),
           ),
-          backgroundColor: buttonColor,
+          flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight))),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 8.0),

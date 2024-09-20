@@ -59,7 +59,12 @@ class _AssignedUserState extends State<AssignedUser> {
                     'Assigned Members',
                     style: TextStyle(color: white),
                   ),
-                  backgroundColor: primaryColor),
+                 flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight)))),
             ),
             body: Column(
               children: [

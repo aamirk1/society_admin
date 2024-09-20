@@ -69,7 +69,12 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight))),
         title: const Text('Daily Report'),
       ),
       body: SizedBox(
@@ -180,7 +185,7 @@ class _ReportScreenState extends State<ReportScreen> {
                             ),
                           ),
                         );
-                      }),
+                      }, stream: null,),
                     ),
                   ),
                 ],

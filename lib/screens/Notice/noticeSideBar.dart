@@ -50,7 +50,11 @@ class _NoticeSidebarState extends State<NoticeSidebar> {
           Container(
             padding: const EdgeInsets.only(top: 20),
             width: 150,
-            color: primaryColor,
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [lightBlueColor, blueColor])),
             child: Column(
               children: [
                 Container(

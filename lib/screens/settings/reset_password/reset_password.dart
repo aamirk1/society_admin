@@ -38,7 +38,12 @@ class _ResetPasswordState extends State<ResetPassword> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reset Password'),
-        backgroundColor: primaryColor,
+        flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [lightBlueColor, blueColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight))),
       ),
       body: Center(
         child: Container(

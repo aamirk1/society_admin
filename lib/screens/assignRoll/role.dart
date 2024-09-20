@@ -90,7 +90,12 @@ class _RoleScreenState extends State<RoleScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [lightBlueColor, blueColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight))),
         title: const Text(
           "Role Management",
           style: TextStyle(color: Colors.white),
@@ -106,7 +111,7 @@ class _RoleScreenState extends State<RoleScreen> {
                     //EV PMIS
 
                     Container(
-                      margin: const EdgeInsets.all(15.0),
+                      margin: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                         border: Border.all(
                             color: const Color.fromARGB(

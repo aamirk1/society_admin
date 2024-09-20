@@ -42,7 +42,12 @@ class _AddEmployeeState extends State<AddEmployee> {
           'Add Employee in ${widget.CompanyName}',
           style: const TextStyle(color: white),
         ),
-        backgroundColor: primaryColor,
+        flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight))),
       ),
       body: Center(
         child: Padding(

@@ -43,7 +43,12 @@ class _ReceiptDebitNoteState extends State<ReceiptDebitNote> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: buttonColor,
+   flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight))),
         title: const Text("Receipt "),
       ),
       body: isLoading

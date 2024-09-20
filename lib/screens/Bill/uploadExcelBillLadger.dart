@@ -89,7 +89,12 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
           "Upload Bill of ${widget.societyName}",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: buttonColor,
+        flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight))),
         actions: [
           // Padding(
           //   padding: const EdgeInsets.only(right: 8.0),
@@ -382,7 +387,6 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
   }
 
   Future<List<List<dynamic>>> selectExcelFile() async {
-    List arraydata = [];
     final input = FileUploadInputElement()..accept = '.csv';
     input.click();
 
@@ -411,7 +415,6 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
         columnName.add(a.toString().trim());
       }
       for (var rows in data) {
-        Map<String, dynamic> entry = {};
         Map<String, dynamic> tempMap = {};
 
         print('columnname - $columnName');

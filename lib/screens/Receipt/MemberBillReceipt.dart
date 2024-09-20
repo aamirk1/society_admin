@@ -68,7 +68,12 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
             "All Members Receipt of ${widget.society}",
             style: const TextStyle(color: buttonTextColor),
           ),
-          backgroundColor: buttonColor,
+     flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [lightBlueColor, blueColor],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight))),
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
