@@ -48,11 +48,9 @@ class _ServiceProviderState extends State<ServiceProvider> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(white),
-                      minimumSize: MaterialStateProperty.all(
-                        const Size(20, 10),
-                      )),
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(white),
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,

@@ -1,6 +1,7 @@
 // import 'dart:html';
 // ignore_for_file: use_build_context_synchronously, avoid_print, file_names, void_checks
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -189,5 +190,34 @@ class _AddNocState extends State<AddNoc> {
                 style: TextStyle(color: Colors.red),
               ));
         });
+  }
+
+  Future<void> sendNotification(String token, String title, String body) async {
+    final url =
+        Uri.parse('http://localhost:8000/notifications/send-notification/');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'token': token,
+          'title': title,
+          'body': body,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // Handle successful response
+        print('Notification sent successfully: ${response.body}');
+      } else {
+        // Handle error response
+        print('Failed to send notification: ${response.body}');
+      }
+    } catch (error) {
+      print('Error sending notification: $error');
+    }
   }
 }

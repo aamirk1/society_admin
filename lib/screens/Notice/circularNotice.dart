@@ -52,22 +52,20 @@ class _CircularNoticeState extends State<CircularNotice> {
       appBar: AppBar(
         title: const Text('Circular Notice'),
         flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [lightBlueColor, blueColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight))),
         actions: [
           Padding(
               padding: const EdgeInsets.only(right: 10.0),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(white),
-                      minimumSize: MaterialStateProperty.all(
-                        const Size(20, 10),
-                      )),
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(white),
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,

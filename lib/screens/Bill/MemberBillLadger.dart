@@ -83,11 +83,8 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: const ButtonStyle(
-                  minimumSize: MaterialStatePropertyAll(Size(20, 10)),
-                  backgroundColor: MaterialStatePropertyAll(
-                    Colors.white,
-                  ),
-                ),
+                      backgroundColor: MaterialStatePropertyAll(white),
+                    ),
                 onPressed: () {
                   Navigator.push(
                     context,

@@ -68,21 +68,18 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
             "All Members Receipt of ${widget.society}",
             style: const TextStyle(color: buttonTextColor),
           ),
-     flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+          flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [lightBlueColor, blueColor],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight))),
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: const ButtonStyle(
-                  minimumSize: MaterialStatePropertyAll(Size(20, 10)),
-                  backgroundColor: MaterialStatePropertyAll(
-                    Colors.white,
-                  ),
+                  backgroundColor: MaterialStatePropertyAll(white),
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -233,7 +230,7 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                                     decoration: InputDecoration(
                                                         contentPadding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 3.0,
                                                                 right: 3.0),
                                                         hintText: data[index1]
