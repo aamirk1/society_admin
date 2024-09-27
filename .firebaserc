@@ -5,11 +5,12 @@
   "targets": {
     "societymanagement-763f1": {
       "hosting": {
-        "society_admin": [
+        "societyadmin": [
           "societyadmin"
         ]
       }
     }
   },
-  "etags": {}
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

@@ -130,7 +130,7 @@ class _AddComplaintState extends State<AddComplaint> {
                               errorAlertBox();
                             }
                           },
-                          child: const Text('Send Response'))
+                          child: const Text('Send Response',style: TextStyle(color: white),))
                     ],
                   ),
                 )

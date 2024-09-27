@@ -1,10 +1,11 @@
 // import 'dart:html';
 // ignore_for_file: use_build_context_synchronously, avoid_print, file_names, void_checks
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:society_admin/authScreen/common.dart';
 
 // ignore: must_be_immutable
@@ -85,7 +86,10 @@ class _AddNocState extends State<AddNoc> {
                           selectedFile = await pickAndUploadPDF();
                           setState(() {});
                         },
-                        child: const Text('Pick PDF'),
+                        child: const Text(
+                          'Pick PDF',
+                          style: TextStyle(color: white),
+                        ),
                       ),
                       Text(
                         selectedFile?.name ?? 'No file selected',
@@ -101,7 +105,10 @@ class _AddNocState extends State<AddNoc> {
                             uploadFile(selectedFile!, selectedFile!.name);
                           }
                         },
-                        child: const Text('Upload PDF'),
+                        child: const Text(
+                          'Upload PDF',
+                          style: TextStyle(color: white),
+                        ),
                       ),
                     ])
               ],

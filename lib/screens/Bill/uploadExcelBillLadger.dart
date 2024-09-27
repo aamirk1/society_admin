@@ -177,7 +177,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                             provider.setMonth(monthList[index]);
                             provider.reload(true);
                           },
-                          child: Text(monthList[index]),
+                          child: Text(monthList[index],style: const TextStyle(color: white),),
                         ),
                       );
                     }),
@@ -288,7 +288,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                         openPdf(url);
                       },
                       child: const Text(
-                        "Download CSV",
+                        "Download CSV",style: TextStyle(color: white),
                       ),
                     ),
                   ],
