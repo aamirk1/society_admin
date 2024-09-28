@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:society_admin/authScreen/common.dart';
@@ -11,7 +10,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   Future<void> _getImageFromGallery() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -23,18 +21,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
-         flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+        title: const Text('Edit Profile', style: TextStyle(color: white)),
+        flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [lightBlueColor, blueColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight))),
       ),
       body: Center(
         child: Column(

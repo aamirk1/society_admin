@@ -75,7 +75,8 @@ class _ReportScreenState extends State<ReportScreen> {
                         colors: [lightBlueColor, blueColor],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight))),
-        title: const Text('Daily Report'),
+        title: const Text('Daily Report',
+              style:  TextStyle(color: white)),
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,

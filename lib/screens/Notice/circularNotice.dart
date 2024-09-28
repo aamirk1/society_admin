@@ -50,7 +50,8 @@ class _CircularNoticeState extends State<CircularNotice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Circular Notice'),
+        title: const Text('Circular Notice',
+              style:  TextStyle(color: white)),
         flexibleSpace: Container(
             decoration: const BoxDecoration(
                 gradient: LinearGradient(

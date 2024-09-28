@@ -35,7 +35,8 @@ class _ServiceProviderState extends State<ServiceProvider> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('All Service Provider'),
+        title: const Text('All Service Provider',
+              style:  TextStyle(color: white)),
         flexibleSpace: Container(
             decoration: const BoxDecoration(
                 gradient: LinearGradient(

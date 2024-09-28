@@ -98,7 +98,7 @@ class _RoleScreenState extends State<RoleScreen> {
                     end: Alignment.bottomRight))),
         title: const Text(
           "Role Management",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: white),
         ),
       ),
       body: isLoading

@@ -26,7 +26,8 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Text('Settings',
+              style:  TextStyle(color: white)),
         leading: IconButton(
             onPressed: () {}, icon: const Icon(Icons.settings_outlined)),
         actions: [

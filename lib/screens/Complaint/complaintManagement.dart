@@ -55,6 +55,7 @@ class _ComplaintManagementState extends State<ComplaintManagement> {
         appBar: AppBar(
           title: const Text(
             'Complaint Application',
+              style:  TextStyle(color: white)
           ),
       flexibleSpace: Container(
                 decoration: const BoxDecoration(

@@ -50,7 +50,8 @@ class _ShortNoticeState extends State<ShortNotice> {
                         colors: [lightBlueColor, blueColor],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight))),
-        title: const Text('Short Notice'),
+        title: const Text('Short Notice',
+              style:  TextStyle(color: white)),
       ),
       body: Center(
         child: Form(

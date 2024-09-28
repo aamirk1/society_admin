@@ -49,7 +49,8 @@ class _ReceiptDebitNoteState extends State<ReceiptDebitNote> {
                         colors: [lightBlueColor, blueColor],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight))),
-        title: const Text("Receipt "),
+        title: const Text("Receipt",
+              style:  TextStyle(color: white)),
       ),
       body: isLoading
           ? const Center(

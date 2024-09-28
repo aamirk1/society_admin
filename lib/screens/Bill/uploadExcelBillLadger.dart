@@ -87,7 +87,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
         iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
           "Upload Bill of ${widget.societyName}",
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: white),
         ),
         flexibleSpace: Container(
             decoration: const BoxDecoration(

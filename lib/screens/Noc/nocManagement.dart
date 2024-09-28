@@ -53,7 +53,8 @@ class _NocManagementState extends State<NocManagement> {
     );
     return Scaffold(
       appBar: AppBar(
-        title: const Text('NOC Application'),
+        title: const Text('NOC Application',
+              style:  TextStyle(color: white)),
        flexibleSpace: Container(
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(
