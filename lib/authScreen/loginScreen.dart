@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                                 child: const Text(
                                   'Login',
-                                  style: TextStyle(fontSize: 14, color: white),
+                                  style: TextStyle(fontSize: 16, color: white),
                                 ),
                               ),
                               const SizedBox(
@@ -163,8 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               TextButton(
                                 style: TextButton.styleFrom(
-                                  backgroundColor: primaryColor,
-                                ),
+                                    // backgroundColor: primaryColor,
+                                    ),
                                 onPressed: () {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
@@ -173,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                                 child: const Text(
                                   'Don\'t have an account? Sign Up',
-                                  style: TextStyle(color: white),
+                                  style: TextStyle(color: textColor),
                                 ),
                               ),
                             ],

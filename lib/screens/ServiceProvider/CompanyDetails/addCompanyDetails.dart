@@ -136,7 +136,10 @@ class _AddCompanyState extends State<AddCompany> {
                               widget.userId,
                             );
                           },
-                          child: const Text('Submit'))
+                          child: const Text(
+                            'Submit',
+                            style: TextStyle(color: white),
+                          ))
                     ])),
               ]),
             ),

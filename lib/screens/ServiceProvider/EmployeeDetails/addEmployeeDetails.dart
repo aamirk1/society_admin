@@ -43,11 +43,11 @@ class _AddEmployeeState extends State<AddEmployee> {
           style: const TextStyle(color: white),
         ),
         flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [lightBlueColor, blueColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight))),
       ),
       body: Center(
         child: Padding(
@@ -155,7 +155,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                                 empAddressController.text,
                                 empDesignationController.text);
                           },
-                          child: const Text('Submit'))
+                          child: const Text('Submit',
+                              style: TextStyle(color: white)))
                     ])),
               ]),
             ),

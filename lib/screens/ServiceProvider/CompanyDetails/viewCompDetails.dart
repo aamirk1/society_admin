@@ -29,12 +29,14 @@ class _ViewCompanyDataState extends State<ViewCompanyData> {
           'View Full Detais of ${widget.CompanyName}',
           style: const TextStyle(color: white),
         ),
-          flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                colors: [lightBlueColor, blueColor],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight),
+          ),
+        ),
       ),
       body: Center(
         child: SizedBox(

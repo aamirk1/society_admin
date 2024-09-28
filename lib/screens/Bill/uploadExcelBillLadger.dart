@@ -55,18 +55,18 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
   }
 
   List<String> monthList = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
+    'JAN',
+    'FEB',
+    'MAR',
+    'APR',
+    'MAY',
+    'JUN',
+    'JUL',
+    'AUG',
+    'SEP',
+    'OCT',
+    'NOV',
+    'DEC'
   ];
 
   String monthAndYear = '';
@@ -87,14 +87,14 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
         iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
           "Upload Bill of ${widget.societyName}",
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
         flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [lightBlueColor, blueColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight))),
         actions: [
           // Padding(
           //   padding: const EdgeInsets.only(right: 8.0),
@@ -165,7 +165,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return Container(
-                        margin: const EdgeInsets.only(left: 8.0, top: 5),
+                        margin: const EdgeInsets.only(left: 28.0, top: 5),
                         child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
@@ -177,7 +177,12 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                             provider.setMonth(monthList[index]);
                             provider.reload(true);
                           },
-                          child: Text(monthList[index],style: const TextStyle(color: white),),
+                          child: Center(
+                            child: Text(
+                              monthList[index],
+                              style: const TextStyle(color: white),
+                            ),
+                          ),
                         ),
                       );
                     }),
@@ -235,63 +240,68 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
               const SizedBox(
                 height: 15,
               ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Row(
-                  children: [
-                    ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(buttonColor),
+              Padding(
+                padding: const EdgeInsets.only(left: 28.0),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: Row(
+                    children: [
+                      ElevatedButton(
+                        style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(buttonColor),
+                        ),
+                        onPressed: () async {
+                          if (selectedMonth.trim().isNotEmpty) {
+                            monthAndYear = "$selectedMonth $monthyear";
+                            selectExcelFile();
+                          } else {
+                            await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    contentPadding: const EdgeInsets.all(5),
+                                    icon: const Icon(
+                                      Icons.warning_amber,
+                                      size: 60,
+                                      color: Color.fromARGB(255, 212, 194, 25),
+                                    ),
+                                    actions: [
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'))
+                                    ],
+                                    title: const Text(
+                                      'Please Select A Month !',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  );
+                                });
+                          }
+                        },
+                        child: const Text("Upload CSV",
+                            style: TextStyle(color: white)),
                       ),
-                      onPressed: () async {
-                        if (selectedMonth.trim().isNotEmpty) {
-                          monthAndYear = "$selectedMonth $monthyear";
-                          selectExcelFile();
-                        } else {
-                          await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  contentPadding: const EdgeInsets.all(5),
-                                  icon: const Icon(
-                                    Icons.warning_amber,
-                                    size: 60,
-                                    color: Color.fromARGB(255, 212, 194, 25),
-                                  ),
-                                  actions: [
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'))
-                                  ],
-                                  title: const Text(
-                                    'Please Select A Month !',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                );
-                              });
-                        }
-                      },
-                      child: const Text(
-                        "Upload CSV",
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                        style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(buttonColor),
+                        ),
+                        onPressed: () {
+                          openPdf(url);
+                        },
+                        child: const Text(
+                          "Download CSV",
+                          style: TextStyle(color: white),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    ElevatedButton(
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(buttonColor),
-                      ),
-                      onPressed: () {
-                        openPdf(url);
-                      },
-                      child: const Text(
-                        "Download CSV",style: TextStyle(color: white),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

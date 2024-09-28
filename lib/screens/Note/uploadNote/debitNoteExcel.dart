@@ -67,11 +67,11 @@ class _DebitNoteExcelState extends State<DebitNoteExcel> {
             style: const TextStyle(color: white),
           ),
           flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [lightBlueColor, blueColor],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight))),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
@@ -344,7 +344,10 @@ class _DebitNoteExcelState extends State<DebitNoteExcel> {
                                     )));
                           }
                         },
-                        child: const Text('Submit'),
+                        child: const Text(
+                          'Submit',
+                          style: TextStyle(color: white),
+                        ),
                       ),
                     ],
                   ),

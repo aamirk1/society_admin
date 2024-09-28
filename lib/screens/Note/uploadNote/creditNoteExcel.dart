@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/screens/Members/ListOfMemberName.dart';
@@ -72,12 +71,12 @@ class _CreditNoteExcelState extends State<CreditNoteExcel> {
             "Upload Credit Note of ${widget.societyName}",
             style: const TextStyle(color: white),
           ),
-     flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+          flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [lightBlueColor, blueColor],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight))),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
@@ -346,7 +345,10 @@ class _CreditNoteExcelState extends State<CreditNoteExcel> {
                                     )));
                           }
                         },
-                        child: const Text('Submit'),
+                        child: const Text(
+                          'Submit',
+                          style: TextStyle(color: white),
+                        ),
                       ),
                     ],
                   ),
