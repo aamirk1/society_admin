@@ -29,6 +29,7 @@ class CircularNotice extends StatefulWidget {
 class _CircularNoticeState extends State<CircularNotice> {
   List<dynamic> dataList = [];
   List<String> fileList = [];
+  List<dynamic> allFcmId = [];
   String url = '';
   bool isClicked = false;
   final date = DateFormat('dd-MM-yyyy').format(DateTime.now());
@@ -43,6 +44,7 @@ class _CircularNoticeState extends State<CircularNotice> {
   void initState() {
     getNotice(widget.society);
     getNoticePdf(widget.society);
+    getFcmId();
     super.initState();
   }
 
@@ -50,8 +52,7 @@ class _CircularNoticeState extends State<CircularNotice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Circular Notice',
-              style:  TextStyle(color: white)),
+        title: const Text('Circular Notice', style: TextStyle(color: white)),
         flexibleSpace: Container(
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -303,5 +304,19 @@ class _CircularNoticeState extends State<CircularNotice> {
     } else {
       const Text('Sorry it is not ready for mobile platform');
     }
+  }
+
+  Future<void> getFcmId() async {
+    QuerySnapshot getAllFcmId = await FirebaseFirestore.instance
+        .collection('users')
+        .where('fcmId', isNotEqualTo: null)
+        .get();
+    List<dynamic> FcmId = getAllFcmId.docs
+        .map((e) => (e.data() as Map<String, dynamic>)['fcmId'])
+        .toList();
+    for (var i = 0; i < FcmId.length; i++) {
+      allFcmId.add(FcmId[i]);
+    }
+    // print('update fcmId $allFcmId');
   }
 }

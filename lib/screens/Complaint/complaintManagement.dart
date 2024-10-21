@@ -53,16 +53,14 @@ class _ComplaintManagementState extends State<ComplaintManagement> {
     );
     return Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Complaint Application',
-              style:  TextStyle(color: white)
-          ),
-      flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+          title: const Text('Complaint Application',
+              style: TextStyle(color: white)),
+          flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [lightBlueColor, blueColor],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight))),
           actions: [
             IconButton(
               padding: const EdgeInsets.only(right: 20.0),
@@ -252,6 +250,7 @@ class _ComplaintManagementState extends State<ComplaintManagement> {
                                   date: dateofComplainList[selectedDateIndex]
                                       .toString(),
                                   response: allComplaintData['response'],
+                                  fcmId: allComplaintData['fcmId'],
                                 )
                               : Container(),
                         ),

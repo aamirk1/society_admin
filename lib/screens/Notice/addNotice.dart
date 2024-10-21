@@ -87,7 +87,7 @@ class _AddNoticeState extends State<AddNotice> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(primaryColor),
                 ),
-                onPressed: () {
+                onPressed: ()async {
                   storeNotice(titleController.text, customNoticeController.text,
                       widget.userId);
                 },
@@ -165,8 +165,7 @@ class _AddNoticeState extends State<AddNotice> {
   }
 
   Future<void> sendNotification(String token, String title, String body) async {
-    final url =
-        Uri.parse('http://localhost:8000/notifications/send-notification/');
+    final url = Uri.parse('http://localhost:3000/not');
 
     try {
       final response = await http.post(

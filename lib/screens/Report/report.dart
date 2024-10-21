@@ -70,13 +70,12 @@ class _ReportScreenState extends State<ReportScreen> {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
-        title: const Text('Daily Report',
-              style:  TextStyle(color: white)),
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [lightBlueColor, blueColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight))),
+        title: const Text('Daily Report', style: TextStyle(color: white)),
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -138,55 +137,59 @@ class _ReportScreenState extends State<ReportScreen> {
                       height: MediaQuery.of(context).size.height * 0.60,
                       width: MediaQuery.of(context).size.width * 0.99,
                       child: StreamBuilder<List<List<dynamic>>>(
-                          builder: (context, snapshot) {
-                        return DataTable2(
-                          minWidth: 4500,
-                          border: TableBorder.all(color: Colors.black),
-                          headingRowColor:
-                              const MaterialStatePropertyAll(primaryColor),
-                          headingTextStyle: const TextStyle(
-                              color: Colors.white, fontSize: 50.0),
-                          columnSpacing: 3.0,
-                          columns: List.generate(columnName.length, (index) {
-                            return DataColumn2(
-                              fixedWidth: index == 4 ? 500 : 110,
-                              label: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  columnName[index],
-                                  style: const TextStyle(
-                                      // overflow: TextOverflow.ellipsis,
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            );
-                          }),
-                          rows: List.generate(
-                            growable: true,
-                            allData.length, //change column name to row data
-                            (index1) => DataRow2(
-                              cells: List.generate(growable: true, 6, (index2) {
-                                //change column name to row data
-                                return
-                                    //  allData[index1][index2] !=
-                                    //         'Status'
-                                    //     ?
-                                    DataCell(Padding(
-                                  padding: const EdgeInsets.only(bottom: 2.0),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      allData[index1][index2].toString(),
-                                      style: const TextStyle(color: textColor),
-                                    ),
+                        builder: (context, snapshot) {
+                          return DataTable2(
+                            minWidth: 4500,
+                            border: TableBorder.all(color: Colors.black),
+                            headingRowColor:
+                                const MaterialStatePropertyAll(primaryColor),
+                            headingTextStyle: const TextStyle(
+                                color: Colors.white, fontSize: 50.0),
+                            columnSpacing: 3.0,
+                            columns: List.generate(columnName.length, (index) {
+                              return DataColumn2(
+                                fixedWidth: index == 4 ? 500 : 110,
+                                label: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    columnName[index],
+                                    style: const TextStyle(
+                                        // overflow: TextOverflow.ellipsis,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ));
-                              }),
+                                ),
+                              );
+                            }),
+                            rows: List.generate(
+                              growable: true,
+                              allData.length, //change column name to row data
+                              (index1) => DataRow2(
+                                cells:
+                                    List.generate(growable: true, 6, (index2) {
+                                  //change column name to row data
+                                  return
+                                      //  allData[index1][index2] !=
+                                      //         'Status'
+                                      //     ?
+                                      DataCell(Padding(
+                                    padding: const EdgeInsets.only(bottom: 2.0),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        allData[index1][index2].toString(),
+                                        style:
+                                            const TextStyle(color: textColor),
+                                      ),
+                                    ),
+                                  ));
+                                }),
+                              ),
                             ),
-                          ),
-                        );
-                      }, stream: null,),
+                          );
+                        },
+                        stream: null,
+                      ),
                     ),
                   ),
                 ],
@@ -207,45 +210,66 @@ class _ReportScreenState extends State<ReportScreen> {
       isLoading = true;
     });
 
-
     final fontData1 = await rootBundle.load('fonts/IBMPlexSans-Medium.ttf');
     final fontData2 = await rootBundle.load('fonts/IBMPlexSans-Bold.ttf');
-
 
     List<pw.TableRow> rows = [];
 
     rows.add(pw.TableRow(children: [
       pw.Container(
-          padding: const pw.EdgeInsets.all(2.0),
-          child: pw.Center(
-              child: pw.Text('Sr No',
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+        padding: const pw.EdgeInsets.all(2.0),
+        child: pw.Center(
+          child: pw.Text(
+            'Sr No',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+          ),
+        ),
+      ),
       pw.Container(
-          padding:
-              const pw.EdgeInsets.only(top: 4, bottom: 4, left: 2, right: 2),
-          child: pw.Center(
-              child: pw.Text('Date',
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+        padding: const pw.EdgeInsets.only(top: 4, bottom: 4, left: 2, right: 2),
+        child: pw.Center(
+          child: pw.Text(
+            'Date',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+          ),
+        ),
+      ),
       pw.Container(
-          padding: const pw.EdgeInsets.all(2.0),
-          child: pw.Center(
-              child: pw.Text('Unit No',
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+        padding: const pw.EdgeInsets.all(2.0),
+        child: pw.Center(
+          child: pw.Text(
+            'Unit No',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+          ),
+        ),
+      ),
       pw.Container(
-          padding: const pw.EdgeInsets.all(2.0),
-          child: pw.Center(
-              child: pw.Text('Category',
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+        padding: const pw.EdgeInsets.all(2.0),
+        child: pw.Center(
+          child: pw.Text(
+            'Category',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+          ),
+        ),
+      ),
       pw.Container(
-          padding: const pw.EdgeInsets.all(2.0),
-          child: pw.Center(
-              child: pw.Text('particulars',
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+        padding: const pw.EdgeInsets.all(2.0),
+        child: pw.Center(
+          child: pw.Text(
+            'particulars',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+          ),
+        ),
+      ),
       pw.Container(
-          padding: const pw.EdgeInsets.all(2.0),
-          child: pw.Center(
-              child: pw.Text('Status',
-                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+        padding: const pw.EdgeInsets.all(2.0),
+        child: pw.Center(
+          child: pw.Text(
+            'Status',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+          ),
+        ),
+      ),
       // pw.Container(
       //     padding: const pw.EdgeInsets.all(2.0),
       //     child: pw.Center(
@@ -266,36 +290,60 @@ class _ReportScreenState extends State<ReportScreen> {
         //Text Rows of PDF Table
         rows.add(pw.TableRow(children: [
           pw.Container(
-              padding: const pw.EdgeInsets.all(3.0),
-              child: pw.Center(
-                  child: pw.Text('${i + 1}',
-                      style: const pw.TextStyle(fontSize: 14)))),
+            padding: const pw.EdgeInsets.all(3.0),
+            child: pw.Center(
+              child: pw.Text(
+                '${i + 1}',
+                style: const pw.TextStyle(fontSize: 14),
+              ),
+            ),
+          ),
           pw.Container(
-              padding: const pw.EdgeInsets.all(2.0),
-              child: pw.Center(
-                  child: pw.Text(allData[i][1].toString(),
-                      style: const pw.TextStyle(fontSize: 14)))),
+            padding: const pw.EdgeInsets.all(2.0),
+            child: pw.Center(
+              child: pw.Text(
+                allData[i][1].toString(),
+                style: const pw.TextStyle(fontSize: 14),
+              ),
+            ),
+          ),
           pw.Container(
-              padding: const pw.EdgeInsets.all(2.0),
-              child: pw.Center(
-                  child: pw.Text(allData[i][2].toString(),
-                      style: const pw.TextStyle(fontSize: 14)))),
+            padding: const pw.EdgeInsets.all(2.0),
+            child: pw.Center(
+              child: pw.Text(
+                allData[i][2].toString(),
+                style: const pw.TextStyle(fontSize: 14),
+              ),
+            ),
+          ),
           pw.Container(
-              padding: const pw.EdgeInsets.all(5.0),
-              child: pw.Center(
-                  child: pw.Text(allData[i][3].toString(),
-                      style: const pw.TextStyle(fontSize: 14)))),
+            padding: const pw.EdgeInsets.all(5.0),
+            child: pw.Center(
+              child: pw.Text(
+                allData[i][3].toString(),
+                style: const pw.TextStyle(fontSize: 14),
+              ),
+            ),
+          ),
           pw.Container(
-              padding: const pw.EdgeInsets.all(2.0),
-              child: pw.Center(
-                  child: pw.Text(allData[i][4].toString(),
-                      textAlign: pw.TextAlign.center,
-                      style: const pw.TextStyle(fontSize: 14)))),
+            padding: const pw.EdgeInsets.all(2.0),
+            child: pw.Center(
+              child: pw.Text(
+                allData[i][4].toString(),
+                textAlign: pw.TextAlign.center,
+                style: const pw.TextStyle(fontSize: 14),
+              ),
+            ),
+          ),
           pw.Container(
-              padding: const pw.EdgeInsets.all(2.0),
-              child: pw.Center(
-                  child: pw.Text(allData[i][5].toString(),
-                      style: const pw.TextStyle(fontSize: 14)))),
+            padding: const pw.EdgeInsets.all(2.0),
+            child: pw.Center(
+              child: pw.Text(
+                allData[i][5].toString(),
+                style: const pw.TextStyle(fontSize: 14),
+              ),
+            ),
+          ),
         ]));
       }
     }

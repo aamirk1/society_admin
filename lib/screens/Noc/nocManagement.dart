@@ -30,6 +30,8 @@ class _NocManagementState extends State<NocManagement> {
   String selectedFlatno = '';
   bool isNocLoaded = false;
   Map<String, dynamic> allNocData = {};
+
+  Map<String, dynamic> allComplaintData = {};
   bool isLoading = true;
 
   bool isShowNoc = false;
@@ -53,14 +55,13 @@ class _NocManagementState extends State<NocManagement> {
     );
     return Scaffold(
       appBar: AppBar(
-        title: const Text('NOC Application',
-              style:  TextStyle(color: white)),
-       flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+        title: const Text('NOC Application', style: TextStyle(color: white)),
+        flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [lightBlueColor, blueColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight))),
         actions: [
           IconButton(
             padding: const EdgeInsets.only(right: 20.0),
@@ -223,10 +224,13 @@ class _NocManagementState extends State<NocManagement> {
                                 child: isNocLoaded
                                     ? AddNoc(
                                         nocType: provider.selectedNoc,
-                                        text: allNocData['text'],
+                                        text:
+                                            allComplaintData['text'].toString(),
                                         society: widget.society,
                                         flatNo: selectedFlatno,
                                         date: dateofNocList[selectedDateIndex]
+                                            .toString(),
+                                        fcmId: allComplaintData['fcmId']
                                             .toString(),
                                       )
                                     : Container(),
@@ -316,11 +320,11 @@ class _NocManagementState extends State<NocManagement> {
           .collection('dateOfNoc')
           .doc(date)
           .get();
-
+      print('bers');
       if (fetchallData.exists) {
         //allComplaintData = fetchallData.data().toString();
-        allNocData = fetchallData.data() as Map<String, dynamic>;
-        print('allNocData $allNocData');
+        allComplaintData = fetchallData.data() as Map<String, dynamic>;
+        print('allComplaintData $allComplaintData');
       }
     } catch (e) {
       print("Error while fetching data $e");

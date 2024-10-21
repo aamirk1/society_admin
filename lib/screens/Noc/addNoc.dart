@@ -10,18 +10,21 @@ import 'package:society_admin/authScreen/common.dart';
 
 // ignore: must_be_immutable
 class AddNoc extends StatefulWidget {
-  AddNoc(
-      {super.key,
-      required this.nocType,
-      required this.text,
-      required this.society,
-      required this.flatNo,
-      required this.date});
+  AddNoc({
+    super.key,
+    required this.nocType,
+    required this.text,
+    required this.society,
+    required this.flatNo,
+    required this.date,
+    required this.fcmId,
+  });
   String nocType;
   String text;
   String society;
   String flatNo;
   String date;
+  String fcmId;
   @override
   State<AddNoc> createState() => _AddNocState();
 }
@@ -35,6 +38,8 @@ class _AddNocState extends State<AddNoc> {
   void initState() {
     super.initState();
     // getTypeOfNoc(widget.society, widget.flatNo, widget.nocType,widget.text);
+    print('fcm ${widget.text.toString()}');
+    print('fcmiidddddddd ${widget.fcmId.toString()}');
   }
 
   @override
@@ -102,7 +107,11 @@ class _AddNocState extends State<AddNoc> {
                           if (selectedFile == null) {
                             return alertbox();
                           } else {
-                            uploadFile(selectedFile!, selectedFile!.name);
+                            uploadFile(selectedFile!, selectedFile!.name)
+                                .whenComplete(() {
+                              sendNotification(widget.fcmId, selectedFile!.name,
+                                  widget.nocType);
+                            });
                           }
                         },
                         child: const Text(
@@ -134,7 +143,7 @@ class _AddNocState extends State<AddNoc> {
     return file!;
   }
 
-  void uploadFile(PlatformFile file, String fileName) async {
+  Future<void> uploadFile(PlatformFile file, String fileName) async {
     try {
       TaskSnapshot taskSnapshot;
       // ignore: duplicate_ignore
@@ -200,8 +209,7 @@ class _AddNocState extends State<AddNoc> {
   }
 
   Future<void> sendNotification(String token, String title, String body) async {
-    final url =
-        Uri.parse('http://localhost:8000/notifications/send-notification/');
+    final url = Uri.parse('http://localhost:3000/not');
 
     try {
       final response = await http.post(
@@ -212,7 +220,7 @@ class _AddNocState extends State<AddNoc> {
         body: json.encode({
           'token': token,
           'title': title,
-          'body': body,
+          'message': body,
         }),
       );
 

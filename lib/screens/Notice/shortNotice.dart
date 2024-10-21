@@ -1,10 +1,13 @@
 // import 'dart:html';
 // ignore_for_file: avoid_print, use_build_context_synchronously, duplicate_ignore, void_checks, file_names
 
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/deleteNoticeProvider.dart';
@@ -44,14 +47,13 @@ class _ShortNoticeState extends State<ShortNotice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
-        title: const Text('Short Notice',
-              style:  TextStyle(color: white)),
+        flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [lightBlueColor, blueColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight))),
+        title: const Text('Short Notice', style: TextStyle(color: white)),
       ),
       body: Center(
         child: Form(
@@ -106,9 +108,14 @@ class _ShortNoticeState extends State<ShortNotice> {
                       ),
                       backgroundColor: MaterialStateProperty.all(primaryColor),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       storeNotice(titleController.text,
                           customNoticeController.text, widget.userId);
+
+                      await sendNotification(
+                          'cWInH5ZBSsOS8EHH9EKJSf:APA91bG-D16cg1bNDFQu1ea-HabCs9dJkbJ43zU4-sNe_Z4BJIh4I2ZGXZbDCL_nAke6XZADik3d64nxAHddQrmljVHLI5yiZOWGDjeA5JimXpWV5Itg3PUlN246W9g3e_C_prjxc1tR',
+                          titleController.text,
+                          customNoticeController.text);
                     },
                     child: const Text(
                       'Submit',
@@ -208,6 +215,35 @@ class _ShortNoticeState extends State<ShortNotice> {
       }
     } on FirebaseException catch (e) {
       print('Failed to upload PDF file: $e');
+    }
+  }
+
+  Future<void> sendNotification(
+      String token, String title, String message) async {
+    final url = Uri.parse('http://localhost:3000/not/');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'title': title,
+          'token': token,
+          'message': message,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // Handle successful response
+        print('Notification sent successfully: ${response.body}');
+      } else {
+        // Handle error response
+        print('Failed to send notification: ${response.body}');
+      }
+    } catch (error) {
+      print('Error sending notification: $error');
     }
   }
 

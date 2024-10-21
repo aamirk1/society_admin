@@ -21,7 +21,11 @@ import 'package:society_admin/screens/settings/settings.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class customSide extends StatefulWidget {
-  customSide({super.key, this.society, this.allRoles, required this.userId});
+  customSide(
+      {super.key,
+      this.society,
+      this.allRoles,
+      required this.userId});
   String? society;
   List<dynamic>? allRoles = [];
   String userId;

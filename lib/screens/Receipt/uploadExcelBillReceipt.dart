@@ -86,11 +86,13 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
             style: const TextStyle(color: white),
           ),
           flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [lightBlueColor, blueColor],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight))),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [lightBlueColor, blueColor],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight),
+            ),
+          ),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 8.0),

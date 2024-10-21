@@ -52,7 +52,8 @@ class _GatePassState extends State<GatePass> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gate Pass Application'),
+        title:
+            const Text('Gate Pass Application', style: TextStyle(color: white)),
         flexibleSpace: Container(
             decoration: const BoxDecoration(
                 gradient: LinearGradient(

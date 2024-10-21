@@ -15,13 +15,15 @@ class AddComplaint extends StatefulWidget {
       required this.text,
       required this.flatNo,
       required this.date,
-      this.response});
+      this.response,
+      required this.fcmId});
   String complaintType;
   String society;
   String text;
   String flatNo;
   String date;
   String? response;
+  String fcmId;
   @override
   State<AddComplaint> createState() => _AddComplaintState();
 }
@@ -35,6 +37,7 @@ class _AddComplaintState extends State<AddComplaint> {
 
   @override
   Widget build(BuildContext context) {
+    print('com ${widget.fcmId}');
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -125,12 +128,19 @@ class _AddComplaintState extends State<AddComplaint> {
                             if (responseMsgController.text.isNotEmpty) {
                               storeData().whenComplete(() {
                                 successAlertBox();
+                                sendNotification(
+                                    widget.fcmId,
+                                    widget.complaintType,
+                                    responseMsgController.text);
                               });
                             } else {
                               errorAlertBox();
                             }
                           },
-                          child: const Text('Send Response',style: TextStyle(color: white),))
+                          child: const Text(
+                            'Send Response',
+                            style: TextStyle(color: white),
+                          ))
                     ],
                   ),
                 )
@@ -236,8 +246,7 @@ class _AddComplaintState extends State<AddComplaint> {
   }
 
   Future<void> sendNotification(String token, String title, String body) async {
-    final url =
-        Uri.parse('http://localhost:8000/notifications/send-notification/');
+    final url = Uri.parse('http://localhost:3000/not');
 
     try {
       final response = await http.post(
@@ -248,7 +257,7 @@ class _AddComplaintState extends State<AddComplaint> {
         body: json.encode({
           'token': token,
           'title': title,
-          'body': body,
+          'message': body,
         }),
       );
 
