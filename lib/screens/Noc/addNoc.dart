@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:society_admin/authScreen/common.dart';
 
 // ignore: must_be_immutable
@@ -208,31 +207,31 @@ class _AddNocState extends State<AddNoc> {
         });
   }
 
-  Future<void> sendNotification(String token, String title, String body) async {
-    final url = Uri.parse('http://localhost:3000/not');
+  // Future<void> sendNotification(String token, String title, String body) async {
+  //   final url = Uri.parse('http://localhost:3000/not');
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
-          'token': token,
-          'title': title,
-          'message': body,
-        }),
-      );
+  //   try {
+  //     final response = await http.post(
+  //       url,
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: json.encode({
+  //         'token': token,
+  //         'title': title,
+  //         'message': body,
+  //       }),
+  //     );
 
-      if (response.statusCode == 200) {
-        // Handle successful response
-        print('Notification sent successfully: ${response.body}');
-      } else {
-        // Handle error response
-        print('Failed to send notification: ${response.body}');
-      }
-    } catch (error) {
-      print('Error sending notification: $error');
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       // Handle successful response
+  //       print('Notification sent successfully: ${response.body}');
+  //     } else {
+  //       // Handle error response
+  //       print('Failed to send notification: ${response.body}');
+  //     }
+  //   } catch (error) {
+  //     print('Error sending notification: $error');
+  //   }
+  // }
 }

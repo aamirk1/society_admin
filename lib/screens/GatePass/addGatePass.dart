@@ -1,29 +1,29 @@
 // import 'dart:html';
 // ignore_for_file: use_build_context_synchronously, avoid_print, file_names, void_checks
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/gatePassProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
 
 // ignore: must_be_immutable
 class AddGatePass extends StatefulWidget {
-  AddGatePass(
-      {super.key,
-      required this.gatePassType,
-      required this.text,
-      required this.society,
-      required this.flatNo,
-      required this.date});
+  AddGatePass({
+    super.key,
+    required this.gatePassType,
+    required this.text,
+    required this.society,
+    required this.flatNo,
+    required this.date,
+    required this.fcmId,
+  });
   String gatePassType;
   String text;
   String society;
   String flatNo;
   String date;
+  String fcmId;
 
   @override
   @override
@@ -91,8 +91,10 @@ class _AddGatePassState extends State<AddGatePass> {
                                     approvedAlertbox(true, 'Approved');
                                   },
                         child: provider.isApproved == true
-                            ? const Text('Approved')
-                            : const Text('Approve'),
+                            ? const Text('Approved',
+                                style: TextStyle(color: white))
+                            : const Text('Approve',
+                                style: TextStyle(color: white)),
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -105,8 +107,10 @@ class _AddGatePassState extends State<AddGatePass> {
                                     approvedAlertbox(false, 'Rejected');
                                   },
                         child: provider.isApproved == false
-                            ? const Text('Rejected')
-                            : const Text('Reject'),
+                            ? const Text('Rejected',
+                                style: TextStyle(color: white))
+                            : const Text('Reject',
+                                style: TextStyle(color: white)),
                       )
                     ]),
               ],
@@ -118,14 +122,13 @@ class _AddGatePassState extends State<AddGatePass> {
   }
 
   Future<void> storeApprovedGatePass(bool approvedStatus) async {
-    final provider = Provider.of<GatePassProvider>(context, listen: false);
     await firestore
         .collection('gatePassApplications')
         .doc(widget.society)
         .collection('flatno')
         .doc(widget.flatNo)
         .collection('gatePassType')
-        .doc(provider.selectedPass)
+        .doc(widget.gatePassType)
         .collection('dateOfGatePass')
         .doc(widget.date)
         .update({"isApproved": approvedStatus});
@@ -147,7 +150,10 @@ class _AddGatePassState extends State<AddGatePass> {
                       setState(() {
                         final provider = Provider.of<GatePassProvider>(context,
                             listen: false);
-                        storeApprovedGatePass(approvedStatus);
+                        storeApprovedGatePass(approvedStatus).whenComplete(() {
+                          sendNotification(
+                              widget.fcmId, status, provider.selectedPass);
+                        });
                         provider.setIsApproved(approvedStatus);
                         provider.setLoadWidget(true);
                       });
@@ -173,34 +179,5 @@ class _AddGatePassState extends State<AddGatePass> {
         );
       },
     );
-  }
-
-  Future<void> sendNotification(String token, String title, String body) async {
-    final url =
-        Uri.parse('http://localhost:8000/notifications/send-notification/');
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
-          'token': token,
-          'title': title,
-          'body': body,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        // Handle successful response
-        print('Notification sent successfully: ${response.body}');
-      } else {
-        // Handle error response
-        print('Failed to send notification: ${response.body}');
-      }
-    } catch (error) {
-      print('Error sending notification: $error');
-    }
   }
 }

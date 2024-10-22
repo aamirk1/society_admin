@@ -245,31 +245,5 @@ class _AddComplaintState extends State<AddComplaint> {
         });
   }
 
-  Future<void> sendNotification(String token, String title, String body) async {
-    final url = Uri.parse('http://localhost:3000/not');
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
-          'token': token,
-          'title': title,
-          'message': body,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        // Handle successful response
-        print('Notification sent successfully: ${response.body}');
-      } else {
-        // Handle error response
-        print('Failed to send notification: ${response.body}');
-      }
-    } catch (error) {
-      print('Error sending notification: $error');
-    }
-  }
+  
 }

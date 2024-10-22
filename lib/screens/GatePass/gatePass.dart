@@ -229,7 +229,8 @@ class _GatePassState extends State<GatePass> {
                                       text: allGatePassData['text'],
                                       society: widget.society,
                                       flatNo: selectedFlatno,
-                                      date: dateofNocList[selectedDateIndex])
+                                      date: dateofNocList[selectedDateIndex],
+                                      fcmId: allGatePassData['fcmId'])
                                   : Container(),
                             )
                           : Container(),
