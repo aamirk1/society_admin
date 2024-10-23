@@ -27,7 +27,7 @@ class GatePassProvider with ChangeNotifier {
     await _fetchDateOfGatePass!();
   }
 
-  void setIsApproved(bool? value) {
+  void setIsApproved(bool value) {
     _isApproved = value;
   }
 
@@ -35,5 +35,4 @@ class GatePassProvider with ChangeNotifier {
     _selectedPass = value;
     notifyListeners();
   }
-
 }

@@ -12,9 +12,14 @@ import 'package:society_admin/authScreen/common.dart';
 // ignore: must_be_immutable
 class AddNoticePdf extends StatefulWidget {
   static const id = "/AddNoticePdf";
-  AddNoticePdf({super.key, this.societyName, required this.userId});
+  AddNoticePdf(
+      {super.key,
+      this.societyName,
+      required this.userId,
+      required this.fcmIdList});
   String? societyName;
   String userId;
+  List<String> fcmIdList = [];
 
   @override
   State<AddNoticePdf> createState() => _AddNoticePdfState();

@@ -19,7 +19,6 @@ class AddNotice extends StatefulWidget {
   AddNotice({super.key, this.societyName, required this.userId});
   String? societyName;
   String userId;
-
   @override
   State<AddNotice> createState() => _AddNoticeState();
 }
@@ -87,7 +86,7 @@ class _AddNoticeState extends State<AddNotice> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(primaryColor),
                 ),
-                onPressed: ()async {
+                onPressed: () async {
                   storeNotice(titleController.text, customNoticeController.text,
                       widget.userId);
                 },
@@ -142,9 +141,9 @@ class _AddNoticeState extends State<AddNotice> {
     );
   }
 
-  void storeNotice(title, notice, userId) {
+  Future<void> storeNotice(title, notice, userId) async {
     final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('notice')
         .doc(widget.societyName)
         .collection('notices')

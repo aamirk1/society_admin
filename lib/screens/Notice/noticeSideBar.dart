@@ -6,9 +6,14 @@ import 'package:society_admin/screens/Notice/shortNotice.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class NoticeSidebar extends StatefulWidget {
-  NoticeSidebar({super.key, this.societyName, required this.userId});
+  NoticeSidebar(
+      {super.key,
+      this.societyName,
+      required this.userId,
+      required this.fcmIdList});
   String? societyName;
   String userId;
+  List<String> fcmIdList = [];
   @override
   State<NoticeSidebar> createState() => _NoticeSidebarState();
 }
@@ -37,12 +42,15 @@ class _NoticeSidebarState extends State<NoticeSidebar> {
       ShortNotice(
           userId: widget.userId,
           societyName: widget.societyName,
-          isIndex1: isIndex1),
+          isIndex1: isIndex1,
+          fcmIdList: widget.fcmIdList,
+          ),
       ShortNotice(
         userId: widget.userId,
         societyName: widget.societyName,
+        fcmIdList: widget.fcmIdList
       ),
-      AddNoticePdf(userId: widget.userId, societyName: widget.societyName),
+      AddNoticePdf(userId: widget.userId, societyName: widget.societyName,fcmIdList: widget.fcmIdList),
     ];
     return Scaffold(
       body: Row(

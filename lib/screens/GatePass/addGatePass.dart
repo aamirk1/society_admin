@@ -121,7 +121,9 @@ class _AddGatePassState extends State<AddGatePass> {
     );
   }
 
-  Future<void> storeApprovedGatePass(bool approvedStatus) async {
+  Future<void> storeApprovedGatePass(bool? approvedStatus) async {
+    final provider = Provider.of<GatePassProvider>(context, listen: false);
+    provider.setIsApproved(false);
     await firestore
         .collection('gatePassApplications')
         .doc(widget.society)
@@ -132,6 +134,8 @@ class _AddGatePassState extends State<AddGatePass> {
         .collection('dateOfGatePass')
         .doc(widget.date)
         .update({"isApproved": approvedStatus});
+
+    provider.setIsApproved(approvedStatus!);
   }
 
   // Rejected code end here
@@ -147,16 +151,13 @@ class _AddGatePassState extends State<AddGatePass> {
               children: [
                 TextButton(
                     onPressed: () {
-                      setState(() {
-                        final provider = Provider.of<GatePassProvider>(context,
-                            listen: false);
-                        storeApprovedGatePass(approvedStatus).whenComplete(() {
-                          sendNotification(
-                              widget.fcmId, status, provider.selectedPass);
-                        });
-                        provider.setIsApproved(approvedStatus);
-                        provider.setLoadWidget(true);
+                      final provider =
+                          Provider.of<GatePassProvider>(context, listen: false);
+                      storeApprovedGatePass(approvedStatus).whenComplete(() {
+                        sendNotification(
+                            widget.fcmId, status, provider.selectedPass);
                       });
+                      provider.setLoadWidget(true);
                       Navigator.pop(context);
                     },
                     child: const Text(

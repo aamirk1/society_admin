@@ -29,7 +29,7 @@ class CircularNotice extends StatefulWidget {
 class _CircularNoticeState extends State<CircularNotice> {
   List<dynamic> dataList = [];
   List<String> fileList = [];
-  List<dynamic> allFcmId = [];
+  List<String> allFcmId = [];
   String url = '';
   bool isClicked = false;
   final date = DateFormat('dd-MM-yyyy').format(DateTime.now());
@@ -73,7 +73,9 @@ class _CircularNoticeState extends State<CircularNotice> {
                       context,
                       MaterialPageRoute(builder: (context) {
                         return NoticeSidebar(
-                            societyName: widget.society, userId: widget.userId);
+                            societyName: widget.society,
+                            userId: widget.userId,
+                            fcmIdList: allFcmId);
                       }),
                     );
                   },
@@ -317,6 +319,7 @@ class _CircularNoticeState extends State<CircularNotice> {
     for (var i = 0; i < FcmId.length; i++) {
       allFcmId.add(FcmId[i]);
     }
-    // print('update fcmId $allFcmId');
+
+    print('notice update fcmId $allFcmId');
   }
 }

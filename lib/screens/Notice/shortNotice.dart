@@ -20,10 +20,12 @@ class ShortNotice extends StatefulWidget {
       {super.key,
       this.societyName,
       required this.userId,
-      this.isIndex1 = false});
+      this.isIndex1 = false,
+      required this.fcmIdList});
   String? societyName;
   String userId;
   bool isIndex1;
+  List<String> fcmIdList = [];
 
   @override
   State<ShortNotice> createState() => _ShortNoticeState();
@@ -110,12 +112,11 @@ class _ShortNoticeState extends State<ShortNotice> {
                     ),
                     onPressed: () async {
                       storeNotice(titleController.text,
-                          customNoticeController.text, widget.userId);
-
-                      await sendNotification(
-                          'cWInH5ZBSsOS8EHH9EKJSf:APA91bG-D16cg1bNDFQu1ea-HabCs9dJkbJ43zU4-sNe_Z4BJIh4I2ZGXZbDCL_nAke6XZADik3d64nxAHddQrmljVHLI5yiZOWGDjeA5JimXpWV5Itg3PUlN246W9g3e_C_prjxc1tR',
-                          titleController.text,
-                          customNoticeController.text);
+                              customNoticeController.text, widget.userId)
+                          .whenComplete(() {
+                        sendNoticeNotification(
+                            widget.fcmIdList, "Notice", titleController.text);
+                      });
                     },
                     child: const Text(
                       'Submit',
@@ -134,9 +135,9 @@ class _ShortNoticeState extends State<ShortNotice> {
     );
   }
 
-  void storeNotice(title, notice, userId) {
+  Future<void> storeNotice(title, notice, userId) async {
     final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('notice')
         .doc(widget.societyName)
         .collection('notices')
