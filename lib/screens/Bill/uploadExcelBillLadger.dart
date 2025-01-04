@@ -68,6 +68,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
     'NOV',
     'DEC'
   ];
+  List<String> selectedMonths = [];
 
   String monthAndYear = '';
   List<bool> buttonBoolList = [];
@@ -158,66 +159,101 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 40,
+                height: 50,
                 child: ListView.builder(
-                    itemCount: monthList.length,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.only(left: 28.0, top: 5),
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
-                                  buttonBoolList[index] == true
-                                      ? const Color.fromARGB(255, 1, 19, 124)
-                                      : buttonColor)),
-                          onPressed: () {
-                            setButtonBoolean(index);
-                            provider.setMonth(monthList[index]);
-                            provider.reload(true);
+                  itemCount: monthList.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Row(
+                      children: [
+                        Checkbox(
+                          value: buttonBoolList[index],
+                          onChanged: (value) {
+                            setState(() {
+                              buttonBoolList[index] = value!;
+                              if (buttonBoolList[index]) {
+                                if (!selectedMonths
+                                    .contains(monthList[index])) {
+                                  selectedMonths.add(monthList[index]);
+                                }
+                              } else {
+                                selectedMonths.remove(monthList[index]);
+                              }
+                            });
                           },
-                          child: Center(
-                            child: Text(
-                              monthList[index],
-                              style: const TextStyle(color: white),
+                        ),
+                        Container(
+                          width: 70,
+                          height: 40,
+                          margin: const EdgeInsets.only(right: 2.0, top: 2),
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              // minimumSize: MaterialStateProperty.all(
+                              //   const Size(40, 15), // Adjust button size
+                              // ),
+                              backgroundColor: MaterialStatePropertyAll(
+                                buttonBoolList[index]
+                                    ? const Color.fromARGB(255, 1, 19, 124)
+                                    : buttonColor,
+                              ),
+                            ),
+                            onPressed: () {
+                              if (mounted) {
+                                setState(() {
+                                  buttonBoolList[index] =
+                                      !buttonBoolList[index];
+                                  if (buttonBoolList[index]) {
+                                    if (!selectedMonths
+                                        .contains(monthList[index])) {
+                                      selectedMonths.add(monthList[index]);
+                                    }
+                                  } else {
+                                    selectedMonths.remove(monthList[index]);
+                                  }
+                                });
+                              }
+                            },
+                            child: Center(
+                              child: Text(
+                                monthList[index],
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 10),
+                              ),
                             ),
                           ),
                         ),
-                      );
-                    }),
+                      ],
+                    );
+                  },
+                ),
               ),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               showTable
                   ? Container(
                       padding: const EdgeInsets.all(2.0),
-                      height: MediaQuery.of(context).size.height * 0.70,
+                      height: MediaQuery.of(context).size.height * 0.65,
                       width: MediaQuery.of(context).size.width * 0.99,
                       child: DataTable2(
                         minWidth: 1700,
-                        // border: const TableBorder(
-                        //     horizontalInside: BorderSide(
-                        //   color: Colors.black,
-                        // )),
                         border: TableBorder.all(color: Colors.black),
                         headingRowColor:
                             const MaterialStatePropertyAll(buttonColor),
                         headingTextStyle: const TextStyle(
-                            color: Colors.white,
-                            // fontSize: 24,
-                            wordSpacing: 5),
+                          color: Colors.white,
+                          wordSpacing: 5,
+                        ),
                         columnSpacing: 5.0,
                         columns: columnName
                             .map((e) => DataColumn2(
                                   label: Text(
                                     e,
-                                    // textAlign: TextAlign.center,
                                     style: const TextStyle(
-                                        // overflow: TextOverflow.ellipsis,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ))
                             .toList(),
@@ -225,13 +261,20 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                           growable: true,
                           data.length,
                           (index1) => DataRow2(
-                            cells: List.generate(growable: true, data[0].length,
-                                (index2) {
-                              return DataCell(Padding(
-                                padding: const EdgeInsets.only(bottom: 5.0),
-                                child: Text(data[index1][index2].toString()),
-                              ));
-                            }),
+                            cells: List.generate(
+                              growable: true,
+                              data[0].length,
+                              (index2) {
+                                return DataCell(
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 5.0),
+                                    child: Text(
+                                      data[index1][index2].toString(),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -252,39 +295,45 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                               MaterialStatePropertyAll(buttonColor),
                         ),
                         onPressed: () async {
-                          if (selectedMonth.trim().isNotEmpty) {
-                            monthAndYear = "$selectedMonth $monthyear";
+                          if (selectedMonths.isNotEmpty) {
+                            monthAndYear =
+                                selectedMonths.join(", ") + " $monthyear";
                             selectExcelFile();
                           } else {
                             await showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    contentPadding: const EdgeInsets.all(5),
-                                    icon: const Icon(
-                                      Icons.warning_amber,
-                                      size: 60,
-                                      color: Color.fromARGB(255, 212, 194, 25),
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  contentPadding: const EdgeInsets.all(5),
+                                  icon: const Icon(
+                                    Icons.warning_amber,
+                                    size: 60,
+                                    color: Color.fromARGB(255, 212, 194, 25),
+                                  ),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('OK'),
+                                    )
+                                  ],
+                                  title: const Text(
+                                    'Please Select At Least One Month!',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    actions: [
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('OK'))
-                                    ],
-                                    title: const Text(
-                                      'Please Select A Month !',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  );
-                                });
+                                  ),
+                                );
+                              },
+                            );
                           }
                         },
-                        child: const Text("Upload CSV",
-                            style: TextStyle(color: white)),
+                        child: const Text(
+                          "Upload CSV",
+                          style: TextStyle(color: white),
+                        ),
                       ),
                       const SizedBox(width: 10),
                       ElevatedButton(

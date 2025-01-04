@@ -164,7 +164,7 @@ class _AddNoticeState extends State<AddNotice> {
   }
 
   Future<void> sendNotification(String token, String title, String body) async {
-    final url = Uri.parse('http://localhost:3000/not');
+    final url = Uri.parse('https://notifactionsend-ram2.onrender.com/not');
 
     try {
       final response = await http.post(

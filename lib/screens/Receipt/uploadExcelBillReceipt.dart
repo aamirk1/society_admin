@@ -54,6 +54,8 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
     'DEC'
   ];
 
+  List<String> selectedMonths = [];
+
   String monthyear = DateFormat('yyyy').format(DateTime.now());
   String monthAndYear = '';
   bool showTable = false;
@@ -79,292 +81,314 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
             .selectedMonth;
     final provider = Provider.of<UploadReceiptProvider>(context);
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: white),
-          title: Text(
-            "Upload Receipt of ${widget.societyName}",
-            style: const TextStyle(color: white),
-          ),
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [lightBlueColor, blueColor],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight),
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Row(
-                children: [
-                  // SizedBox(
-                  //   width: 200,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(10.0),
-                  //     child: TypeAheadField(
-                  //       textFieldConfiguration: TextFieldConfiguration(
-                  //           controller: _societyNameController,
-                  //           style: const TextStyle(color: Colors.white),
-                  //           decoration: const InputDecoration(
-                  //               labelText: 'Search Society',
-                  //               labelStyle: TextStyle(color: Colors.white),
-                  //               border: OutlineInputBorder())),
-                  //       suggestionsCallback: (pattern) async {
-                  //         return await getUserdata(pattern);
-                  //       },
-                  //       itemBuilder: (context, suggestion) {
-                  //         return ListTile(
-                  //           title: Text(suggestion.toString()),
-                  //         );
-                  //       },
-                  //       onSuggestionSelected: (suggestion) {
-                  //         _societyNameController.text = suggestion.toString();
-                  //         Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //             builder: (context) => customSocietySide(
-                  //                 societyNames: suggestion.toString()),
-                  //           ),
-                  //         );
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   width: 10,
-                  // ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.logout_rounded,
-                      color: white,
-                    ),
-                    onPressed: () {
-                      signOut(context);
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: white),
+        title: Text(
+          "Upload Receipt of ${widget.societyName}",
+          style: const TextStyle(color: white),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Form(
-            key: _formKey,
-            child: Column(
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                colors: [lightBlueColor, blueColor],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Row(
               children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 40,
-                  child: ListView.builder(
-                      itemCount: monthList.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.only(left: 28.0, top: 5),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStatePropertyAll(
-                                    buttonBoolList[index] == true
-                                        ? const Color.fromARGB(255, 1, 19, 124)
-                                        : buttonColor)),
-                            onPressed: () {
-                              setButtonBoolean(index);
-                              provider.setMonth(monthList[index]);
-                              provider.reload(true);
-                            },
-                            child: Text(monthList[index],
-                                style: const TextStyle(color: white)),
-                          ),
-                        );
-                      }),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                showTable
-                    // ? SingleChildScrollView(
-                    //     scrollDirection: Axis.vertical,
-                    //     child: Container(
-                    //       width: 1000,
-                    //       height: MediaQuery.of(context).size.height - 50,
-                    //       child: ListView.builder(
-                    //           itemCount: alldata.length,
-                    //           itemBuilder: (context, index) {
-                    //             return Padding(
-                    //               padding: const EdgeInsets.all(8.0),
-                    //               child: Text(alldata[index]),
-                    //             );
-                    //           }),
-                    //     ),
-                    //   )
-                    ? columnName.isEmpty
-                        ? alertBox()
-                        : Container(
-                            padding: const EdgeInsets.all(2.0),
-                            height: MediaQuery.of(context).size.height * 0.7,
-                            width: MediaQuery.of(context).size.width,
-                            child: DataTable2(
-                              minWidth: 1700,
-                              border: TableBorder.all(color: Colors.black),
-                              headingRowColor:
-                                  const MaterialStatePropertyAll(buttonColor),
-                              headingTextStyle: const TextStyle(
-                                  color: Colors.white,
-                                  // fontSize: 24,
-                                  wordSpacing: 5),
-                              columnSpacing: 5.0,
-                              columns: columnName
-                                  .map((e) => DataColumn2(
-                                        label: Text(
-                                          e,
-                                          // textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              // overflow: TextOverflow.ellipsis,
-                                              fontSize: 12.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ))
-                                  .toList(),
-                              rows: List.generate(
-                                growable: true,
-                                alldata.length,
-                                (index1) => DataRow2(
-                                  cells: List.generate(
-                                      growable: true,
-                                      alldata[0].length, (index2) {
-                                    return DataCell(Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 5.0),
-                                      child: Text(
-                                          alldata[index1][index2].toString()),
-                                    ));
-                                  }),
-                                ),
-                              ),
-                            ),
-                          )
-                    : Container(),
-                const SizedBox(
-                  height: 15,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 28.0),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Row(
-                      children: [
-                        ElevatedButton(
-                          style: const ButtonStyle(
-                            backgroundColor:
-                                MaterialStatePropertyAll(buttonColor),
-                          ),
-                          onPressed: () async {
-                            if (selectedMonth.trim().isNotEmpty) {
-                              monthAndYear = "$selectedMonth $monthyear";
-                              selectExcelFile();
-                            } else {
-                              await showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      contentPadding: const EdgeInsets.all(5),
-                                      icon: const Icon(
-                                        Icons.warning_amber,
-                                        size: 60,
-                                        color:
-                                            Color.fromARGB(255, 212, 194, 25),
-                                      ),
-                                      actions: [
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('OK'))
-                                      ],
-                                      title: const Text(
-                                        'Please Select A Month !',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    );
-                                  });
-                            }
-                          },
-                          child: const Text(
-                            "Upload CSV",
-                            style: TextStyle(color: white),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        ElevatedButton(
-                          style: const ButtonStyle(
-                            backgroundColor:
-                                MaterialStatePropertyAll(buttonColor),
-                          ),
-                          onPressed: () {
-                            openPdf(url);
-                          },
-                          child: const Text(
-                            "Download CSV",
-                            style: TextStyle(color: white),
-                          ),
-                        ),
-                      ],
-                    ),
+                // SizedBox(
+                //   width: 200,
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(10.0),
+                //     child: TypeAheadField(
+                //       textFieldConfiguration: TextFieldConfiguration(
+                //           controller: _societyNameController,
+                //           style: const TextStyle(color: Colors.white),
+                //           decoration: const InputDecoration(
+                //               labelText: 'Search Society',
+                //               labelStyle: TextStyle(color: Colors.white),
+                //               border: OutlineInputBorder())),
+                //       suggestionsCallback: (pattern) async {
+                //         return await getUserdata(pattern);
+                //       },
+                //       itemBuilder: (context, suggestion) {
+                //         return ListTile(
+                //           title: Text(suggestion.toString()),
+                //         );
+                //       },
+                //       onSuggestionSelected: (suggestion) {
+                //         _societyNameController.text = suggestion.toString();
+                //         Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (context) => customSocietySide(
+                //                 societyNames: suggestion.toString()),
+                //           ),
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
+                // const SizedBox(
+                //   width: 10,
+                // ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.logout_rounded,
+                    color: white,
                   ),
+                  onPressed: () {
+                    signOut(context);
+                  },
                 ),
               ],
             ),
+          )
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 50, // Increased height for better alignment
+                child: ListView.builder(
+                  itemCount: monthList.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Row(
+                      children: [
+                        Checkbox(
+                          value: buttonBoolList[index],
+                          onChanged: (value) {
+                            setState(() {
+                              buttonBoolList[index] = value!;
+                              if (buttonBoolList[index]) {
+                                if (!selectedMonths
+                                    .contains(monthList[index])) {
+                                  selectedMonths.add(monthList[index]);
+                                }
+                              } else {
+                                selectedMonths.remove(monthList[index]);
+                              }
+                            });
+                          },
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 5, top: 5),
+                          width: 70, // Button width
+                          height: 40, // Button height
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                                buttonBoolList[index]
+                                    ? const Color.fromARGB(255, 1, 19, 124)
+                                    : buttonColor,
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                buttonBoolList[index] = !buttonBoolList[index];
+                                if (buttonBoolList[index]) {
+                                  if (!selectedMonths
+                                      .contains(monthList[index])) {
+                                    selectedMonths.add(monthList[index]);
+                                  }
+                                } else {
+                                  selectedMonths.remove(monthList[index]);
+                                }
+                              });
+                            },
+                            child: Center(
+                              child: Text(
+                                monthList[index],
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 10),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              showTable
+                  ? columnName.isEmpty
+                      ? alertBox()
+                      : Container(
+                          padding: const EdgeInsets.all(2.0),
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          width: MediaQuery.of(context).size.width,
+                          child: DataTable2(
+                            minWidth: 1700,
+                            border: TableBorder.all(color: Colors.black),
+                            headingRowColor:
+                                const WidgetStatePropertyAll(buttonColor),
+                            headingTextStyle: const TextStyle(
+                              color: Colors.white,
+                              wordSpacing: 5,
+                            ),
+                            columnSpacing: 5.0,
+                            columns: columnName
+                                .map(
+                                  (e) => DataColumn2(
+                                    label: Text(
+                                      e,
+                                      style: const TextStyle(
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            rows: List.generate(
+                              alldata.length,
+                              (index1) => DataRow2(
+                                cells: List.generate(
+                                  alldata[0].length,
+                                  (index2) => DataCell(
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 5.0),
+                                      child: Text(
+                                        alldata[index1][index2].toString(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                  : Container(),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 28.0),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: Row(
+                    children: [
+                      ElevatedButton(
+                        style: const ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(buttonColor),
+                        ),
+                        onPressed: () async {
+                          if (selectedMonths.isNotEmpty) {
+                            monthAndYear =
+                                "${selectedMonths.join(", ")} $monthyear";
+                            selectExcelFile();
+                          } else {
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  contentPadding: const EdgeInsets.all(5),
+                                  icon: const Icon(
+                                    Icons.warning_amber,
+                                    size: 60,
+                                    color: Color.fromARGB(255, 212, 194, 25),
+                                  ),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('OK'),
+                                    )
+                                  ],
+                                  title: const Text(
+                                    'Please Select At Least One Month!',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        },
+                        child: const Text(
+                          "Upload CSV",
+                          style: TextStyle(color: white),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                        style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(buttonColor),
+                        ),
+                        onPressed: () {
+                          openPdf(url);
+                        },
+                        child: const Text(
+                          "Download CSV",
+                          style: TextStyle(color: white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-        floatingActionButton: SizedBox(
-          height: 40,
-          width: 40,
-          child: FloatingActionButton(
-            backgroundColor: buttonColor,
-            onPressed: () async {
-              // for (int i = 0; i < alldata.length; i++) {
-              await FirebaseFirestore.instance
-                  .collection('ladgerReceipt')
-                  .doc(widget.societyName)
-                  .collection('month')
-                  .doc(monthAndYear)
-                  .set({
-                'data': newData,
-              }).whenComplete(() {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ),
+      floatingActionButton: SizedBox(
+        height: 40,
+        width: 40,
+        child: FloatingActionButton(
+          backgroundColor: buttonColor,
+          onPressed: () async {
+            await FirebaseFirestore.instance
+                .collection('ladgerReceipt')
+                .doc(widget.societyName)
+                .collection('month')
+                .doc(monthAndYear)
+                .set({'data': newData}).whenComplete(() {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
                   backgroundColor: Colors.green,
                   content: Center(
-                      child: Center(
                     child: Text(
                       'Receipt Uploaded Successfully',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(fontSize: 16),
                     ),
-                  )),
-                ));
-              });
-              // }
-              await FirebaseFirestore.instance
-                  .collection('ladgerReceipt')
-                  .doc(widget.societyName)
-                  .set({'name': widget.societyName});
-              //       }
+                  ),
+                ),
+              );
+            });
 
-              // ignore: use_build_context_synchronously
-              Navigator.pop(context);
-            },
-            child: const Icon(
-              Icons.check,
-              color: Colors.white,
-            ),
+            await FirebaseFirestore.instance
+                .collection('ladgerReceipt')
+                .doc(widget.societyName)
+                .set({'name': widget.societyName});
+
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.check,
+            color: Colors.white,
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   setMonthlyBoolean() {

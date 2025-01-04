@@ -36,6 +36,7 @@ class _AssignedUserState extends State<AssignedUser> {
   File? _imageFile;
 
   @override
+
   void initState() {
     setColor();
     selectedDesign[26] = !selectedDesign[26];
@@ -45,8 +46,7 @@ class _AssignedUserState extends State<AssignedUser> {
 
   @override
   Widget build(BuildContext context) {
-    final imageUploadProvider =
-        Provider.of<ImageUploadProvider>(context, listen: false);
+    Provider.of<ImageUploadProvider>(context, listen: false);
     final provider = Provider.of<FilterProvider>(context, listen: true);
 
     return isLoading
@@ -250,6 +250,7 @@ class _AssignedUserState extends State<AssignedUser> {
     List<dynamic> mapData = snapshot.docs.map((e) => e.id).toList();
     String userName = mapData[selectedIndex];
   }
+
 
   Widget customRowBuilder(List<String> data) {
     return ListView.builder(

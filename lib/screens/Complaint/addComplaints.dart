@@ -100,7 +100,7 @@ class _AddComplaintState extends State<AddComplaint> {
                 const SizedBox(
                   height: 10,
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.50,
                   height: MediaQuery.of(context).size.height * 0.20,
                   child: Column(
