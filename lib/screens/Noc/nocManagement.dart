@@ -31,7 +31,7 @@ class _NocManagementState extends State<NocManagement> {
   bool isNocLoaded = false;
   Map<String, dynamic> allNocData = {};
 
-  Map<String, dynamic> allComplaintData = {};
+  // Map<String, dynamic> allComplaintData = {};
   bool isLoading = true;
 
   bool isShowNoc = false;
@@ -224,14 +224,12 @@ class _NocManagementState extends State<NocManagement> {
                                 child: isNocLoaded
                                     ? AddNoc(
                                         nocType: provider.selectedNoc,
-                                        text:
-                                            allComplaintData['text'].toString(),
+                                        text: allNocData['text'].toString(),
                                         society: widget.society,
                                         flatNo: selectedFlatno,
                                         date: dateofNocList[selectedDateIndex]
                                             .toString(),
-                                        fcmId: allComplaintData['fcmId']
-                                            .toString(),
+                                        fcmId: allNocData['fcmId'].toString(),
                                       )
                                     : Container(),
                               )
@@ -323,8 +321,8 @@ class _NocManagementState extends State<NocManagement> {
       print('bers');
       if (fetchallData.exists) {
         //allComplaintData = fetchallData.data().toString();
-        allComplaintData = fetchallData.data() as Map<String, dynamic>;
-        print('allComplaintData $allComplaintData');
+        allNocData = fetchallData.data() as Map<String, dynamic>;
+        print('allNocData $allNocData');
       }
     } catch (e) {
       print("Error while fetching data $e");

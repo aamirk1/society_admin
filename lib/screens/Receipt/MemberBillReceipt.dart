@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/screens/Receipt/uploadExcelBillReceipt.dart';
 
+// ignore: must_be_immutable
 class MemberBillReceipt extends StatefulWidget {
   static const id =
       "/MemberB                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       illReceipt";

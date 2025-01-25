@@ -29,6 +29,7 @@ class _TotalUsersState extends State<TotalUsers> {
   bool showAll = true;
   String alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+  // ignore: unused_field
   File? _imageFile;
 
   @override

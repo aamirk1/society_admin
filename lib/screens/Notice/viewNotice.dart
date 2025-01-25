@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 
+// ignore: must_be_immutable
 class ViewNotice extends StatefulWidget {
   ViewNotice(
       {super.key,

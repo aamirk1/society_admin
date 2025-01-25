@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:society_admin/authScreen/common.dart';
-import 'package:society_admin/screens/Members/ListOfMemberName.dart';
 // import '../excel/uploadExcel.dart';
 
 class CreditNoteExcel extends StatefulWidget {
@@ -486,6 +486,15 @@ class _CreditNoteExcelState extends State<CreditNoteExcel> {
         'No Data Found',
         style: TextStyle(fontSize: 20, color: Colors.red),
       )),
+    );
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/',
+      (route) => false,
     );
   }
 }

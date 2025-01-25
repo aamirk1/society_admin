@@ -7,6 +7,7 @@ import 'dart:html' as html;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
 import 'package:data_table_2/data_table_2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/upload_receipt_provider.dart';
 import 'package:society_admin/authScreen/common.dart';
-import 'package:society_admin/screens/Members/ListOfMemberName.dart';
 
 // import '../excel/uploadExcel.dart';
 
@@ -76,10 +76,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedMonth =
-        Provider.of<UploadReceiptProvider>(context, listen: false)
-            .selectedMonth;
-    final provider = Provider.of<UploadReceiptProvider>(context);
+    Provider.of<UploadReceiptProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: white),
@@ -538,4 +535,13 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
       const Text('Sorry it is not ready for mobile platform');
     }
   }
+
+  Future<void> signOut(BuildContext context) async {
+  await FirebaseAuth.instance.signOut();
+  Navigator.pushNamedAndRemoveUntil(
+    context,
+    '/',
+    (route) => false,
+  );
+}
 }

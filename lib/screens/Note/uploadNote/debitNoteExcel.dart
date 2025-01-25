@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:society_admin/authScreen/common.dart';
-import 'package:society_admin/screens/Members/ListOfMemberName.dart';
 // import '../excel/uploadExcel.dart';
 
 class DebitNoteExcel extends StatefulWidget {
@@ -477,4 +477,13 @@ class _DebitNoteExcelState extends State<DebitNoteExcel> {
 
     setState(() {});
   }
+
+  Future<void> signOut(BuildContext context) async {
+  await FirebaseAuth.instance.signOut();
+  Navigator.pushNamedAndRemoveUntil(
+    context,
+    '/',
+    (route) => false,
+  );
+}
 }

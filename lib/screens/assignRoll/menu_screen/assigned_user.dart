@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,7 +32,6 @@ class _AssignedUserState extends State<AssignedUser> {
   String alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   FirebaseStorage storage = FirebaseStorage.instance;
 
-  File? _imageFile;
 
   @override
 
@@ -247,8 +245,7 @@ class _AssignedUserState extends State<AssignedUser> {
             .where('societyname', isEqualTo: widget.society)
             .get();
 
-    List<dynamic> mapData = snapshot.docs.map((e) => e.id).toList();
-    String userName = mapData[selectedIndex];
+    snapshot.docs.map((e) => e.id).toList();
   }
 
 
@@ -836,7 +833,6 @@ class _AssignedUserState extends State<AssignedUser> {
 
     if (pickedFile != null) {
       setState(() {
-        _imageFile = File(pickedFile.path);
       });
     }
   }

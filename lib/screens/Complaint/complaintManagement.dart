@@ -10,6 +10,7 @@ import 'package:society_admin/screens/Complaint/typeOfComplaint.dart';
 
 import '../../Provider/complaintManagementProvider.dart';
 
+// ignore: must_be_immutable
 class ComplaintManagement extends StatefulWidget {
   ComplaintManagement(
       {super.key,
@@ -83,181 +84,199 @@ class _ComplaintManagementState extends State<ComplaintManagement> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          //     crossAxisCount: 5,
-                          //     crossAxisSpacing: 10,
-                          //     childAspectRatio: 2.0,
-                          //     mainAxisSpacing: 10),
-                          itemCount: dataList.length,
-                          itemBuilder: (context, index) {
-                            return SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.12,
-                              child: Card(
-                                color: primaryColor,
-                                elevation: 5,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(1.0),
-                                      child: ListTile(
-                                        onTap: () {
-                                          selectedFlatno =
-                                              dataList[index]['flatno'];
+            : SizedBox(
+                width: MediaQuery.of(context).size.width * .90,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: dataList.length,
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
+                                child: Card(
+                                  color: primaryColor,
+                                  elevation: 5,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(1.0),
+                                        child: ListTile(
+                                          onTap: () {
+                                            selectedFlatno =
+                                                dataList[index]['flatno'];
 
-                                          setState(() {
-                                            isShowComplaint = true;
-                                          });
-                                        },
-                                        minVerticalPadding: 0.3,
-                                        title: Center(
-                                          child: Text(
-                                            dataList[index]['flatno'],
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                                //Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) {
-                                //     return TypeOfComplaint(
-                                //       userId: widget.userId,
-                                //       society: widget.society,
-                                //       flatNo: dataList[index]['flatno'],
-                                //     );
-                                //   }),
-                                // );
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      width: 500,
-                      child: isShowComplaint
-                          ? TypeOfComplaint(
-                              dataList: complaintDataList,
-                              flatNo: selectedFlatno.toString(),
-                              society: widget.society,
-                              userId: widget.userId,
-                            )
-                          : Container(),
-                    ),
-                  ),
-                  Consumer<ComplaintManagementProvider>(
-                    builder: (context, value, child) {
-                      return Expanded(
-                        flex: 1,
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.9,
-                          child: Column(
-                            children: [
-                              ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: dateofComplainList.length,
-                                itemBuilder: (context, index) {
-                                  return SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.12,
-                                    child: Card(
-                                      color: primaryColor,
-                                      elevation: 5,
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        child: Padding(
-                                            padding: const EdgeInsets.all(1.0),
-                                            child: ListTile(
-                                              onTap: () {
-                                                selectedFlatno =
-                                                    dataList[index]['flatno'];
-                                                selectedDateIndex = index;
-                                                allDatafetch(
-                                                        widget.society,
-                                                        selectedFlatno,
-                                                        dateofComplainList[
-                                                                index]
-                                                            .toString())
-                                                    .whenComplete(() {
-                                                  isComplaintLoaded =
-                                                      !isComplaintLoaded;
-                                                  provider.setLoadWidget(true);
-                                                  // setState(() {});
-                                                });
-                                              },
-                                              minVerticalPadding: 0.3,
-                                              title: Center(
-                                                child: Text(
-                                                  dateofComplainList[index]
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 14),
-                                                  textAlign: TextAlign.center,
-                                                ),
+                                            setState(() {
+                                              isShowComplaint = true;
+                                            });
+                                          },
+                                          minVerticalPadding: 0.3,
+                                          title: Center(
+                                            child: Text(
+                                              dataList[index]['flatno'],
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14,
                                               ),
-                                            )),
-                                      ),
-                                      //Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(builder: (context) {
-                                      //     return TypeOfComplaint(
-                                      //       userId: widget.userId,
-                                      //       society: widget.society,
-                                      //       flatNo: dataList[index]['flatno'],
-                                      //     );
-                                      //   }),
-                                      // );
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  //Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(builder: (context) {
+                                  //     return TypeOfComplaint(
+                                  //       userId: widget.userId,
+                                  //       society: widget.society,
+                                  //       flatNo: dataList[index]['flatno'],
+                                  //     );
+                                  //   }),
+                                  // );
+                                ),
+                              );
+                            },
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                  Consumer<ComplaintManagementProvider>(
-                    builder: (context, value, child) {
-                      return Expanded(
-                        flex: 5,
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: provider.loadWidget
-                              ? AddComplaint(
-                                  complaintType: provider.selectedComplaint,
-                                  text: allComplaintData['text'],
-                                  society: widget.society,
-                                  flatNo: selectedFlatno,
-                                  date: dateofComplainList[selectedDateIndex]
-                                      .toString(),
-                                  response: allComplaintData['response'],
-                                  fcmId: allComplaintData['fcmId'],
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        width: 500,
+                        child: isShowComplaint
+                            ? TypeOfComplaint(
+                                dataList: complaintDataList,
+                                flatNo: selectedFlatno.toString(),
+                                society: widget.society,
+                                userId: widget.userId,
+                              )
+                            : Container(),
+                      ),
+                    ),
+                    Consumer<ComplaintManagementProvider>(
+                      builder: (context, value, child) {
+                        return Expanded(
+                          flex: 1,
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.9,
+                            child: Column(
+                              children: [
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: dateofComplainList.length,
+                                  itemBuilder: (context, index) {
+                                    return SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.12,
+                                      child: Card(
+                                        color: primaryColor,
+                                        elevation: 5,
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(1.0),
+                                              child: ListTile(
+                                                onTap: () {
+                                                  selectedFlatno =
+                                                      dataList[index]['flatno'];
+                                                  selectedDateIndex = index;
+                                                  allDatafetch(
+                                                          widget.society,
+                                                          selectedFlatno,
+                                                          dateofComplainList[
+                                                                  index]
+                                                              .toString())
+                                                      .whenComplete(() {
+                                                    isComplaintLoaded =
+                                                        !isComplaintLoaded;
+                                                    provider
+                                                        .setLoadWidget(true);
+                                                    // setState(() {});
+                                                  });
+                                                },
+                                                minVerticalPadding: 0.3,
+                                                title: Center(
+                                                  child: Text(
+                                                    dateofComplainList[index]
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              )),
+                                        ),
+                                        //Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(builder: (context) {
+                                        //     return TypeOfComplaint(
+                                        //       userId: widget.userId,
+                                        //       society: widget.society,
+                                        //       flatNo: dataList[index]['flatno'],
+                                        //     );
+                                        //   }),
+                                        // );
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    Consumer<ComplaintManagementProvider>(
+                      builder: (context, value, child) {
+                        print('isComplaintLoaded $isComplaintLoaded');
+                        print(
+                            'allComplaintData113 ${(allComplaintData)['text']?.toString() ?? 'N/A'}');
+                        print(
+                            'fcmId ${(allComplaintData)['fcmId']?.toString() ?? 'N/A'}');
+                        // print('date ${dateofComplainList[selectedDateIndex]}');
+                        print('flatNo $selectedFlatno');
+                        print('society ${widget.society}');
+                        return Expanded(
+                          flex: 5,
+                          child: value.loadWidget
+                              ? SizedBox(
+                                  height: MediaQuery.of(context).size.height,
+                                  width: 500,
+                                  child: isComplaintLoaded
+                                      ? AddComplaint(
+                                          complaintType:
+                                              value.selectedComplaint,
+                                          text: (allComplaintData)['text']
+                                                  ?.toString() ??
+                                              'N/A',
+                                          society: widget.society,
+                                          flatNo: selectedFlatno,
+                                          date: '',
+                                          response: allComplaintData['response']
+                                              .toString(),
+                                          fcmId:
+                                              (allComplaintData)['fcmId']
+                                                      ?.toString() ??
+                                                  'N/A',
+                                        )
+                                      : Container(),
                                 )
                               : Container(),
-                        ),
-                      );
-                    },
-                  )
-                ],
+                        );
+                      },
+                    )
+                  ],
+                ),
               ));
   }
 
@@ -309,7 +328,7 @@ class _ComplaintManagementState extends State<ComplaintManagement> {
       if (flatNumQuerySnapshot.docs.isNotEmpty) {
         List<dynamic> allComplaintType =
             flatNumQuerySnapshot.docs.map((e) => e.id).toList();
-        print('heloloeeoc $allComplaintType');
+
         dateofComplainList = allComplaintType;
       } else {
         dateofComplainList = [];
@@ -337,7 +356,7 @@ class _ComplaintManagementState extends State<ComplaintManagement> {
       if (fetchallData.exists) {
         //allComplaintData = fetchallData.data().toString();
         allComplaintData = fetchallData.data() as Map<String, dynamic>;
-        print('allComplaintData $allComplaintData');
+        print('allComplaintDataFF $allComplaintData');
       }
     } catch (e) {
       print("Error while fetching data $e");

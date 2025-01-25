@@ -34,9 +34,12 @@ class _AddNocState extends State<AddNoc> {
   @override
   void initState() {
     super.initState();
-    // getTypeOfNoc(widget.society, widget.flatNo, widget.nocType,widget.text);
-    print('fcm ${widget.text.toString()}');
-    print('fcmiidddddddd ${widget.fcmId.toString()}');
+    print('fcm ${widget.fcmId}');
+    print('nocType ${widget.nocType}');
+    print('society ${widget.society}');
+    print('text ${widget.text}');
+    print('flatNo ${widget.flatNo}');
+    print('date ${widget.date}');
   }
 
   @override

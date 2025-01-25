@@ -80,9 +80,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedMonth =
-        Provider.of<UploadLedgerProvider>(context, listen: false).selectedMonth;
-    final provider = Provider.of<UploadLedgerProvider>(context);
+    Provider.of<UploadLedgerProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),

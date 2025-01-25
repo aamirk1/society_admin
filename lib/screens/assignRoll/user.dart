@@ -79,10 +79,12 @@ class _MenuUserPageState extends State<MenuUserPage> {
   @override
   void initState() {
     getDesigationLen();
-    getTotalUsers().whenComplete(() => {
-          isLoading = false,
-          if (mounted) {setState(() {})}
-        });
+    getTotalUsers().whenComplete(() {
+      isLoading = false;
+      if (mounted) {
+        setState(() {});
+      }
+    });
 
     _stream = FirebaseFirestore.instance
         .collection('User')

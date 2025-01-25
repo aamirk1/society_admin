@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/nocManagementProvider.dart';
 
+// ignore: must_be_immutable
 class TypeOfNoc extends StatefulWidget {
   TypeOfNoc(
       {super.key,

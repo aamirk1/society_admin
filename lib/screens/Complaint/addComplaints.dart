@@ -1,10 +1,7 @@
 // ignore_for_file: must_be_immutable, file_names
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:society_admin/authScreen/common.dart';
 
 class AddComplaint extends StatefulWidget {
@@ -34,15 +31,27 @@ class _AddComplaintState extends State<AddComplaint> {
   PlatformFile? selectedFile;
 
   TextEditingController responseMsgController = TextEditingController();
+  @override
+  void initState() {
+    print('fcm ${widget.fcmId}');
+    print('complaintType ${widget.complaintType}');
+    print('society ${widget.society}');
+    print('text ${widget.text}');
+    print('flatNo ${widget.flatNo}');
+    print('date ${widget.date}');
+    print('response ${widget.response}');
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    print('com ${widget.fcmId}');
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.60,
+          child: 
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.90,
             child: Card(
               elevation: 5,
@@ -244,6 +253,4 @@ class _AddComplaintState extends State<AddComplaint> {
           );
         });
   }
-
-  
 }
