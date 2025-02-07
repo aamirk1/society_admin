@@ -14,7 +14,7 @@ import 'package:society_admin/Provider/nocManagementProvider.dart';
 import 'package:society_admin/Provider/role_page_total_number_provider.dart';
 import 'package:society_admin/Provider/upload_ledger_provider.dart';
 import 'package:society_admin/Provider/upload_receipt_provider.dart';
-import 'package:society_admin/authScreen/loginScreen.dart';
+import 'package:society_admin/homeScreen/sideBar.dart';
 import 'package:society_admin/screens/Notice/addNotice.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
 
@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           scrollbarTheme: const ScrollbarThemeData(
             thumbColor: WidgetStatePropertyAll(
-              Color.fromARGB(255, 3, 20, 255),
+              Color.fromARGB(255, 255, 255, 255),
             ),
           ),
           primarySwatch: Colors.blue,
@@ -106,7 +106,12 @@ class MyApp extends StatelessWidget {
         //   userId: 'SM2211',
         // ),
 
-        home: const LoginScreen(),
+        home: customSide(
+          society: 'JYOTI CO-OPERATIVE HOUSING SOCIETY LIMITED',
+          allRoles: const [''],
+          userId: 'JU6263',
+        ),
+        //  LoginScreen(),
       ),
     );
   }

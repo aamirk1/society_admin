@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-const Color primaryColor = Color.fromARGB(255, 49, 80, 255);
+const Color primaryColor = Color(0xFF800080);
+// const Color primaryColor = Color.fromARGB(255, 49, 80, 255);
 const Color white = Colors.white;
 const Color textColor = Colors.black;
 
@@ -30,13 +32,19 @@ Future<void> sendNotification(String token, String title, String body) async {
 
     if (response.statusCode == 200) {
       // Handle successful response
-      print('Notification sent successfully: ${response.body}');
+      if (kDebugMode) {
+        print('Notification sent successfully: ${response.body}');
+      }
     } else {
       // Handle error response
-      print('Failed to send notification: ${response.body}');
+      if (kDebugMode) {
+        print('Failed to send notification: ${response.body}');
+      }
     }
   } catch (error) {
-    print('Error sending notification: $error');
+    if (kDebugMode) {
+      print('Error sending notification: $error');
+    }
   }
 }
 
@@ -59,13 +67,19 @@ Future<void> sendNoticeNotification(
 
       if (response.statusCode == 200) {
         // Handle successful response
-        print('Notification sent successfully: ${response.body}');
+        if (kDebugMode) {
+          print('Notification sent successfully: ${response.body}');
+        }
       } else {
         // Handle error response
-        print('Failed to send notification: ${response.body}');
+        if (kDebugMode) {
+          print('Failed to send notification: ${response.body}');
+        }
       }
     } catch (error) {
-      print('Error sending notification: $error');
+      if (kDebugMode) {
+        print('Error sending notification: $error');
+      }
     }
   }
 }

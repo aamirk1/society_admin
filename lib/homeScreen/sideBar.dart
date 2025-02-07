@@ -17,15 +17,12 @@ import 'package:society_admin/screens/Receipt/MemberBillReceipt.dart';
 import 'package:society_admin/screens/Report/report.dart';
 import 'package:society_admin/screens/ServiceProvider/serviceProvider.dart';
 import 'package:society_admin/screens/assignRoll/role.dart';
+import 'package:society_admin/screens/dashboard/dashboard.dart';
 import 'package:society_admin/screens/settings/settings.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class customSide extends StatefulWidget {
-  customSide(
-      {super.key,
-      this.society,
-      this.allRoles,
-      required this.userId});
+  customSide({super.key, this.society, this.allRoles, required this.userId});
   String? society;
   List<dynamic>? allRoles = [];
   String userId;
@@ -36,6 +33,7 @@ class customSide extends StatefulWidget {
 // ignore: camel_case_types
 class _customSideState extends State<customSide> {
   List<String> tabTitle = [
+    'Dashboard',
     'Circular/Notice \n Module',
     'NOC Management',
     'Complaint Management',
@@ -51,6 +49,7 @@ class _customSideState extends State<customSide> {
     'Settings',
   ];
   List<dynamic> tabIcon = [
+    Icons.dashboard,
     Icons.supervised_user_circle_outlined,
     Icons.house_rounded,
     Icons.house_outlined,
@@ -78,6 +77,7 @@ class _customSideState extends State<customSide> {
     false,
     false,
     false,
+    false,
     false
   ];
 
@@ -88,6 +88,7 @@ class _customSideState extends State<customSide> {
   @override
   Widget build(BuildContext context) {
     pages = [
+      Dashboard(society: widget.society!, userId: widget.userId),
       CircularNotice(
           society: widget.society!,
           allRoles: widget.allRoles!,
@@ -136,18 +137,22 @@ class _customSideState extends State<customSide> {
       body: Row(
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 10),
             width: 150,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [lightBlueColor, blueColor])),
+                    colors: [primaryColor, primaryColor])),
             child: Column(
               children: [
                 Container(
-                  width: 80,
-                  padding: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5), color: white),
+                  // color: white,
+                  width: 130,
+                  padding: const EdgeInsets.only(
+                      top: 20, left: 10, right: 10, bottom: 10),
                   child: Image.asset('assets/images/devlogo.png'),
                 ),
                 Padding(
@@ -184,6 +189,7 @@ class _customSideState extends State<customSide> {
               ],
             ),
           ),
+          
           Expanded(child: pages[_selectedIndex])
         ],
       ),
@@ -223,7 +229,7 @@ class _customSideState extends State<customSide> {
 
   void setDesignBool() {
     List<bool> tempBool = [];
-    for (int i = 0; i < 13; i++) {
+    for (int i = 0; i < 14; i++) {
       tempBool.add(false);
     }
     design = tempBool;

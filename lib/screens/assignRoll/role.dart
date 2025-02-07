@@ -29,7 +29,6 @@ class _RoleScreenState extends State<RoleScreen> {
   List<String> unAssignedUsersList = [];
   List<String> memberList = [];
   String selectedUserName = '';
-  List<dynamic> role = [];
 
   final TextEditingController citiesController = TextEditingController();
   final TextEditingController reportingManagerController =
@@ -300,13 +299,14 @@ class _RoleScreenState extends State<RoleScreen> {
                                 }
 
                                 if (selectedUserName != selectedSocietyName) {
-                                  role.isEmpty
+                                  selectedDesignationList.isEmpty
                                       ? customAlertBox(
                                           'Please Select Designation')
                                       : selectedSocietyName.isEmpty
                                           ? customAlertBox(
                                               'Please Select Society')
-                                          : storeAssignData();
+                                          : storeAssignData(
+                                              selectedReportingManager);
                                   getTotalUsers().whenComplete(() async {
                                     DocumentReference documentReference =
                                         FirebaseFirestore.instance
@@ -845,17 +845,15 @@ class _RoleScreenState extends State<RoleScreen> {
     );
   }
 
-  Future<void> storeAssignData() async {
-    String phoneNum = await getPhoneNumber(selectedUserName);
+  Future<void> storeAssignData(selectedUserName) async {
     await FirebaseFirestore.instance
         .collection('AssignedRole')
         .doc(selectedUserName)
         .set({
       "fullName": selectedUserName,
-      "phoneNum": phoneNum,
       'alphabet': selectedUserName[0][0].toUpperCase(),
       'position': 'Assigned',
-      'roles': role,
+      'roles': selectedDesignationList,
       // 'depots': selectedDepo,
       'societyname': widget.society,
       // 'cities': selectedCity,
@@ -873,42 +871,11 @@ class _RoleScreenState extends State<RoleScreen> {
       // 'userId': selectedUserId,
       'alphabet': selectedUserName[0][0].toUpperCase(),
       'position': 'Assigned',
-      'roles': role,
+      'roles': selectedDesignationList,
       // 'depots': selectedDepo,
       'societyname': widget.society,
       // 'cities': selectedCity,
     });
-  }
-
-  Future getPhoneNumber(String selectedUser) async {
-    String phoneNum = '';
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-        .collection("members")
-        .doc(widget.society)
-        .get();
-
-    if (documentSnapshot.exists) {
-      Map<String, dynamic> allUserMapData =
-          documentSnapshot.data() as Map<String, dynamic>;
-      List<dynamic> allUserData = allUserMapData["data"];
-
-      for (int i = 0; i < allUserData.length; i++) {
-        if (allUserData[i]['Member Name'] == selectedUser) {
-          phoneNum = allUserData[i]['Mobile No.'];
-        }
-      }
-    }
-    if (phoneNum.isEmpty) {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection("societyAdmin")
-          .where("fullName", isEqualTo: selectedUser)
-          .get();
-      List<dynamic> adminData =
-          querySnapshot.docs.map((e) => e.data()).toList();
-
-      phoneNum = adminData[0]['mobile'];
-    }
-    return phoneNum;
   }
 
   //Calculating Total users for additional screen

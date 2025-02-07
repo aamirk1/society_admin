@@ -83,8 +83,8 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(white),
-                    ),
+                  backgroundColor: WidgetStatePropertyAll(white),
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -173,7 +173,7 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                             minWidth: 3000,
                             border: TableBorder.all(color: Colors.black),
                             headingRowColor:
-                                const MaterialStatePropertyAll(buttonColor),
+                                const WidgetStatePropertyAll(buttonColor),
                             headingTextStyle: const TextStyle(
                               color: Colors.white,
                               fontSize: 50.0,
@@ -237,7 +237,7 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                                           ElevatedButton(
                                             style: const ButtonStyle(
                                               backgroundColor:
-                                                  MaterialStatePropertyAll(
+                                                  WidgetStatePropertyAll(
                                                       buttonColor),
                                             ),
                                             onPressed: () {
@@ -330,8 +330,8 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
 
   Future<void> signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    // ignore: use_build_context_synchronously
     Navigator.pushNamedAndRemoveUntil(
+      // ignore: use_build_context_synchronously
       context,
       '/',
       (route) => false,
