@@ -59,10 +59,7 @@ class _AssignedUserState extends State<AssignedUser> {
                   ),
                  flexibleSpace: Container(
                 decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight)))),
+                    color: primaryColor))),
             ),
             body: Column(
               children: [
@@ -83,7 +80,7 @@ class _AssignedUserState extends State<AssignedUser> {
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                       backgroundColor:
-                                          MaterialStateProperty.all(
+                                          WidgetStateProperty.all(
                                     selectedDesign[26]
                                         ? Colors.grey
                                         : Colors.black,
@@ -114,7 +111,7 @@ class _AssignedUserState extends State<AssignedUser> {
                                     child: ElevatedButton(
                                       style: ButtonStyle(
                                           backgroundColor:
-                                              MaterialStateProperty.all(
+                                              WidgetStateProperty.all(
                                         selectedDesign[index]
                                             ? Colors.grey
                                             : Colors.black,
@@ -400,7 +397,7 @@ class _AssignedUserState extends State<AssignedUser> {
                                               ElevatedButton(
                                                 style: const ButtonStyle(
                                                     backgroundColor:
-                                                        MaterialStatePropertyAll(
+                                                        WidgetStatePropertyAll(
                                                             Colors.redAccent)),
                                                 onPressed: () {
                                                   Navigator.pop(context);
@@ -410,7 +407,7 @@ class _AssignedUserState extends State<AssignedUser> {
                                               ElevatedButton(
                                                 style: const ButtonStyle(
                                                     backgroundColor:
-                                                        MaterialStatePropertyAll(
+                                                        WidgetStatePropertyAll(
                                                             Color.fromARGB(255,
                                                                 67, 182, 126))),
                                                 onPressed: () {

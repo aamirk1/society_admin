@@ -45,10 +45,7 @@ class _ReceiptDebitNoteState extends State<ReceiptDebitNote> {
       appBar: AppBar(
    flexibleSpace: Container(
                 decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+                   color: primaryColor)),
         title: const Text("Receipt",
               style:  TextStyle(color: white)),
       ),

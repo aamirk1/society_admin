@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/applicationManagementProvider.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/components/customAppBar.dart';
 import 'package:society_admin/screens/dashboard/tableHeading.dart';
+
 
 class Dashboard extends StatefulWidget {
   Dashboard({super.key, this.society, this.allRoles, required this.userId});
@@ -18,20 +23,25 @@ class _DashboardState extends State<Dashboard> {
   DateTime now = DateTime.now();
   String? formattedDate; // Make this nullable for now
 
+  bool isLoading = true;
+  List<dynamic> flatList =[];
   @override
   void initState() {
     super.initState();
     formattedDate = DateFormat('dd-MM-yyyy').format(now); // Initialize here
+    getFlatNum(widget.society!);
   }
 
   List<String> flat = ['101', '102'];
-  List<String> particular = ['Sale NOC', 'Complaint'];
+  List<dynamic> particular = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: Customappbar(title: 'Dashboard', action: [
           Row(
             children: [
+
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
@@ -51,15 +61,16 @@ class _DashboardState extends State<Dashboard> {
             ],
           )
         ]),
-        body: Container(
+        body: isLoading ? Center(child: CircularProgressIndicator(),):
+        Container(
           height: MediaQuery.of(context).size.height,
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           child: Card(
             elevation: 10,
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Column(
                 children: [
-                  Row(
+                  const Row(
                     children: [
                       TableHeading(title: 'Flat No.', width: 0.15),
                       TableHeading(title: 'Particulars', width: 0.70),
@@ -71,7 +82,7 @@ class _DashboardState extends State<Dashboard> {
                       height: MediaQuery.of(context).size.height * 0.7,
                       child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: flat.length,
+                          itemCount: particular.length,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -85,11 +96,22 @@ class _DashboardState extends State<Dashboard> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: ListTile(
-                                      onTap: () {},
+                                       onTap: () {
+
+                                        final provider = Provider.of<
+                                                ApplicationManagementProvider>(
+                                            context,
+                                            listen: false);
+                                        provider.setSelectedApplication(true);
+
+                                        provider.setSelectedFlatNo(particular[index]['flatno']);
+                                        provider.setSelectedApplicationType(particular[index]['applicationType']);
+                                        provider.setLoadWidget(false);
+                                      },
                                       title: Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          flat[index],
+                                          particular[index]['flatno'],
                                         ),
                                       ),
                                     ),
@@ -105,9 +127,20 @@ class _DashboardState extends State<Dashboard> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: ListTile(
-                                      onTap: () {},
+                                      onTap: () {
+
+                                        final provider = Provider.of<
+                                                ApplicationManagementProvider>(
+                                            context,
+                                            listen: false);
+                                        provider.setSelectedApplication(true);
+
+                                        provider.setSelectedFlatNo(particular[index]['flatno']);
+                                        provider.setSelectedApplicationType(particular[index]['applicationType']);
+                                        provider.setLoadWidget(false);
+                                      },
                                       title: Text(
-                                        flat[index],
+                                        particular[index]['applicationType'],
                                       ),
                                     ),
                                   ),
@@ -123,4 +156,77 @@ class _DashboardState extends State<Dashboard> {
           ),
         ));
   }
+
+ Future<void> getFlatNum(String selectedSociety) async {
+    isLoading = true;
+    QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
+        .collection('application')
+        .doc(selectedSociety)
+        .collection('flatno')
+        .get();
+
+    List<dynamic?> allFlat =
+        flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
+    flatList = allFlat;
+   
+      getAppType(widget.society!);
+  }
+
+// Future<void> getAppType(String selectedSociety) async {
+//     try {
+//       for (var i = 0; i < flatList.length; i++) {
+//       DocumentSnapshot allDataDocumentSnapshot = await FirebaseFirestore.instance
+//         .collection('application')
+//         .doc(selectedSociety)
+//         .collection('flatno')
+//         .doc(flatList[i]['flatno'])
+
+//         .get();
+
+//         if (allDataDocumentSnapshot.exists) {
+//           Map<String,dynamic> allData = allDataDocumentSnapshot.data() as Map<String, dynamic>;
+//           print("alldata $allData");
+
+//         }
+
+//     // List<dynamic> allParticular =
+//     //     allDataDocumentSnapshot.docs.map((e) => e.data()).toList();
+//     // particular = allParticular;
+//     // print('allparticular $particular');
+//     // setState(() {
+//     //   isLoading = false;
+//     // });
+//     }
+      
+//     } catch (e) {
+      
+//     }
+//   }
+ Future<void> getAppType(String selectedSociety) async {
+    try {
+      for (var i = 0; i < flatList.length; i++) {
+      QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
+        .collection('application')
+        .doc(selectedSociety)
+        .collection('flatno')
+        .doc(flatList[i]['flatno'])
+        .collection('applicationType')
+        .get();
+
+    List<dynamic> allParticular =
+        flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
+    particular .addAll(allParticular);
+    
+    }
+    setState(() {
+      isLoading = false;
+    });
+      
+    } catch (e) {
+      
+    }
+  }
+
+  
+ 
 }

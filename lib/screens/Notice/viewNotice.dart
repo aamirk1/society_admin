@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:society_admin/authScreen/common.dart';
 
 // ignore: must_be_immutable
@@ -24,6 +25,11 @@ class _ViewNoticeState extends State<ViewNotice> {
   List<dynamic> dataList = [];
   bool isLoading = true;
   PlatformFile? selectedFile;
+  String formatDate(String dateString) {
+  DateTime dateTime = DateTime.parse(dateString);
+  return DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+}
+
   @override
   void initState() {
     super.initState();
@@ -44,8 +50,7 @@ class _ViewNoticeState extends State<ViewNotice> {
                   padding: const EdgeInsets.all(8.0),
                   child: Align(
                     alignment: Alignment.topLeft,
-                    child: Text(
-                      'Date: ${widget.date!}',
+                    child: Text('Date: ${formatDate(widget.date!)}',
                       style: const TextStyle(
                           color: textColor,
                           fontSize: 15,

@@ -28,7 +28,7 @@ class UpExcelBillReceipt extends StatefulWidget {
 }
 
 class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
-  TextEditingController _societyNameController = TextEditingController();
+  final TextEditingController _societyNameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   List<dynamic> columnName = [];
   List<String> searchedList = [];
@@ -86,10 +86,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
         ),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: [lightBlueColor, blueColor],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight),
+           color: primaryColor,
           ),
         ),
         actions: [
@@ -185,7 +182,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
                           height: 40, // Button height
                           child: ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
+                              backgroundColor: WidgetStatePropertyAll(
                                 buttonBoolList[index]
                                     ? const Color.fromARGB(255, 1, 19, 124)
                                     : buttonColor,
@@ -329,7 +326,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
                       ElevatedButton(
                         style: const ButtonStyle(
                           backgroundColor:
-                              MaterialStatePropertyAll(buttonColor),
+                              WidgetStatePropertyAll(buttonColor),
                         ),
                         onPressed: () {
                           openPdf(url);

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/applicationManagementProvider.dart';
 import 'package:society_admin/Provider/assigned_user_provider.dart';
 import 'package:society_admin/Provider/complaintManagementProvider.dart';
 import 'package:society_admin/Provider/deleteNoticeProvider.dart';
@@ -15,7 +16,6 @@ import 'package:society_admin/Provider/role_page_total_number_provider.dart';
 import 'package:society_admin/Provider/upload_ledger_provider.dart';
 import 'package:society_admin/Provider/upload_receipt_provider.dart';
 import 'package:society_admin/homeScreen/sideBar.dart';
-import 'package:society_admin/screens/Notice/addNotice.dart';
 import 'package:society_admin/screens/Notice/circularNotice.dart';
 
 void main() async {
@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RolePageTotalNumProviderAdmin()),
         ChangeNotifierProvider(create: (_) => UploadLedgerProvider()),
         ChangeNotifierProvider(create: (_) => UploadReceiptProvider()),
+        ChangeNotifierProvider(create: (_) => ApplicationManagementProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -127,10 +128,10 @@ class MyApp extends StatelessWidget {
       case '/':
         return CircularNotice(
             society: 'society', allRoles: const [], userId: 'userId');
-      case '/addNotice':
-        return AddNotice(
-          userId: 'userId',
-        );
+      // case '/addNotice':
+      //   return AddNotice(
+      //     userId: 'userId',
+      //   );
       case '/addNoc':
       // return  AddNoc();
       case '/nocManagement':

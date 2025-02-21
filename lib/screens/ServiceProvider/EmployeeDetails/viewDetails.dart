@@ -35,10 +35,7 @@ class _ViewDataState extends State<ViewData> {
         ),
           flexibleSpace: Container(
                 decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+                  color: primaryColor)),
       ),
       body: Center(
         child: SizedBox(

@@ -130,7 +130,7 @@ class _MemberNameListState extends State<MemberNameList> {
                                 )
                               : Container(
                                   padding: const EdgeInsets.all(2.0),
-                                  height: 450,
+                                  height: MediaQuery.of(context).size.height * 0.80,
                                   width:
                                       MediaQuery.of(context).size.width * 0.99,
                                   child: StreamBuilder<List<List<dynamic>>>(
@@ -278,17 +278,18 @@ class _MemberNameListState extends State<MemberNameList> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: FloatingActionButton(
-                                heroTag: 'add',
-                                onPressed: () {
-                                  addRow();
-                                },
-                                child: const Icon(Icons.add),
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(right: 5),
+                            //   child: FloatingActionButton(
+                            //     heroTag: 'add',
+                            //     onPressed: () {
+                            //       addRow();
+                            //     },
+                            //     child: const Icon(Icons.add),
+                            //   ),
+                            // ),
                             FloatingActionButton(
+                              backgroundColor: primaryColor,
                               heroTag: 'save',
                               onPressed: storeEditedData,
                               child: const Icon(Icons.check),
@@ -381,12 +382,12 @@ class _MemberNameListState extends State<MemberNameList> {
     _data.add(data);
   }
 
-  addRow() {
-    // ignore: no_leading_underscores_for_local_identifiers
-    List<dynamic> _blankRow = List.generate(data[0].length, (_) => '');
-    data.add(_blankRow);
-    _data.add(data);
-  }
+  // addRow() {
+  //   // ignore: no_leading_underscores_for_local_identifiers
+  //   List<dynamic> _blankRow = List.generate(data[0].length, (_) => '');
+  //   data.add(_blankRow);
+  //   _data.add(data);
+  // }
 
   alertBox() async {
     await showDialog(

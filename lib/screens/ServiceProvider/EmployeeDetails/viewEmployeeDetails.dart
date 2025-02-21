@@ -71,10 +71,7 @@ class _ViewEmployeeState extends State<ViewEmployee> {
         ),
        flexibleSpace: Container(
                 decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+                   color: primaryColor)),
         actions: [
           Padding(
               padding: const EdgeInsets.only(right: 10.0),
@@ -82,8 +79,8 @@ class _ViewEmployeeState extends State<ViewEmployee> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(white),
-                      minimumSize: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(white),
+                      minimumSize: WidgetStateProperty.all(
                         const Size(20, 10),
                       )),
                   onPressed: () {

@@ -44,10 +44,7 @@ class _AddEmployeeState extends State<AddEmployee> {
         ),
         flexibleSpace: Container(
             decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [lightBlueColor, blueColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight))),
+               color:primaryColor)),
       ),
       body: Center(
         child: Padding(

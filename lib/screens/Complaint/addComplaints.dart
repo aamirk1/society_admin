@@ -104,7 +104,7 @@ class _AddComplaintState extends State<AddComplaint> {
                 ),
                 Text(
                   'Response: ${widget.response ?? 'Response not sent.'}',
-                  style: TextStyle(color: textColor, fontSize: 15),
+                  style: const TextStyle(color: textColor, fontSize: 15),
                 ),
                 const SizedBox(
                   height: 10,
@@ -128,8 +128,8 @@ class _AddComplaintState extends State<AddComplaint> {
                       ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(primaryColor),
-                            minimumSize: MaterialStateProperty.all(
+                                WidgetStateProperty.all(primaryColor),
+                            minimumSize: WidgetStateProperty.all(
                               const Size(20, 30),
                             ),
                           ),

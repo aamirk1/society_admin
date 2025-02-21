@@ -67,17 +67,14 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          iconTheme: const IconThemeData(color: buttonColor),
+          iconTheme: const IconThemeData(color: primaryColor),
           title: Text(
             "All Members Bill of ${widget.society}",
             style: const TextStyle(color: buttonTextColor),
           ),
           flexibleSpace: Container(
               decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [lightBlueColor, blueColor],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight))),
+                  color: primaryColor)),
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -143,7 +140,7 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                   IconButton(
                     icon: const Icon(
                       Icons.logout_rounded,
-                      color: buttonColor,
+                      color: primaryColor,
                     ),
                     onPressed: () {
                       signOut(context);
@@ -173,7 +170,7 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                             minWidth: 3000,
                             border: TableBorder.all(color: Colors.black),
                             headingRowColor:
-                                const WidgetStatePropertyAll(buttonColor),
+                                const WidgetStatePropertyAll(primaryColor),
                             headingTextStyle: const TextStyle(
                               color: Colors.white,
                               fontSize: 50.0,
@@ -238,7 +235,7 @@ class _MemberBillLadgerState extends State<MemberBillLadger> {
                                             style: const ButtonStyle(
                                               backgroundColor:
                                                   WidgetStatePropertyAll(
-                                                      buttonColor),
+                                                      primaryColor),
                                             ),
                                             onPressed: () {
                                               // print("Paid");

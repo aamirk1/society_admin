@@ -21,16 +21,15 @@ class NoticeSidebar extends StatefulWidget {
 // ignore: camel_case_types
 class _NoticeSidebarState extends State<NoticeSidebar> {
   List<String> tabTitle = [
-    'Title',
+  
     'Notice',
     'Pick File',
   ];
   List<dynamic> tabIcon = [
-    Icons.text_fields_rounded,
     Icons.text_snippet_rounded,
     Icons.picture_as_pdf,
   ];
-  List<bool> design = [true, false, false];
+  List<bool> design = [true, false];
 
   int _selectedIndex = 0;
   bool isIndex1 = false;
@@ -45,11 +44,7 @@ class _NoticeSidebarState extends State<NoticeSidebar> {
           isIndex1: isIndex1,
           fcmIdList: widget.fcmIdList,
           ),
-      ShortNotice(
-        userId: widget.userId,
-        societyName: widget.societyName,
-        fcmIdList: widget.fcmIdList
-      ),
+      
       AddNoticePdf(userId: widget.userId, societyName: widget.societyName,fcmIdList: widget.fcmIdList),
     ];
     return Scaffold(
@@ -59,10 +54,7 @@ class _NoticeSidebarState extends State<NoticeSidebar> {
             padding: const EdgeInsets.only(top: 20),
             width: 150,
             decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [lightBlueColor, blueColor])),
+                color: primaryColor),
             child: Column(
               children: [
                 Container(
@@ -125,7 +117,7 @@ class _NoticeSidebarState extends State<NoticeSidebar> {
 
   void setDesignBool() {
     List<bool> tempBool = [];
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 2; i++) {
       tempBool.add(false);
     }
     design = tempBool;

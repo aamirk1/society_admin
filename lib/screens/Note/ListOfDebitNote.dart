@@ -59,10 +59,7 @@ class _DebitNoteState extends State<DebitNote> {
           ),
           flexibleSpace: Container(
               decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [lightBlueColor, blueColor],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight))),
+                 color: primaryColor)),
           actions: [
             Padding(
               padding: const EdgeInsets.only(left: 150, right: 10.0),
@@ -70,7 +67,7 @@ class _DebitNoteState extends State<DebitNote> {
                 children: [
                   ElevatedButton(
                     style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(white),
+                      backgroundColor: WidgetStatePropertyAll(white),
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -156,7 +153,7 @@ class _DebitNoteState extends State<DebitNote> {
                   //   width: 10,
                   // ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.logout_rounded,
                       color: white,
                     ),

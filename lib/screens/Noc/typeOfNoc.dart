@@ -45,8 +45,8 @@ class _TypeOfNocState extends State<TypeOfNoc> {
     'ELECTRIC METER NOC',
     'PASSPORT NOC',
     'RENOVATION NOC',
-    'NOC FOR GIFT DEED',
-    'BANK',
+    'GIFT DEED NOC',
+    'BANK NOC',
   ];
   @override
   Widget build(BuildContext context) {

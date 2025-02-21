@@ -58,10 +58,7 @@ class _ComplaintManagementState extends State<ComplaintManagement> {
               style: TextStyle(color: white)),
           flexibleSpace: Container(
               decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [lightBlueColor, blueColor],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight))),
+                  color: primaryColor)),
           actions: [
             IconButton(
               padding: const EdgeInsets.only(right: 20.0),

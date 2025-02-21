@@ -71,16 +71,13 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
           ),
           flexibleSpace: Container(
               decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [lightBlueColor, blueColor],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight))),
+                 color: primaryColor)),
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(white),
+                  backgroundColor: WidgetStatePropertyAll(white),
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -176,7 +173,7 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                   minWidth: 3000,
                                   border: TableBorder.all(color: Colors.black),
                                   headingRowColor:
-                                      const MaterialStatePropertyAll(
+                                      const WidgetStatePropertyAll(
                                     buttonColor,
                                   ),
                                   headingTextStyle: const TextStyle(
@@ -245,7 +242,7 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                             : DataCell(ElevatedButton(
                                                 style: const ButtonStyle(
                                                     backgroundColor:
-                                                        MaterialStatePropertyAll(
+                                                        WidgetStatePropertyAll(
                                                             buttonColor)),
                                                 onPressed: () {
                                                   // print("Paid");

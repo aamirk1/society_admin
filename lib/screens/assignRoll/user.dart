@@ -104,10 +104,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
         title: Text(widget.society),
         flexibleSpace: Container(
             decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [lightBlueColor, blueColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight))),
+               color:primaryColor)),
         actions: [
           IconButton(
             padding: const EdgeInsets.only(right: 20.0),
@@ -179,7 +176,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
                                                   child: TextButton(
                                                     style: const ButtonStyle(
                                                         backgroundColor:
-                                                            MaterialStatePropertyAll(
+                                                            WidgetStatePropertyAll(
                                                                 Colors.yellow)),
                                                     onPressed: () {},
                                                     child: const Text(
@@ -277,7 +274,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
                                                 child: ElevatedButton(
                                                   style: const ButtonStyle(
                                                       backgroundColor:
-                                                          MaterialStatePropertyAll(
+                                                          WidgetStatePropertyAll(
                                                               Colors.green)),
                                                   onPressed: () async {
                                                     for (int i = 0;
@@ -373,7 +370,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
                                                   child: TextButton(
                                                     style: const ButtonStyle(
                                                         backgroundColor:
-                                                            MaterialStatePropertyAll(
+                                                            WidgetStatePropertyAll(
                                                                 Colors.yellow)),
                                                     onPressed: () {},
                                                     child: const Text(
@@ -421,7 +418,7 @@ class _MenuUserPageState extends State<MenuUserPage> {
                                                           return ElevatedButton(
                                                             style: ButtonStyle(
                                                                 backgroundColor:
-                                                                    MaterialStatePropertyAll(changeColorForRole[
+                                                                    WidgetStatePropertyAll(changeColorForRole[
                                                                             index]
                                                                         ? Colors
                                                                             .white

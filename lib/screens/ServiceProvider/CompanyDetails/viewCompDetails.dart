@@ -31,10 +31,7 @@ class _ViewCompanyDataState extends State<ViewCompanyData> {
         ),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: [lightBlueColor, blueColor],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight),
+            color: primaryColor
           ),
         ),
       ),

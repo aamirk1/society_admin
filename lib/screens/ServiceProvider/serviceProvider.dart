@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:society_admin/Provider/list_builder_provider.dart';
 import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/authScreen/loginScreen.dart';
+import 'package:society_admin/components/customAppBar.dart';
 import 'package:society_admin/screens/ServiceProvider/CompanyDetails/addCompanyDetails.dart';
 import 'package:society_admin/screens/ServiceProvider/EmployeeDetails/viewEmployeeDetails.dart';
 
@@ -34,23 +35,14 @@ class _ServiceProviderState extends State<ServiceProvider> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('All Service Provider',
-              style:  TextStyle(color: white)),
-        flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [lightBlueColor, blueColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight))),
-        actions: [
+      appBar: Customappbar(title:'All Service Provider',action: [
           Padding(
               padding: const EdgeInsets.only(right: 10.0),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(white),
+                    backgroundColor: WidgetStatePropertyAll(white),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -80,6 +72,55 @@ class _ServiceProviderState extends State<ServiceProvider> {
           )
         ],
       ),
+      
+      
+      
+      // AppBar(
+      //   title: const Text('All Service Provider',
+      //         style:  TextStyle(color: white)),
+      //   flexibleSpace: Container(
+      //       decoration: const BoxDecoration(
+      //           gradient: LinearGradient(
+      //               colors: [lightBlueColor, blueColor],
+      //               begin: Alignment.topLeft,
+      //               end: Alignment.bottomRight))),
+      //   actions: [
+      //     Padding(
+      //         padding: const EdgeInsets.only(right: 10.0),
+      //         child: Padding(
+      //           padding: const EdgeInsets.all(8.0),
+      //           child: ElevatedButton(
+      //             style: const ButtonStyle(
+      //               backgroundColor: WidgetStatePropertyAll(white),
+      //             ),
+      //             onPressed: () {
+      //               Navigator.push(
+      //                 context,
+      //                 MaterialPageRoute(builder: (context) {
+      //                   return AddCompany(
+      //                       society: widget.society, userId: widget.userId);
+      //                 }),
+      //               );
+      //             },
+      //             child: const Icon(
+      //               Icons.add,
+      //               color: textColor,
+      //             ),
+      //           ),
+      //         )),
+      //     IconButton(
+      //       padding: const EdgeInsets.only(right: 20.0),
+      //       onPressed: () {
+      //         Navigator.pushReplacement(context,
+      //             MaterialPageRoute(builder: (context) => const LoginScreen()));
+      //       },
+      //       icon: const Icon(
+      //         Icons.power_settings_new,
+      //         color: Colors.white,
+      //       ),
+      //     )
+      //   ],
+      // ),
       body: SingleChildScrollView(
         child: Column(
           children: [

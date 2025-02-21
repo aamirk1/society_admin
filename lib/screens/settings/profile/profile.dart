@@ -28,10 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: const Text('Edit Profile', style: TextStyle(color: white)),
         flexibleSpace: Container(
             decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [lightBlueColor, blueColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight))),
+               color:primaryColor)),
       ),
       body: Center(
         child: Column(

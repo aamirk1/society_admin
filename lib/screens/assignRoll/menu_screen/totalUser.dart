@@ -75,7 +75,7 @@ class _TotalUsersState extends State<TotalUsers> {
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                       backgroundColor:
-                                          MaterialStateProperty.all(
+                                          WidgetStateProperty.all(
                                     selectedDesign[26]
                                         ? Colors.grey
                                         : Colors.black,
@@ -105,7 +105,7 @@ class _TotalUsersState extends State<TotalUsers> {
                                   child: ElevatedButton(
                                     style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all(
+                                            WidgetStateProperty.all(
                                       selectedDesign[index]
                                           ? Colors.grey
                                           : Colors.black,
@@ -368,7 +368,7 @@ class _TotalUsersState extends State<TotalUsers> {
                                             ElevatedButton(
                                               style: const ButtonStyle(
                                                   backgroundColor:
-                                                      MaterialStatePropertyAll(
+                                                      WidgetStatePropertyAll(
                                                           Colors.redAccent)),
                                               onPressed: () {
                                                 Navigator.pop(context);
@@ -378,7 +378,7 @@ class _TotalUsersState extends State<TotalUsers> {
                                             ElevatedButton(
                                               style: const ButtonStyle(
                                                   backgroundColor:
-                                                      MaterialStatePropertyAll(
+                                                      WidgetStatePropertyAll(
                                                           Color.fromARGB(255,
                                                               67, 182, 126))),
                                               onPressed: () {

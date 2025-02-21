@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 
 class TableHeading extends StatelessWidget {
-  TableHeading({super.key, required this.title, this.width});
+  const TableHeading({super.key, required this.title, this.width});
   final String title;
   final double? width;
 

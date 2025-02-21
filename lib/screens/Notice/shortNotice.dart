@@ -51,10 +51,7 @@ class _ShortNoticeState extends State<ShortNotice> {
       appBar: AppBar(
         flexibleSpace: Container(
             decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [lightBlueColor, blueColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight))),
+                color: primaryColor)),
         title: const Text('Short Notice', style: TextStyle(color: white)),
       ),
       body: Center(
@@ -105,15 +102,16 @@ class _ShortNoticeState extends State<ShortNotice> {
                   width: MediaQuery.of(context).size.width * 0.08,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      minimumSize: MaterialStatePropertyAll(
+                      minimumSize: WidgetStatePropertyAll(
                         Size(MediaQuery.of(context).size.width * 0.09, 50),
                       ),
-                      backgroundColor: MaterialStateProperty.all(primaryColor),
+                      backgroundColor: WidgetStateProperty.all(primaryColor),
                     ),
                     onPressed: () async {
                       storeNotice(titleController.text,
                               customNoticeController.text, widget.userId)
                           .whenComplete(() {
+
                         sendNoticeNotification(
                             widget.fcmIdList, "Notice", titleController.text);
                       });
@@ -135,27 +133,54 @@ class _ShortNoticeState extends State<ShortNotice> {
     );
   }
 
-  Future<void> storeNotice(title, notice, userId) async {
+  Future<void> storeNotice(String title, String notice, String userId) async {
+  try {
     final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
-    await FirebaseFirestore.instance
+    
+    // Create a reference with an auto-generated ID
+    DocumentReference noticeRef = FirebaseFirestore.instance
         .collection('notice')
         .doc(widget.societyName)
         .collection('notices')
-        .doc(title)
-        .set({
+        .doc(); // Auto-generated ID
+
+    await noticeRef.set({
+      'id': noticeRef.id, // Store the document ID for future edits
       'userId': userId,
       'title': title,
-      'date': date,
+      'date': DateTime.now().toString(),
       'notice': notice,
-    });
-    provider.addSingleList({
-      'userId': userId,
-      'title': title,
-      'date': date,
-      'notice': notice,
-    });
+    }).whenComplete((){
+      
     Navigator.pop(context);
+    });
+
+    print('Notice stored successfully!');
+  } catch (e) {
+    print('Error storing notice: $e');
   }
+}
+  // Future<void> storeNotice(title, notice, userId) async {
+  //   final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
+  //   await FirebaseFirestore.instance
+  //       .collection('notice')
+  //       .doc(widget.societyName)
+  //       .collection('notices')
+  //       .doc(title)
+  //       .set({
+  //     'userId': userId,
+  //     'title': title,
+  //     'date': date,
+  //     'notice': notice,
+  //   });
+  //   provider.addSingleList({
+  //     'userId': userId,
+  //     'title': title,
+  //     'date': date,
+  //     'notice': notice,
+  //   });
+  //   Navigator.pop(context);
+  // }
 
   Future<PlatformFile> pickAndUploadPDF() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(

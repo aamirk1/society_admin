@@ -91,10 +91,7 @@ class _RoleScreenState extends State<RoleScreen> {
       appBar: AppBar(
         flexibleSpace: Container(
             decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [lightBlueColor, blueColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight))),
+               color:primaryColor)),
         title: const Text(
           "Role Management",
           style: TextStyle(color: white),
@@ -282,7 +279,7 @@ class _RoleScreenState extends State<RoleScreen> {
                             alignment: Alignment.center,
                             child: ElevatedButton(
                               style: const ButtonStyle(
-                                backgroundColor: MaterialStatePropertyAll(
+                                backgroundColor: WidgetStatePropertyAll(
                                   Color.fromARGB(
                                     255,
                                     47,
@@ -407,7 +404,7 @@ class _RoleScreenState extends State<RoleScreen> {
                       child: ElevatedButton(
                         style: const ButtonStyle(
                           backgroundColor:
-                              MaterialStatePropertyAll(Colors.white),
+                              WidgetStatePropertyAll(Colors.white),
                         ),
                         onPressed: () {
                           Navigator.push(
@@ -774,7 +771,7 @@ class _RoleScreenState extends State<RoleScreen> {
                     BoxDecoration(border: Border.all(color: Colors.blue)),
                 child: ElevatedButton(
                   style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.white)),
+                      backgroundColor: WidgetStatePropertyAll(Colors.white)),
                   onPressed: () {
                     Navigator.pop(context);
                   },

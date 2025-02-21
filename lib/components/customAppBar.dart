@@ -1,9 +1,12 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
 
 class Customappbar extends StatelessWidget implements PreferredSizeWidget {
-  Customappbar({super.key, required this.title, this.action});
-
+ const Customappbar({super.key, this.arrows = false, required this.title, this.action});
+  
+  final bool arrows; // Non-nullable bool with a default value
   final String title;
   final List<Widget>? action;
 
@@ -11,6 +14,7 @@ class Customappbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: arrows,
         title: Text(
           title,
           style: const TextStyle(color: white),

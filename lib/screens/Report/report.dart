@@ -71,10 +71,7 @@ class _ReportScreenState extends State<ReportScreen> {
       appBar: AppBar(
         flexibleSpace: Container(
             decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [lightBlueColor, blueColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight))),
+               color:primaryColor)),
         title: const Text('Daily Report', style: TextStyle(color: white)),
       ),
       body: SizedBox(
@@ -142,7 +139,7 @@ class _ReportScreenState extends State<ReportScreen> {
                             minWidth: 4500,
                             border: TableBorder.all(color: Colors.black),
                             headingRowColor:
-                                const MaterialStatePropertyAll(primaryColor),
+                                const WidgetStatePropertyAll(primaryColor),
                             headingTextStyle: const TextStyle(
                                 color: Colors.white, fontSize: 50.0),
                             columnSpacing: 3.0,

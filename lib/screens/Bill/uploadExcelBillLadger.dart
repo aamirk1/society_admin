@@ -40,7 +40,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
   List<dynamic> listofdata = [];
   // ignore: prefer_collection_literals
   List<Map<String, dynamic>> dataMap = [];
-  Map<String, dynamic> mapExcelData = Map();
+  Map<String, dynamic> mapExcelData = {};
   List<dynamic> alldata = [];
   // String monthyear = 'February 2024';
   String monthyear = DateFormat('yyyy').format(DateTime.now());
@@ -90,11 +90,8 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
         ),
         flexibleSpace: Container(
             decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [lightBlueColor, blueColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight))),
-        actions: [
+               color:primaryColor)),
+        actions: const [
           // Padding(
           //   padding: const EdgeInsets.only(right: 8.0),
           //   child: Row(
@@ -190,10 +187,10 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                               // minimumSize: MaterialStateProperty.all(
                               //   const Size(40, 15), // Adjust button size
                               // ),
-                              backgroundColor: MaterialStatePropertyAll(
+                              backgroundColor: WidgetStatePropertyAll(
                                 buttonBoolList[index]
                                     ? const Color.fromARGB(255, 1, 19, 124)
-                                    : buttonColor,
+                                    : primaryColor,
                               ),
                             ),
                             onPressed: () {
@@ -238,7 +235,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                         minWidth: 1700,
                         border: TableBorder.all(color: Colors.black),
                         headingRowColor:
-                            const MaterialStatePropertyAll(buttonColor),
+                            const WidgetStatePropertyAll(primaryColor),
                         headingTextStyle: const TextStyle(
                           color: Colors.white,
                           wordSpacing: 5,
@@ -290,12 +287,12 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                       ElevatedButton(
                         style: const ButtonStyle(
                           backgroundColor:
-                              MaterialStatePropertyAll(buttonColor),
+                              WidgetStatePropertyAll(primaryColor),
                         ),
                         onPressed: () async {
                           if (selectedMonths.isNotEmpty) {
                             monthAndYear =
-                                selectedMonths.join(", ") + " $monthyear";
+                                "${selectedMonths.join(", ")} $monthyear";
                             selectExcelFile();
                           } else {
                             await showDialog(
@@ -337,7 +334,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
                       ElevatedButton(
                         style: const ButtonStyle(
                           backgroundColor:
-                              MaterialStatePropertyAll(buttonColor),
+                              WidgetStatePropertyAll(primaryColor),
                         ),
                         onPressed: () {
                           openPdf(url);
@@ -359,10 +356,10 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
         width: 40,
         height: 40,
         child: FloatingActionButton(
-          backgroundColor: buttonColor,
+          backgroundColor: primaryColor,
           onPressed: () async {
             // for (int i = 0; i < mapExcelData.length; i++) {
-            DocumentReference docRef = await FirebaseFirestore.instance
+            DocumentReference docRef = FirebaseFirestore.instance
                 .collection('ladgerBill')
                 .doc(widget.societyName)
                 .collection('month')
@@ -486,7 +483,7 @@ class _UpExcelBillLadgerState extends State<UpExcelBillLadger> {
         alldata.add(rowData);
 
         newData.add(tempMap);
-        print('alldata ${newData}');
+        print('alldata $newData');
         // print('alldata - $alldata');
 
         tempMap = {};

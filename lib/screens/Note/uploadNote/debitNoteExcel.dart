@@ -68,10 +68,7 @@ class _DebitNoteExcelState extends State<DebitNoteExcel> {
           ),
           flexibleSpace: Container(
               decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [lightBlueColor, blueColor],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight))),
+                color: primaryColor)),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
@@ -329,7 +326,7 @@ class _DebitNoteExcelState extends State<DebitNoteExcel> {
                       ElevatedButton(
                         style: const ButtonStyle(
                           backgroundColor:
-                              MaterialStatePropertyAll(buttonColor),
+                              WidgetStatePropertyAll(buttonColor),
                         ),
                         onPressed: () async {
                           if (_formKey.currentState!.validate() &&

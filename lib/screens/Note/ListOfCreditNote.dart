@@ -65,10 +65,7 @@ class _CreditNoteState extends State<CreditNote> {
           ),
         flexibleSpace: Container(
                 decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [lightBlueColor, blueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight))),
+                   color: primaryColor),),
           actions: [
             Padding(
               padding: const EdgeInsets.only(left: 150, right: 10.0),
@@ -76,7 +73,7 @@ class _CreditNoteState extends State<CreditNote> {
                 children: [
                   ElevatedButton(
                     style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(white),
+                      backgroundColor: WidgetStatePropertyAll(white),
                     ),
                     onPressed: () {
                       Navigator.push(

@@ -41,10 +41,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               style:  TextStyle(color: white)),
         flexibleSpace: Container(
             decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [lightBlueColor, blueColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight))),
+               color:primaryColor)),
       ),
       body: Center(
         child: Container(
