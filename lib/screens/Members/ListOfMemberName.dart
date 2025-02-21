@@ -183,9 +183,9 @@ class _MemberNameListState extends State<MemberNameList> {
                                                         data[0].length,
                                                         (index2) {
                                                       return
-                                                          //  data[index1][index2] !=
-                                                          //         'Status'
-                                                          //     ?
+                                                           data[index1][index2] !=
+                                                                  'Status'
+                                                              ?
                                                           DataCell(Padding(
                                                         padding:
                                                             const EdgeInsets
@@ -223,47 +223,37 @@ class _MemberNameListState extends State<MemberNameList> {
                                                                             11.0,
                                                                         color: Colors
                                                                             .black))),
-                                                      ));
-                                                      // : DataCell(
-                                                      //     Padding(
-                                                      //       padding:
-                                                      //           const EdgeInsets
-                                                      //                   .only(
-                                                      //               left: 8.0),
-                                                      //       child: ElevatedButton(
-                                                      //         onPressed: () {
-                                                      //           setState(() {
-                                                      //             isActive[
-                                                      //                     index1] =
-                                                      //                 !isActive[
-                                                      //                     index1];
-                                                      //           });
-                                                      //         },
-                                                      //         style:
-                                                      //             ElevatedButton
-                                                      //                 .styleFrom(
-                                                      //           backgroundColor:
-                                                      //               isActive[
-                                                      //                       index1]
-                                                      //                   ? Colors
-                                                      //                       .red
-                                                      //                   : Colors
-                                                      //                       .green,
-                                                      //         ),
-                                                      //         child: Text(
-                                                      //           isActive[index1]
-                                                      //               ? 'Deactivate'
-                                                      //               : 'Activate',
-                                                      //           style:
-                                                      //               const TextStyle(
-                                                      //             fontSize: 18.0,
-                                                      //             color: Colors
-                                                      //                 .white,
-                                                      //           ),
-                                                      //         ),
-                                                      //       ),
-                                                      //     ),
-                                                      //   );
+                                                      ))
+                                                      : DataCell(
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 8.0),
+                                                            child: ElevatedButton(
+                                                              onPressed: () {
+                                                               
+                                                              },
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                backgroundColor:
+                                                                    primaryColor,
+                                                              ),
+                                                              child: Text(
+                                                                isActive[index1]
+                                                                    ? 'Deactivate'
+                                                                    : 'Activate',
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 18.0,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
                                                     }),
                                                   ),
                                                 ),

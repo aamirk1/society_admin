@@ -185,7 +185,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
                               backgroundColor: WidgetStatePropertyAll(
                                 buttonBoolList[index]
                                     ? const Color.fromARGB(255, 1, 19, 124)
-                                    : buttonColor,
+                                    : primaryColor,
                               ),
                             ),
                             onPressed: () {
@@ -229,7 +229,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
                             minWidth: 1700,
                             border: TableBorder.all(color: Colors.black),
                             headingRowColor:
-                                const WidgetStatePropertyAll(buttonColor),
+                                const WidgetStatePropertyAll(primaryColor),
                             headingTextStyle: const TextStyle(
                               color: Colors.white,
                               wordSpacing: 5,
@@ -279,7 +279,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
                     children: [
                       ElevatedButton(
                         style: const ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(buttonColor),
+                          backgroundColor: WidgetStatePropertyAll(primaryColor),
                         ),
                         onPressed: () async {
                           if (selectedMonths.isNotEmpty) {
@@ -326,7 +326,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
                       ElevatedButton(
                         style: const ButtonStyle(
                           backgroundColor:
-                              WidgetStatePropertyAll(buttonColor),
+                              WidgetStatePropertyAll(primaryColor),
                         ),
                         onPressed: () {
                           openPdf(url);
@@ -348,7 +348,7 @@ class _UpExcelBillReceiptState extends State<UpExcelBillReceipt> {
         height: 40,
         width: 40,
         child: FloatingActionButton(
-          backgroundColor: buttonColor,
+          backgroundColor: primaryColor,
           onPressed: () async {
             await FirebaseFirestore.instance
                 .collection('ladgerReceipt')

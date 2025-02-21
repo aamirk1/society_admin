@@ -66,11 +66,14 @@ class _ShortNoticeState extends State<ShortNotice> {
                   child: Column(
                     children: [
                       TextFormField(
+                        maxLength: 20,
                         autofocus: widget.isIndex1,
                         // autofocus: true,
                         controller: titleController,
                         decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: primaryColor)
+                          ),
                           labelText: 'Title',
                         ),
                       ),
@@ -78,11 +81,14 @@ class _ShortNoticeState extends State<ShortNotice> {
                         height: 40,
                       ),
                       TextField(
+                        maxLength: 500,
                         maxLines: 10,
                         controller: customNoticeController,
                         decoration: const InputDecoration(
+                          
                           hintText: 'Write a short notice',
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder( borderSide: BorderSide(color: primaryColor)
+                        ),
                           // alignLabelWithHint: true,
                         ),
                       ),

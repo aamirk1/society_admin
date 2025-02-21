@@ -64,7 +64,7 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          iconTheme: const IconThemeData(color: buttonColor),
+          iconTheme: const IconThemeData(color: primaryColor),
           title: Text(
             "All Members Receipt of ${widget.society}",
             style: const TextStyle(color: buttonTextColor),
@@ -143,7 +143,7 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                   IconButton(
                     icon: const Icon(
                       Icons.logout_rounded,
-                      color: buttonColor,
+                      color: primaryColor,
                     ),
                     onPressed: () {
                       signOut(context);
@@ -174,7 +174,7 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                   border: TableBorder.all(color: Colors.black),
                                   headingRowColor:
                                       const WidgetStatePropertyAll(
-                                    buttonColor,
+                                    primaryColor,
                                   ),
                                   headingTextStyle: const TextStyle(
                                     color: Colors.white,
@@ -185,9 +185,9 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                       List.generate(columnName.length, (index) {
                                     return DataColumn2(
                                       fixedWidth:
-                                          headers[index] == '4_Member Name'
+                                          headers[index] == 'Member Name'
                                               ? 500
-                                              : 85,
+                                              : 120,
                                       label: Container(
                                         alignment: Alignment.center,
                                         child: Text(
@@ -243,7 +243,7 @@ class _MemberBillReceiptState extends State<MemberBillReceipt> {
                                                 style: const ButtonStyle(
                                                     backgroundColor:
                                                         WidgetStatePropertyAll(
-                                                            buttonColor)),
+                                                            primaryColor)),
                                                 onPressed: () {
                                                   // print("Paid");
                                                 },

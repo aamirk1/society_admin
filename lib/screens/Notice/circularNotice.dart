@@ -72,7 +72,7 @@ class _CircularNoticeState extends State<CircularNotice> {
                             userId: widget.userId,
                             fcmIdList: allFcmId);
                       }),
-                    ).whenComplete((){
+                    ).whenComplete(() {
                       getNotice(widget.society);
                     });
                   },
@@ -162,6 +162,132 @@ class _CircularNoticeState extends State<CircularNotice> {
                                   itemBuilder: (context, index) {
                                     return Padding(
                                       padding: const EdgeInsets.all(5.0),
+                                      child: Row(
+                                        children: [
+                                          Row(
+                                            mainAxisSize: MainAxisSize
+                                                .min, // Ensures buttons take only necessary space
+                                            children: [
+                                              // Delete Button
+                                              Padding(
+                                                padding: const EdgeInsets.all(2.0),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                              color: primaryColor,
+                                              border:
+                                                  Border.all(color: primaryColor),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            height:
+                                                MediaQuery.of(context).size.height *
+                                                    0.060,
+                                            width:
+                                                MediaQuery.of(context).size.width *
+                                                    0.03,
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      deleteNotice(
+                                                        widget.society,
+                                                        value.noticeList[index][
+                                                            'id'], // Use 'id' instead of 'title'
+                                                        index,
+                                                      );
+                                                    },
+                                                    icon: const Icon(Icons.delete,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                              // Edit Button
+                                              Padding(
+                                                padding: const EdgeInsets.all(2.0),
+                                                child: Container(
+                                                 decoration: BoxDecoration(
+                                              color: primaryColor,
+                                              border:
+                                                  Border.all(color: primaryColor),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            height:
+                                                MediaQuery.of(context).size.height *
+                                                    0.060,
+                                            width:
+                                                MediaQuery.of(context).size.width *
+                                                    0.03,
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      showEditDialog(
+                                                        context,
+                                                        value.noticeList[index][
+                                                            'id'], // Ensure ID is passed
+                                                        value.noticeList[index]
+                                                            ['title'],
+                                                        value.noticeList[index]
+                                                            ['notice'],
+                                                      );
+                                                    },
+                                                    icon: const Icon(Icons.edit,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                              
+                                            ],
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: primaryColor,
+                                              border:
+                                                  Border.all(color: primaryColor),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            height:
+                                                MediaQuery.of(context).size.height *
+                                                    0.060,
+                                            width:
+                                                MediaQuery.of(context).size.width *
+                                                    0.12,
+                                            child: ListTile(
+                                              
+                                              title: Text(
+                                                value.noticeList[index]['title'],
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14),
+                                                textAlign: TextAlign.justify,
+                                              ),
+                                              onTap: () {
+                                                if (!value.noticeList[index]
+                                                        ['title']
+                                                    .toString()
+                                                    .endsWith('.pdf')) {
+                                                  isClicked = !isClicked;
+                                                  userId = widget.userId;
+                                                  societyName = widget.society!;
+                                                  title = value.noticeList[index]
+                                                      ['title'];
+                                                  notice = value.noticeList[index]
+                                                      ['notice'];
+                                                  dates = value.noticeList[index]
+                                                      ['date'];
+                                                  setState(() {});
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: value.noticePdfList.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: primaryColor,
@@ -175,83 +301,10 @@ class _CircularNoticeState extends State<CircularNotice> {
                                                 0.060,
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.70,
-                                        child: ListTile(
-                                          title: Text(
-                                            value.noticeList[index]['title'],
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14),
-                                            textAlign: TextAlign.justify,
-                                          ),
-                                         trailing: Row(
-            mainAxisSize: MainAxisSize.min, // Ensures buttons take only necessary space
-            children: [
-              // Edit Button
-              IconButton(
-                onPressed: () {
-                  showEditDialog(
-                    context,
-                    value.noticeList[index]['id'], // Ensure ID is passed
-                    value.noticeList[index]['title'],
-                    value.noticeList[index]['notice'],
-                  );
-                },
-                icon: const Icon(Icons.edit, color: Colors.white),
-              ),
-              // Delete Button
-              IconButton(
-                onPressed: () {
-                  deleteNotice(
-                    widget.society,
-                    value.noticeList[index]['id'], // Use 'id' instead of 'title'
-                    index,
-                  );
-                },
-                icon: const Icon(Icons.delete, color: Colors.white),
-              ),
-            ],
-          ),
-                                          onTap: () {
-                                            if (!value.noticeList[index]
-                                                    ['title']
-                                                .toString()
-                                                .endsWith('.pdf')) {
-                                              isClicked = !isClicked;
-                                              userId = widget.userId;
-                                              societyName = widget.society!;
-                                              title = value.noticeList[index]
-                                                  ['title'];
-                                              notice = value.noticeList[index]
-                                                  ['notice'];
-                                              dates = value.noticeList[index]
-                                                  ['date'];
-                                              setState(() {});
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                              ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: value.noticePdfList.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: primaryColor,
-                                          border: Border.all(color: primaryColor),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.060,
-                                        width: MediaQuery.of(context).size.width *
-                                            0.50,
+                                                0.50,
                                         child: Padding(
-                                          padding: const EdgeInsets.only(bottom: 8.0),
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
                                           child: ListTile(
                                             title: Text(
                                               value.noticePdfList[index]
@@ -261,7 +314,7 @@ class _CircularNoticeState extends State<CircularNotice> {
                                                   fontSize: 12),
                                               textAlign: TextAlign.start,
                                             ),
-                                            trailing: IconButton(
+                                            leading: IconButton(
                                               onPressed: () {
                                                 deleteNoticePdf(
                                                     widget.society,
@@ -274,7 +327,8 @@ class _CircularNoticeState extends State<CircularNotice> {
                                               ),
                                             ),
                                             onTap: () {
-                                              openPdf(value.noticePdfList[index]);
+                                              openPdf(
+                                                  value.noticePdfList[index]);
                                             },
                                           ),
                                         ),
@@ -311,89 +365,98 @@ class _CircularNoticeState extends State<CircularNotice> {
 
   Future<void> getNotice(String? selectedSociety) async {
     try {
-      final provider =
-          Provider.of<DeleteNoticeProvider>(context, listen: false);
+  final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
 
-      QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('notice')
-          .doc(selectedSociety)
-          .collection('notices')
-          .get();
+  QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collection('notice')
+      .doc(selectedSociety)
+      .collection('notices')
+      .orderBy('date', descending: true) // Fetch latest notices first
+      .get();
 
-      List<Map<String, dynamic>> allTypeOfNotice = snapshot.docs.map((doc) {
-        return {
-          'id': doc.id, // Store the document ID for editing
-          'title': doc['title'],
-          'notice': doc['notice'],
-          'date': doc['date'],
-        };
-      }).toList();
+  List<Map<String, dynamic>> allTypeOfNotice = snapshot.docs.map((doc) {
+    return {
+      'id': doc.id, // Store document ID for editing
+      'title': doc['title'],
+      'notice': doc['notice'],
+      'date': doc['date'],
+    };
+  }).toList();
 
-      provider.setBuilderNoticeList(allTypeOfNotice);
-    } catch (e) {
-      print('Error fetching notices: $e');
-    }
+  provider.setBuilderNoticeList(allTypeOfNotice);
+} catch (e) {
+  print('Error fetching notices: $e');
+}
+
   }
-void showEditDialog(BuildContext context, String docId, String oldTitle, String oldNotice) {
-  TextEditingController titleController = TextEditingController(text: oldTitle);
-  TextEditingController noticeController = TextEditingController(text: oldNotice);
 
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Edit Notice'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: titleController,
-              decoration: const InputDecoration(labelText: 'Title'),
+  void showEditDialog(
+      BuildContext context, String docId, String oldTitle, String oldNotice) {
+    TextEditingController titleController =
+        TextEditingController(text: oldTitle);
+    TextEditingController noticeController =
+        TextEditingController(text: oldNotice);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Edit Notice'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(labelText: 'Title'),
+              ),
+              TextField(
+                controller: noticeController,
+                decoration: const InputDecoration(labelText: 'Notice'),
+                maxLines: 3,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
             ),
-            TextField(
-              controller: noticeController,
-              decoration: const InputDecoration(labelText: 'Notice'),
-              maxLines: 3,
+            TextButton(
+              onPressed: () async {
+                await editNotice(
+                        docId, titleController.text, noticeController.text)
+                    .whenComplete(() {
+                  getNotice(widget.society);
+                });
+                Navigator.pop(context);
+              },
+              child: const Text('Save'),
             ),
           ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () async {
-              await editNotice(docId, titleController.text, noticeController.text).whenComplete((){
-                getNotice(widget.society);
-              });
-              Navigator.pop(context);
-            },
-            child: const Text('Save'),
-          ),
-        ],
-      );
-    },
-  );
-}
-Future<void> editNotice(String docId, String newTitle, String newNotice) async {
-  try {
-    await FirebaseFirestore.instance
-        .collection('notice')
-        .doc(widget.society)
-        .collection('notices')
-        .doc(docId) // Use document ID for updating
-        .update({
-      'title': newTitle,
-      'notice': newNotice,
-      'date': DateTime.now().toString(), // Update the timestamp
-    });
-
-    print('Notice updated successfully!');
-  } catch (e) {
-    print('Error updating notice: $e');
+        );
+      },
+    );
   }
-}
+
+  Future<void> editNotice(
+      String docId, String newTitle, String newNotice) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('notice')
+          .doc(widget.society)
+          .collection('notices')
+          .doc(docId) // Use document ID for updating
+          .update({
+        'title': newTitle,
+        'notice': newNotice,
+        'date': DateTime.now().toString(), // Update the timestamp
+      });
+
+      print('Notice updated successfully!');
+    } catch (e) {
+      print('Error updating notice: $e');
+    }
+  }
 
   // Future<void> getNotice(String? SelectedSociety) async {
   //   final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
@@ -428,28 +491,29 @@ Future<void> editNotice(String docId, String newTitle, String newNotice) async {
     return fileList;
   }
 
-  Future<void> deleteNotice(String? selectedSociety, String docId, int index) async {
-  try {
-    final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
+  Future<void> deleteNotice(
+      String? selectedSociety, String docId, int index) async {
+    try {
+      final provider =
+          Provider.of<DeleteNoticeProvider>(context, listen: false);
 
-    // Reference to the document using docId instead of title
-    DocumentReference deleteNotice = FirebaseFirestore.instance
-        .collection('notice')
-        .doc(selectedSociety)
-        .collection('notices')
-        .doc(docId); // Use document ID
+      // Reference to the document using docId instead of title
+      DocumentReference deleteNotice = FirebaseFirestore.instance
+          .collection('notice')
+          .doc(selectedSociety)
+          .collection('notices')
+          .doc(docId); // Use document ID
 
-    await deleteNotice.delete();
+      await deleteNotice.delete();
 
-    // Remove from the provider's list
-    provider.removeData(index);
+      // Remove from the provider's list
+      provider.removeData(index);
 
-    print('Notice deleted successfully!');
-  } catch (e) {
-    print('Error deleting notice: $e');
+      print('Notice deleted successfully!');
+    } catch (e) {
+      print('Error deleting notice: $e');
+    }
   }
-}
-
 
   // Future<void> deleteNotice(
   //     String? SelectedSociety, String typeOfNotice, int index) async {
