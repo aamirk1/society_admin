@@ -170,21 +170,25 @@ class _CircularNoticeState extends State<CircularNotice> {
                                             children: [
                                               // Delete Button
                                               Padding(
-                                                padding: const EdgeInsets.all(2.0),
+                                                padding:
+                                                    const EdgeInsets.all(2.0),
                                                 child: Container(
                                                   decoration: BoxDecoration(
-                                              color: primaryColor,
-                                              border:
-                                                  Border.all(color: primaryColor),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            height:
-                                                MediaQuery.of(context).size.height *
-                                                    0.060,
-                                            width:
-                                                MediaQuery.of(context).size.width *
-                                                    0.03,
+                                                    color: primaryColor,
+                                                    border: Border.all(
+                                                        color: primaryColor),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.060,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.03,
                                                   child: IconButton(
                                                     onPressed: () {
                                                       deleteNotice(
@@ -194,28 +198,33 @@ class _CircularNoticeState extends State<CircularNotice> {
                                                         index,
                                                       );
                                                     },
-                                                    icon: const Icon(Icons.delete,
+                                                    icon: const Icon(
+                                                        Icons.delete,
                                                         color: Colors.white),
                                                   ),
                                                 ),
                                               ),
                                               // Edit Button
                                               Padding(
-                                                padding: const EdgeInsets.all(2.0),
+                                                padding:
+                                                    const EdgeInsets.all(2.0),
                                                 child: Container(
-                                                 decoration: BoxDecoration(
-                                              color: primaryColor,
-                                              border:
-                                                  Border.all(color: primaryColor),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            height:
-                                                MediaQuery.of(context).size.height *
-                                                    0.060,
-                                            width:
-                                                MediaQuery.of(context).size.width *
-                                                    0.03,
+                                                  decoration: BoxDecoration(
+                                                    color: primaryColor,
+                                                    border: Border.all(
+                                                        color: primaryColor),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.060,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.03,
                                                   child: IconButton(
                                                     onPressed: () {
                                                       showEditDialog(
@@ -233,27 +242,28 @@ class _CircularNoticeState extends State<CircularNotice> {
                                                   ),
                                                 ),
                                               ),
-                                              
                                             ],
                                           ),
                                           Container(
                                             decoration: BoxDecoration(
                                               color: primaryColor,
-                                              border:
-                                                  Border.all(color: primaryColor),
+                                              border: Border.all(
+                                                  color: primaryColor),
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
-                                            height:
-                                                MediaQuery.of(context).size.height *
-                                                    0.060,
-                                            width:
-                                                MediaQuery.of(context).size.width *
-                                                    0.12,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.060,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.12,
                                             child: ListTile(
-                                              
                                               title: Text(
-                                                value.noticeList[index]['title'],
+                                                value.noticeList[index]
+                                                    ['title'],
                                                 style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 14),
@@ -267,12 +277,15 @@ class _CircularNoticeState extends State<CircularNotice> {
                                                   isClicked = !isClicked;
                                                   userId = widget.userId;
                                                   societyName = widget.society!;
-                                                  title = value.noticeList[index]
-                                                      ['title'];
-                                                  notice = value.noticeList[index]
-                                                      ['notice'];
-                                                  dates = value.noticeList[index]
-                                                      ['date'];
+                                                  title =
+                                                      value.noticeList[index]
+                                                          ['title'];
+                                                  notice =
+                                                      value.noticeList[index]
+                                                          ['notice'];
+                                                  dates =
+                                                      value.noticeList[index]
+                                                          ['date'];
                                                   setState(() {});
                                                 }
                                               },
@@ -365,29 +378,29 @@ class _CircularNoticeState extends State<CircularNotice> {
 
   Future<void> getNotice(String? selectedSociety) async {
     try {
-  final provider = Provider.of<DeleteNoticeProvider>(context, listen: false);
+      final provider =
+          Provider.of<DeleteNoticeProvider>(context, listen: false);
 
-  QuerySnapshot snapshot = await FirebaseFirestore.instance
-      .collection('notice')
-      .doc(selectedSociety)
-      .collection('notices')
-      .orderBy('date', descending: true) // Fetch latest notices first
-      .get();
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('notice')
+          .doc(selectedSociety)
+          .collection('notices')
+          .orderBy('date', descending: true) // Fetch latest notices first
+          .get();
 
-  List<Map<String, dynamic>> allTypeOfNotice = snapshot.docs.map((doc) {
-    return {
-      'id': doc.id, // Store document ID for editing
-      'title': doc['title'],
-      'notice': doc['notice'],
-      'date': doc['date'],
-    };
-  }).toList();
+      List<Map<String, dynamic>> allTypeOfNotice = snapshot.docs.map((doc) {
+        return {
+          'id': doc.id, // Store document ID for editing
+          'title': doc['title'],
+          'notice': doc['notice'],
+          'date': doc['date'],
+        };
+      }).toList();
 
-  provider.setBuilderNoticeList(allTypeOfNotice);
-} catch (e) {
-  print('Error fetching notices: $e');
-}
-
+      provider.setBuilderNoticeList(allTypeOfNotice);
+    } catch (e) {
+      print('Error fetching notices: $e');
+    }
   }
 
   void showEditDialog(

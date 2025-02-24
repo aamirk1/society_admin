@@ -10,6 +10,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:society_admin/authScreen/common.dart';
+import 'package:society_admin/screens/Members/memberLedger.dart';
 import 'package:society_admin/screens/Members/uploadExcel.dart';
 
 // ignore: must_be_immutable
@@ -49,9 +50,16 @@ class _MemberNameListState extends State<MemberNameList> {
   List<dynamic> alldata = [];
   bool showTable = false;
   bool isLoading = true;
+  late String email;
+  late String regNo;
+  late String landmark;
+  late String city;
+  late String state;
+  late String pincode;
 
   @override
   void initState() {
+    getSocietyDetails();
     addData();
     fetchMap(widget.society).whenComplete(() {
       showTable = true;
@@ -123,14 +131,16 @@ class _MemberNameListState extends State<MemberNameList> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      CircularProgressIndicator(),
+                                      Center(
+                                          child: CircularProgressIndicator()),
                                       Text('Collecting Data...')
                                     ],
                                   ),
                                 )
                               : Container(
                                   padding: const EdgeInsets.all(2.0),
-                                  height: MediaQuery.of(context).size.height * 0.80,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.80,
                                   width:
                                       MediaQuery.of(context).size.width * 0.99,
                                   child: StreamBuilder<List<List<dynamic>>>(
@@ -139,7 +149,9 @@ class _MemberNameListState extends State<MemberNameList> {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
                                           return const Center(
-                                            child: CircularProgressIndicator(),
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator()),
                                           );
                                         }
 
@@ -182,78 +194,87 @@ class _MemberNameListState extends State<MemberNameList> {
                                                         growable: true,
                                                         data[0].length,
                                                         (index2) {
-                                                      return
-                                                           data[index1][index2] !=
-                                                                  'Status'
-                                                              ?
-                                                          DataCell(Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                bottom: 2.0),
-                                                        // child: Text(data[index1][index2]),
+                                                      return data[index1]
+                                                                  [index2] !=
+                                                              'Status'
+                                                          ? DataCell(Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      bottom:
+                                                                          2.0),
+                                                              // child: Text(data[index1][index2]),
 
-                                                        child: TextFormField(
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontSize:
-                                                                        12),
-                                                            // controller: controllers[index1][index2],
-                                                            onChanged: (value) {
-                                                              data[index1]
-                                                                      [index2] =
-                                                                  value;
-                                                            },
-                                                            decoration:
-                                                                InputDecoration(
-                                                                    contentPadding: const EdgeInsets
+                                                              child: TextFormField(
+                                                                  style: const TextStyle(fontSize: 12),
+                                                                  // controller: controllers[index1][index2],
+                                                                  onChanged: (value) {
+                                                                    data[index1]
+                                                                            [
+                                                                            index2] =
+                                                                        value;
+                                                                  },
+                                                                  decoration: InputDecoration(
+                                                                      contentPadding: const EdgeInsets.only(left: 3.0, right: 3.0),
+                                                                      // border:
+                                                                      //     const OutlineInputBorder(),
+                                                                      hintText: data[index1][index2].toString(),
+                                                                      hintStyle: const TextStyle(fontSize: 11.0, color: Colors.black))),
+                                                            ))
+                                                          : DataCell(
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
                                                                         .only(
                                                                         left:
-                                                                            3.0,
-                                                                        right:
-                                                                            3.0),
-                                                                    // border:
-                                                                    //     const OutlineInputBorder(),
-                                                                    hintText: data[
-                                                                            index1]
-                                                                        [
-                                                                        index2],
-                                                                    hintStyle: const TextStyle(
-                                                                        fontSize:
-                                                                            11.0,
-                                                                        color: Colors
-                                                                            .black))),
-                                                      ))
-                                                      : DataCell(
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 8.0),
-                                                            child: ElevatedButton(
-                                                              onPressed: () {
-                                                               
-                                                              },
-                                                              style:
-                                                                  ElevatedButton
+                                                                            8.0),
+                                                                child:
+                                                                    ElevatedButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (context) {
+                                                                        return MemberLedger(
+                                                                          society:
+                                                                              widget.society,
+                                                                          landmark:
+                                                                              landmark,
+                                                                          city:
+                                                                              city,
+                                                                          stateName:
+                                                                              state,
+                                                                          pincode:
+                                                                              pincode,
+                                                                          data:
+                                                                              data,
+                                                                          index1:
+                                                                              index2, // Provide the correct index
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                  style: ElevatedButton
                                                                       .styleFrom(
-                                                                backgroundColor:
-                                                                    primaryColor,
-                                                              ),
-                                                              child: Text(
-                                                                isActive[index1]
-                                                                    ? 'Deactivate'
-                                                                    : 'Activate',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 18.0,
-                                                                  color: Colors
-                                                                      .white,
+                                                                    backgroundColor:
+                                                                        primaryColor,
+                                                                  ),
+                                                                  child:
+                                                                      const Text(
+                                                                    'Ledger',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          18.0,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          ),
-                                                        );
+                                                            );
                                                     }),
                                                   ),
                                                 ),
@@ -292,6 +313,22 @@ class _MemberNameListState extends State<MemberNameList> {
                 ),
         ),
       );
+
+  Future<void> getSocietyDetails() async {
+    DocumentSnapshot societyQuerySnapshot = await FirebaseFirestore.instance
+        .collection('society')
+        .doc(widget.society)
+        .get();
+    Map<String, dynamic> societyData =
+        societyQuerySnapshot.data() as Map<String, dynamic>;
+
+    email = societyData['email'];
+    regNo = societyData['regNo'];
+    landmark = societyData['landmark'];
+    city = societyData['city'];
+    state = societyData['state'];
+    pincode = societyData['pincode'];
+  }
 
   Future<void> storeEditedData() async {
     List<Map<String, dynamic>> mapdata = [];
@@ -351,7 +388,7 @@ class _MemberNameListState extends State<MemberNameList> {
           mapData[i]['Parking No.'].toString(),
           mapData[i]['Tenant Name And Address'].toString(),
           // mapData[i]['Status'] ?? '',
-          // 'Status'
+          'Status'
         ]);
       }
       columnName = temp[0];

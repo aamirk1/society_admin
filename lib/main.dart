@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:society_admin/Provider/ChangeValueProvider.dart';
 import 'package:society_admin/Provider/applicationManagementProvider.dart';
 import 'package:society_admin/Provider/assigned_user_provider.dart';
 import 'package:society_admin/Provider/complaintManagementProvider.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UploadLedgerProvider()),
         ChangeNotifierProvider(create: (_) => UploadReceiptProvider()),
         ChangeNotifierProvider(create: (_) => ApplicationManagementProvider()),
+        ChangeNotifierProvider(create: (_) => ChangeValue()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
