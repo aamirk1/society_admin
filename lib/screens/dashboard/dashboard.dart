@@ -8,7 +8,6 @@ import 'package:society_admin/authScreen/common.dart';
 import 'package:society_admin/components/customAppBar.dart';
 import 'package:society_admin/screens/dashboard/tableHeading.dart';
 
-
 class Dashboard extends StatefulWidget {
   Dashboard({super.key, this.society, this.allRoles, required this.userId});
   String? society;
@@ -24,7 +23,7 @@ class _DashboardState extends State<Dashboard> {
   String? formattedDate; // Make this nullable for now
 
   bool isLoading = true;
-  List<dynamic> flatList =[];
+  List<dynamic> flatList = [];
   @override
   void initState() {
     super.initState();
@@ -34,130 +33,171 @@ class _DashboardState extends State<Dashboard> {
 
   List<String> flat = ['101', '102'];
   List<dynamic> particular = [];
+@override
+Widget build(BuildContext context) {
+  String todayDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
+  Map<String, List<dynamic>> groupedApplications = {};
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: Customappbar(title: 'Dashboard', action: [
-          Row(
-            children: [
+  // Sort applications by timestamp (latest first)
+  particular.sort((a, b) {
+    Timestamp timeA = a['dateOfApplication'];
+    Timestamp timeB = b['dateOfApplication'];
+    return timeB.compareTo(timeA); // 🔹 Latest date first
+  });
 
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(formattedDate!),
-                ),
-              ),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.logout_outlined,
-                    color: white,
-                  )),
-            ],
-          )
-        ]),
-        body: isLoading ? Center(child: CircularProgressIndicator(),):
-        Container(
-          height: MediaQuery.of(context).size.height,
-          margin: const EdgeInsets.all(10),
-          child: Card(
-            elevation: 10,
-            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Column(
-                children: [
-                  const Row(
-                    children: [
-                      TableHeading(title: 'Flat No.', width: 0.15),
-                      TableHeading(title: 'Particulars', width: 0.70),
-                    ],
-                  ),
-                  Column(children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.80,
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: particular.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.10,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: ListTile(
-                                       onTap: () {
+  // Group applications by date
+  for (var app in particular) {
+    Timestamp timestamp = app['dateOfApplication'];
+    DateTime dateTime = timestamp.toDate();
+    String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
 
-                                        final provider = Provider.of<
-                                                ApplicationManagementProvider>(
-                                            context,
-                                            listen: false);
-                                        provider.setSelectedApplication(true);
-
-                                        provider.setSelectedFlatNo(particular[index]['flatno']);
-                                        provider.setSelectedApplicationType(particular[index]['applicationType']);
-                                        provider.setLoadWidget(false);
-                                      },
-                                      title: Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          particular[index]['flatno'],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 50,
-                                  ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.65,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: ListTile(
-                                      onTap: () {
-
-                                        final provider = Provider.of<
-                                                ApplicationManagementProvider>(
-                                            context,
-                                            listen: false);
-                                        provider.setSelectedApplication(true);
-
-                                        provider.setSelectedFlatNo(particular[index]['flatno']);
-                                        provider.setSelectedApplicationType(particular[index]['applicationType']);
-                                        provider.setLoadWidget(false);
-                                      },
-                                      title: Text(
-                                        particular[index]['applicationType'],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                    ),
-                  ]),
-                ],
-              ),
-            ]),
-          ),
-        ));
+    if (!groupedApplications.containsKey(formattedDate)) {
+      groupedApplications[formattedDate] = [];
+    }
+    groupedApplications[formattedDate]!.add(app);
   }
 
- Future<void> getFlatNum(String selectedSociety) async {
+  return Scaffold(
+    appBar: Customappbar(title: 'Dashboard', action: [
+      Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: white,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(todayDate), // Show today's date
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.logout_outlined,
+              color: white,
+            ),
+          ),
+        ],
+      )
+    ]),
+    body: isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : Container(
+            height: MediaQuery.of(context).size.height,
+            margin: const EdgeInsets.all(10),
+            child: Card(
+              elevation: 10,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    children: [
+                      const Row(
+                        children: [
+                          TableHeading(title: 'Flat No.', width: 0.15),
+                          TableHeading(title: 'Particulars', width: 0.70),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.80,
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            child: ListView.builder(
+                              itemCount: groupedApplications.length,
+                              itemBuilder: (context, index) {
+                                String date = groupedApplications.keys.elementAt(index);
+                                List<dynamic> applications = groupedApplications[date]!;
+
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // 🔹 Show Date Header ONLY IF it's NOT today's date
+                                    if (date != todayDate)
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          date, // Display date
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
+
+                                    // 🔹 List of Applications for this date
+                                    ...applications.map((app) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Row(
+                                          children: [
+                                            // 🔹 Flat Number Box
+                                            Container(
+                                              width: MediaQuery.of(context).size.width * 0.10,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(),
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              child: ListTile(
+                                                onTap: () {
+                                                  final provider = Provider.of<ApplicationManagementProvider>(context, listen: false);
+                                                  provider.setSelectedApplication(true);
+                                                  provider.setSelectedFlatNo(app['flatno']);
+                                                  provider.setSelectedApplicationType(app['applicationType']);
+                                                  provider.setLoadWidget(false);
+                                                },
+                                                title: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(app['flatno']),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 50),
+
+                                            // 🔹 Application Type Box
+                                            Container(
+                                              width: MediaQuery.of(context).size.width * 0.65,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(),
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              child: ListTile(
+                                                onTap: () {
+                                                  final provider = Provider.of<ApplicationManagementProvider>(context, listen: false);
+                                                  provider.setSelectedApplication(true);
+                                                  provider.setSelectedFlatNo(app['flatno']);
+                                                  provider.setSelectedApplicationType(app['applicationType']);
+                                                  provider.setLoadWidget(false);
+                                                },
+                                                title: Text(app['applicationType']),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+  );
+}
+
+
+  Future<void> getFlatNum(String selectedSociety) async {
     isLoading = true;
     QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
         .collection('application')
@@ -168,66 +208,32 @@ class _DashboardState extends State<Dashboard> {
     List<dynamic?> allFlat =
         flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
     flatList = allFlat;
-   
-      getAppType(widget.society!);
+
+    getAppType(widget.society!);
   }
 
-// Future<void> getAppType(String selectedSociety) async {
-//     try {
-//       for (var i = 0; i < flatList.length; i++) {
-//       DocumentSnapshot allDataDocumentSnapshot = await FirebaseFirestore.instance
-//         .collection('application')
-//         .doc(selectedSociety)
-//         .collection('flatno')
-//         .doc(flatList[i]['flatno'])
+  Future<void> getAppType(String selectedSociety) async {
+    try {
+      for (var i = 0; i < flatList.length; i++) {
+        QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
+            .collection('application')
+            .doc(selectedSociety)
+            .collection('flatno')
+            .doc(flatList[i]['flatno'])
+            .collection('applicationType')
+            .orderBy('dateOfApplication', descending: true)
+            .get();
 
-//         .get();
+        List<dynamic> allParticular =
+            flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
+        particular.addAll(allParticular);
+      }
 
-//         if (allDataDocumentSnapshot.exists) {
-//           Map<String,dynamic> allData = allDataDocumentSnapshot.data() as Map<String, dynamic>;
-//           print("alldata $allData");
-
-//         }
-
-//     // List<dynamic> allParticular =
-//     //     allDataDocumentSnapshot.docs.map((e) => e.data()).toList();
-//     // particular = allParticular;
-//     // print('allparticular $particular');
-//     // setState(() {
-//     //   isLoading = false;
-//     // });
-//     }
-      
-//     } catch (e) {
-      
-//     }
-//   }
- Future<void> getAppType(String selectedSociety) async {
-  try {
-    for (var i = 0; i < flatList.length; i++) {
-      QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
-          .collection('application')
-          .doc(selectedSociety)
-          .collection('flatno')
-          .doc(flatList[i]['flatno'])
-          .collection('applicationType')
-          .orderBy('dateOfApplication', descending: true)
-          .get();
-
-      List<dynamic> allParticular =
-          flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
-      particular.addAll(allParticular);
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching data: $e");
     }
-
-    setState(() {
-      isLoading = false;
-    });
-  } catch (e) {
-    print("Error fetching data: $e");
   }
-}
-
-
-  
- 
 }

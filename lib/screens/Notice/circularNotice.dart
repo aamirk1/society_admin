@@ -33,6 +33,7 @@ class _CircularNoticeState extends State<CircularNotice> {
   List<String> allFcmId = [];
   String url = '';
   bool isClicked = false;
+  bool isClickedPdf = false;
   final date = DateFormat('dd-MM-yyyy').format(DateTime.now());
 
   String societyName = '';
@@ -287,6 +288,8 @@ class _CircularNoticeState extends State<CircularNotice> {
                                                       value.noticeList[index]
                                                           ['date'];
                                                   setState(() {});
+                                                }else{
+print('clik on pdf');
                                                 }
                                               },
                                             ),
