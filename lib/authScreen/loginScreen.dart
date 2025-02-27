@@ -211,20 +211,20 @@ class _LoginScreenState extends State<LoginScreen> {
       if (userDoc.exists) {
         // Compare the provided password with the stored password
         final storedPassword = userDoc.data()!['password'];
-        final fullName = userDoc.data()!['fullName'];
+        final username = userDoc.data()!['fullName'];
 
         if (password == storedPassword) {
           storeLoginData(true, userID);
 
           QuerySnapshot querySnapshot = await FirebaseFirestore.instance
               .collection('AssignedRole')
-              .where("fullName", isEqualTo: fullName)
+              .where("username", isEqualTo: username)
               .get();
 
           List<dynamic> mapData =
               querySnapshot.docs.map((doc) => doc.data()).toList();
           if (mapData.isNotEmpty) {
-            final society = mapData[0]['societyname'];
+            final society = mapData[0]['societyName'];
 
             // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
