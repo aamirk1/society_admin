@@ -303,7 +303,11 @@ class _RoleScreenState extends State<RoleScreen> {
                                           ? customAlertBox(
                                               'Please Select Society')
                                           : storeAssignData(
-                                              selectedReportingManager);
+                                              selectedReportingManager ).whenComplete((){
+                                                selectedReportingManager = '';
+                                                selectedDesignationList.clear();
+                                              });
+
                                   getTotalUsers().whenComplete(() async {
                                     DocumentReference documentReference =
                                         FirebaseFirestore.instance
@@ -842,37 +846,70 @@ class _RoleScreenState extends State<RoleScreen> {
     );
   }
 
-  Future<void> storeAssignData(selectedUserName) async {
-    await FirebaseFirestore.instance
-        .collection('AssignedRole')
-        .doc(selectedUserName)
-        .set({
-      "fullName": selectedUserName,
-      'alphabet': selectedUserName[0][0].toUpperCase(),
-      'position': 'Assigned',
-      'roles': selectedDesignationList,
-      // 'depots': selectedDepo,
-      'societyname': widget.society,
-      // 'cities': selectedCity,
-    }).whenComplete(() {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: Colors.green,
-        content: Center(child: Text('Role Assigned Successfully')),
-      ));
-    });
+  // Future<void> storeAssignData(selectedUserName) async {
+  //   await FirebaseFirestore.instance
+  //       .collection('AssignedRole')
+  //       .doc(selectedUserName)
+  //       .set({
+  //     "fullName": selectedUserName,
+  //     'alphabet': selectedUserName[0][0].toUpperCase(),
+  //     'position': 'Assigned',
+  //     'roles': selectedDesignationList,
+  //     // 'depots': selectedDepo,
+  //     'societyname': widget.society,
+  //     // 'cities': selectedCity,
+  //   }).whenComplete(() {
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //       backgroundColor: Colors.green,
+  //       content: Center(child: Text('Role Assigned Successfully')),
+  //     ));
+  //   });
 
-    await FirebaseFirestore.instance
-        .collection('TotalUsers')
-        .doc(selectedUserName)
-        .set({
-      // 'userId': selectedUserId,
-      'alphabet': selectedUserName[0][0].toUpperCase(),
-      'position': 'Assigned',
-      'roles': selectedDesignationList,
-      // 'depots': selectedDepo,
-      'societyname': widget.society,
-      // 'cities': selectedCity,
-    });
+  //   await FirebaseFirestore.instance
+  //       .collection('TotalUsers')
+  //       .doc(selectedUserName)
+  //       .set({
+  //     // 'userId': selectedUserId,
+  //     'alphabet': selectedUserName[0][0].toUpperCase(),
+  //     'position': 'Assigned',
+  //     'roles': selectedDesignationList,
+  //     // 'depots': selectedDepo,
+  //     'societyname': widget.society,
+  //     // 'cities': selectedCity,
+  //   });
+  // }
+
+  Future<void> storeAssignData(selectedUserName) async {
+ 
+      await FirebaseFirestore.instance
+          .collection('AssignedRole')
+          .add({
+            
+        'username': selectedUserName,
+        'position': 'Assigned',
+        'roles': selectedDesignationList,
+        'societyName': widget.society,
+      });
+
+      await FirebaseFirestore.instance
+          .collection('TotalUsers')
+          .add({
+        'username': selectedUserName,
+        'position': 'Assigned',
+        'roles': selectedDesignationList,
+        'societyName': widget.society,
+      });
+    ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.green,
+                content: Center(
+                  child: Text(
+                    "Role Assign",
+                  ),
+                ),
+              ),
+            );
+    
   }
 
   //Calculating Total users for additional screen
@@ -897,19 +934,32 @@ class _RoleScreenState extends State<RoleScreen> {
     assignedUserList.clear();
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('AssignedRole')
-        .where('societyname', isEqualTo: widget.society)
+        .where('societyName', isEqualTo: widget.society)
         .get();
 
     assignedUserList = querySnapshot.docs.map((e) => e.id).toList();
     assignedUsers = querySnapshot.docs.length;
-    // print("assignedUser - $assignedUsers");
+    print("assignedUser - $assignedUsers");
     // print('aasasasasasasasa -  $assignedUsers');
     return assignedUserList;
   }
-
-  Future<void> getMemberList() async {
+Future<List<dynamic>> getMemberList() async {
     QuerySnapshot documentSnapshot =
-        await FirebaseFirestore.instance.collection('unAssignedRole').get();
-    memberList = documentSnapshot.docs.map((e) => e.id).toList();
+        await FirebaseFirestore.instance.collection('societyAdmin').get();
+    List<dynamic> memberLists =
+        documentSnapshot.docs.map((e) => e.data()).toList();
+
+    for (var member in memberLists) {
+      member = member['fullName'];
+      memberList.add(member);
+    }
+
+    return memberList;
   }
+
+  // Future<void> getMemberList() async {
+  //   QuerySnapshot documentSnapshot =
+  //       await FirebaseFirestore.instance.collection('unAssignedRole').get();
+  //   memberList = documentSnapshot.docs.map((e) => e.id).toList();
+  // }
 }

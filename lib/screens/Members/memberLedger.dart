@@ -30,8 +30,7 @@ class MemberLedger extends StatefulWidget {
 }
 
 class _MemberLedgerState extends State<MemberLedger> {
-
-   List<int> listOfIndex = [];
+  List<int> listOfIndex = [];
   final TextEditingController totalAmountController = TextEditingController();
   final TextEditingController electricController = TextEditingController();
   final TextEditingController billnoController = TextEditingController();
@@ -149,62 +148,63 @@ class _MemberLedgerState extends State<MemberLedger> {
                   ),
                   // Add tables here
 
- Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width *0.88,
-                        height: MediaQuery.of(context).size.height *0.66,
-                        child: Card(
-                          elevation: 5,
-                          shadowColor: Colors.grey,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.80,
-                                  height:    MediaQuery.of(context).size.height * 0.50,
-                                  child: DataTable(
-                                    headingRowColor:
-                                        const WidgetStatePropertyAll(
-                                            primaryColor),
-                                    // dataRowMinHeight: 10,
-                                    columnSpacing: 5,
-                                    columns: List.generate(5, (index) {
-                                      return DataColumn(
-                                        label: Text(
-                                          colums[index],
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.88,
+                          height: MediaQuery.of(context).size.height * 0.66,
+                          child: Card(
+                            elevation: 5,
+                            shadowColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.80,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.50,
+                                    child: DataTable(
+                                      headingRowColor:
+                                          const WidgetStatePropertyAll(
+                                              primaryColor),
+                                      // dataRowMinHeight: 10,
+                                      columnSpacing: 5,
+                                      columns: List.generate(5, (index) {
+                                        return DataColumn(
+                                          label: Text(
+                                            colums[index],
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    }),
-                                    rows: List.generate(
-                                      rowList.length,
-                                      (index1) {
-                                        return DataRow(
-                                          cells: List.generate(
-                                            colums.length,
-                                            (index2) {
-                                              return DataCell(
-                                                index2 == 1
-                                                    ? particulartsLableList[
-                                                                index1] ==
-                                                            '5_Bill No'
-                                                        ?  Text(
+                                        );
+                                      }),
+                                      rows: List.generate(
+                                        rowList.length,
+                                        (index1) {
+                                          return DataRow(
+                                            cells: List.generate(
+                                              colums.length,
+                                              (index2) {
+                                                return DataCell(
+                                                  index2 == 1
+                                                      ? particulartsLableList[
+                                                                  index1] ==
+                                                              '5_Bill No'
+                                                          ? Text(
                                                               '${particulartsLableList[index1].split('5_').join('')}\n ${rowList[index1][index2]}',
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:
-                                                                         12,
+                                                                          12,
                                                                       // backgroundColor:
                                                                       //     Colors.amber,
                                                                       color: Colors
@@ -216,11 +216,10 @@ class _MemberLedgerState extends State<MemberLedger> {
                                                                   TextAlign
                                                                       .center,
                                                             )
-                                                          
-                                                        : particulartsLableList[
-                                                                    index1] ==
-                                                                '2_Receipt No.'
-                                                            ? Text(
+                                                          : particulartsLableList[
+                                                                      index1] ==
+                                                                  '2_Receipt No.'
+                                                              ? Text(
                                                                   '${particulartsLableList[index1].split('2_').join('')}\n ${rowList[index1][index2]}',
                                                                   style: const TextStyle(
                                                                       fontSize:
@@ -234,11 +233,10 @@ class _MemberLedgerState extends State<MemberLedger> {
                                                                       TextAlign
                                                                           .center,
                                                                 )
-                                                              
-                                                            : particulartsLableList[
-                                                                        index1] ==
-                                                                    'Debit Note'
-                                                                ? Text(
+                                                              : particulartsLableList[
+                                                                          index1] ==
+                                                                      'Debit Note'
+                                                                  ? Text(
                                                                       '${particulartsLableList[index1]}\n${rowList[index1][index2]}',
                                                                       style: const TextStyle(
                                                                           fontSize:
@@ -251,8 +249,7 @@ class _MemberLedgerState extends State<MemberLedger> {
                                                                           TextAlign
                                                                               .center,
                                                                     )
-                                                                  
-                                                                :  Text(
+                                                                  : Text(
                                                                       '${particulartsLableList[index1]}\n ${rowList[index1][index2]}',
                                                                       style: const TextStyle(
                                                                           fontSize:
@@ -265,78 +262,79 @@ class _MemberLedgerState extends State<MemberLedger> {
                                                                           TextAlign
                                                                               .center,
                                                                     )
-                                                                  
-                                                    : Text(
-                                                        rowList[index1]
-                                                                [index2] ??
-                                                            '0',
-                                                        style: const TextStyle(
-                                                          fontSize: 12,
+                                                      : Text(
+                                                          rowList[index1]
+                                                                  [index2] ??
+                                                              '0',
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 12,
+                                                          ),
                                                         ),
-                                                      ),
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      },
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              const Divider(
-                                thickness: 1,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    const Column(
-                                      children: [
-                                        Text(
-                                          'Total Amount: ',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.15,
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.42,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                const Divider(
+                                  thickness: 1,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      const Column(
                                         children: [
-                                          Text(totalDebititAmount,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 12)),
-                                          Text(totalCretitAmount,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 12)),
-                                          Text(totalBillAmount,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 12)),
+                                          Text(
+                                            'Total Amount: ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14),
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.15,
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.42,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(totalDebititAmount,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 12)),
+                                            Text(totalCretitAmount,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 12)),
+                                            Text(totalBillAmount,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 12)),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-
+                      ],
+                    ),
+                  )
                 ],
               ),
             ],
@@ -346,11 +344,9 @@ class _MemberLedgerState extends State<MemberLedger> {
     );
   }
 
- Future<void> getBill(String societyname, String flatno) async {
-
+  Future<void> getBill(String societyname, String flatno) async {
     billNoList.clear();
     isLoading = true;
-
 
     QuerySnapshot societyQuerySnapshot = await FirebaseFirestore.instance
         .collection('ladgerBill')
