@@ -139,9 +139,13 @@ class _DateOfApplicationState extends State<DateOfApplication> {
                       height: MediaQuery.of(context).size.height * 0.060,
                       child: ListTile(
                         title: Text(
-                          widget.listOfDate[index]['dateOfApplication'],
-                          style: const TextStyle(color: Colors.white),
-                        ),
+  widget.listOfDate[index]['dateOfApplication'] != null
+      ? DateFormat('dd-MM-yyyy').format(
+          (widget.listOfDate[index]['dateOfApplication'] as Timestamp).toDate()
+        )
+      : "No Date",
+  style: const TextStyle(color: Colors.white),
+),
                         onTap: () {
                          final provider =
                               Provider.of<ApplicationManagementProvider>(
@@ -171,7 +175,11 @@ class _DateOfApplicationState extends State<DateOfApplication> {
                               text: widget.listOfDate[selectedDateIndex]['text']?.toString() ?? 'N/A',
                               society: widget.society,
                               flatNo: widget.flatNo,
-                              date: widget.listOfDate[selectedDateIndex]['dateOfApplication'],
+                              date: widget.listOfDate[selectedDateIndex]['dateOfApplication'] != null
+      ? DateFormat('dd-MM-yyyy').format(
+          (widget.listOfDate[selectedDateIndex]['dateOfApplication'] as Timestamp).toDate()
+        )
+      : "No Date",
                               response: widget.listOfDate[selectedDateIndex]['response'].toString(),
                               fcmId: widget.listOfDate[selectedDateIndex]['fcmId']?.toString() ?? 'N/A',
                             )

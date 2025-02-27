@@ -203,29 +203,30 @@ class _DashboardState extends State<Dashboard> {
 //     }
 //   }
  Future<void> getAppType(String selectedSociety) async {
-    try {
-      for (var i = 0; i < flatList.length; i++) {
+  try {
+    for (var i = 0; i < flatList.length; i++) {
       QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
-        .collection('application')
-        .doc(selectedSociety)
-        .collection('flatno')
-        .doc(flatList[i]['flatno'])
-        .collection('applicationType')
-        .get();
+          .collection('application')
+          .doc(selectedSociety)
+          .collection('flatno')
+          .doc(flatList[i]['flatno'])
+          .collection('applicationType')
+          .orderBy('dateOfApplication', descending: true)
+          .get();
 
-    List<dynamic> allParticular =
-        flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
-    particular .addAll(allParticular);
-    
+      List<dynamic> allParticular =
+          flatNumQuerySnapshot.docs.map((e) => e.data()).toList();
+      particular.addAll(allParticular);
     }
+
     setState(() {
       isLoading = false;
     });
-      
-    } catch (e) {
-      
-    }
+  } catch (e) {
+    print("Error fetching data: $e");
   }
+}
+
 
   
  

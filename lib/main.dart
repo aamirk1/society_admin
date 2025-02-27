@@ -111,12 +111,12 @@ class MyApp extends StatelessWidget {
         // ),
 
         home: 
-        // customSide(
-        //   society: 'JYOTI CO-OPERATIVE HOUSING SOCIETY LIMITED',
-        //   allRoles: const [''],
-        //   userId: 'JU6263',
-        // ),
-         const LoginScreen(),
+        customSide(
+          society: 'JYOTI CO-OPERATIVE HOUSING SOCIETY LIMITED',
+          allRoles: const [''],
+          userId: 'BP3216',
+        ),
+        //  const LoginScreen(),
       ),
     );
   }

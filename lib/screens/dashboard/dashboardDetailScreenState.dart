@@ -70,33 +70,33 @@ getAllDate(widget.society,widget.flatNo).whenComplete((){
 
 Future<void> getAllDate(String selectedSociety, String selectedFlatno) async {
   try {
-    QuerySnapshot flatNumQuerySnapshot; // Declare it here
+    // Fetch data from Firestore
+    QuerySnapshot flatNumQuerySnapshot = await FirebaseFirestore.instance
+        .collection('application')
+        .doc(selectedSociety)
+        .collection('flatno')
+        .doc(selectedFlatno)
+        .collection('applicationType')
+        .where('dateOfApplication', isNotEqualTo: null)
+        .orderBy('dateOfApplication', descending: true)
+        .get();
 
-
-      flatNumQuerySnapshot = await FirebaseFirestore.instance
-          .collection('application')
-          .doc(selectedSociety)
-          .collection('flatno')
-          .doc(selectedFlatno)
-          .collection('applicationType')
-          .where('dateOfApplication', isNotEqualTo: null)
-          .get();
-    
-
-    // Now it's accessible here
+    // Convert to a list of maps
     List<Map<String, dynamic>> allDate = flatNumQuerySnapshot.docs
         .map((e) => e.data() as Map<String, dynamic>)
         .toList();
 
-    listOfDate.addAll(allDate);
-
     setState(() {
+      listOfDate.clear(); // Clear previous data
+      listOfDate.addAll(allDate);
       isLoading = false;
     });
+
   } catch (e) {
-    print('Error: $e');
+    print('Error fetching dates: $e');
   }
 }
+
 
    
 }
